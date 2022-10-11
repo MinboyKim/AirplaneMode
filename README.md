@@ -1,6 +1,6 @@
 # AirplaneMode
 
-## ? „ê¸°í”„A13???
+## TEAM A13
 
 LETS GO
 A+
