@@ -7,3 +7,4 @@ using namespace std;
 
 vector<string> split_space();
 vector<string> split_space(string str);
+bool check_ID(string str);

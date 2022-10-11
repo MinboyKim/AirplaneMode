@@ -10,18 +10,28 @@ using namespace std;
 
 void log_in_prompt();
 void run();
+void print_ID_warning();
+
+void print_ID_warning() { cout << "Id gramatical error\n"; }
 
 void log_in_prompt() {
     string input_id;
     while (true) {
         cout << "Id > ";
-        vector<string> Id_input;
-        while (cin >> input_id) {
-        }
-        if (input_id == "admin") {
-            admin_prompt();
-            break;
+        vector<string> ID_input;
+        ID_input = split_space();
+        if (ID_input.size() != 1) {
+            print_ID_warning();
+            continue;
+        } else if (!check_ID(ID_input[0])) {
+            print_ID_warning();
+            continue;
         } else {
+            if (ID_input[0] == "admin") {
+                admin_prompt();
+                break;
+            } else {
+            }
         }
     }
 }
@@ -32,6 +42,6 @@ void run() {
 }
 
 int main() {
-    // run();
+    run();
     return 0;
 }
