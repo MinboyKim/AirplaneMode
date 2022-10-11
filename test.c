@@ -11,10 +11,7 @@ void help() {
 
 int main(void) {
   printf("Hello!");
-
-
-
-  printf("asd");
+  printf("¾ß½º");
   printf("underboob");
   return 0;
 }
