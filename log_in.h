@@ -1,3 +1,6 @@
+#ifndef LOG_IN_H
+#define LOG_IN_H
+
 #include "admin.h"
 #include "sign_in.h"
 #include "string_function.h"
@@ -9,3 +12,5 @@
 using namespace std;
 
 void log_in_prompt();
+
+#endif

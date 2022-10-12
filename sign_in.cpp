@@ -1,4 +1,5 @@
 #include "string_function.h"
+#include <direct.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -6,6 +7,28 @@
 #include <vector>
 
 using namespace std;
+
+bool make_new_user(vector<string> new_user_data, string user_ID) {
+    string will_write = "^" + user_ID + "^";
+    for (int i = 0; i < 4; i++) {
+        will_write += new_user_data[i] + "^";
+    }
+    will_write += "0^";
+
+    char dir[256];
+    _getcwd(dir, 256);
+    string server_dir(dir);
+    server_dir += "\\data\\Userlist.txt";
+    ofstream user_data;
+    user_data.open(server_dir, ios::app);
+    if (user_data.is_open()) {
+        user_data << endl << will_write;
+        user_data.close();
+        return true;
+    } else {
+        return false;
+    }
+}
 
 bool sign_in_prompt(string user_ID) {
     vector<string> user_input, new_user_data;
@@ -72,28 +95,6 @@ bool sign_in_prompt(string user_ID) {
     }
 
     if (make_new_user(new_user_data, user_ID)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool make_new_user(vector<string> new_user_data, string user_ID) {
-    string will_write = "^" + user_ID + "^";
-    for (int i = 0; i < 4; i++) {
-        will_write += new_user_data[i] + "^";
-    }
-    will_write += "0^";
-
-    char dir[256];
-    getcwd(dir, 256);
-    string server_dir(dir);
-    server_dir += "/data/Userlist.txt";
-    ofstream user_data;
-    user_data.open(server_dir, ios::app);
-    if (user_data.is_open()) {
-        user_data << will_write << endl;
-        user_data.close();
         return true;
     } else {
         return false;
