@@ -1,10 +1,10 @@
 #include <algorithm>
+#include <direct.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <unistd.h>
 #include <vector>
 
 using namespace std;
@@ -148,7 +148,7 @@ bool check_TEL(string str) {
         if (str[3] != '-' || str[8] != '-') {
             return false;
         }
-        for (int i = 3; i < 13; i++) {
+        for (int i = 4; i < 13; i++) {
             if (i != 8) {
                 if (str[i] > '9' || str[i] < '0') {
                     return false;
@@ -228,9 +228,9 @@ bool check_birth(string str) {
 
 bool is_userID_in_data(string str) {
     char dir[256];
-    getcwd(dir, 256);
+    _getcwd(dir, 256);
     string server_dir(dir);
-    server_dir += "/data/Userlist.txt";
+    server_dir += "\\data\\Userlist.txt";
     ifstream user_data;
     user_data.open(server_dir);
     if (user_data.is_open()) {
@@ -252,7 +252,7 @@ bool is_userID_in_data(string str) {
 }
 
 bool is_male(string str) {
-    if (str[0] == 'm') {
+    if (str[0] == 'M') {
         return true;
     }
     return false;
@@ -272,7 +272,7 @@ string make_TEL_data(string str) {
     } else if (str.size() == 11) {
         data_str = str.substr(3, 8);
     } else if (str.size() == 13) {
-        data_str = str.substr(3, 4) + str.substr(9, 4);
+        data_str = str.substr(4, 4) + str.substr(9, 4);
     }
     return data_str;
 }

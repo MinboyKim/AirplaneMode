@@ -1,10 +1,13 @@
+#ifndef STRING_FUNCTION_H
+#define STRING_FUNCTION_H
+
 #include <algorithm>
+#include <direct.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <unistd.h>
 #include <vector>
 
 using namespace std;
@@ -28,3 +31,5 @@ void print_name_warning();
 void print_sex_warning();
 void print_TEL_warning();
 void print_birth_warning();
+
+#endif
