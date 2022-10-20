@@ -13,32 +13,92 @@ using namespace std;
 void admin_prompt() {
 	system("cls");
 	printf("Admin> ");
-	if (choice() == 1) {
-		show_airplane();
-		check();
-		//admin_add();
-	}
-	else {
-		
-	}
+	string s;
+	cin.ignore();
+	getline(cin, s);
+	vector<string> v(1000);
+	v = split_space(s);
+	check(v);
+	
+}
+
+void show_airplane() {
+	//system("cls");
+	cout << "항공편 목록" << endl;
+	cout << "Admin> ";
+	string s;
+	cin.ignore();
+	getline(cin, s);
+	vector<string> v(1000);
+	v= split_space(s);
+	check(v);
 }
 
 int choice() {
 	int choice;
 	scanf_s("%d", &choice);
-	return 1;
+	return choice;
 }
 
-void check() {
-	string s;
-	getline(cin, s);
-	vector<string> v = split_space(s);
-	if (v.front() == "add") admin_add(v);
-	else if (v.front() == "cancel") admin_cancel(v[1]);
+void check(vector<string> v) {
+	if (v.size() > 6) {
+		string cmd = v[0];
+		if (cmd == "add" || cmd == "d" || cmd == "ad") check_add(v);
+		else if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") admin_cancel(v[1]);
+		else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);
+	}
 	return;
 
 }
 
+void check_add(vector<string> v) {
+	string planename = v[1];
+	string departture_destination = v[2];
+	string time = v[3];
+	string price = v[4];
+	string seats = v[5]; 
+
+	for (int i = 0; i < 3; i++) {
+		if (planename[i] >= 'A' && planename[i] <= 'Z')
+			if (planename[i] >= 'a' && planename[i] <= 'z')
+				planename[i] -= 32;
+			else { error(); return; }
+		else { error(); return; }
+	}
+	for (int i = 3; i < 6; i++) {
+		if (planename[i] < '0' && planename[i] > '9') 
+			 { error(); return; }
+	}
+	for (int j = 0; j < 3; j++) {
+		if (departture_destination[j] >= 'A' && departture_destination[j] <= 'z') {
+		}
+		else{ error(); return; }
+	}
+	if (departture_destination[3] == '/' && departture_destination[3] == ',' && departture_destination[3] == '-') {
+	}
+	else{ error(); return; }
+	for (int j = 3; j < 6; j++) {
+		if (departture_destination[j] >= 'A' && departture_destination[j] <= 'z') {
+		}
+		else { error(); return; }
+	}
+	if(time.length()==21) {
+		for (int i = 0; i < 2; i++) {
+			time[0]==
+		}
+	}
+	else if (time.length() == 23) {
+
+
+	}
+	else if (time.length() == 25) {
+
+	}
+	else
+	
+	admin_add(v);
+	return;
+}
 void admin_add(vector<string> v){
 	string line;
 	string fname = v[1] + ".txt";
@@ -72,24 +132,21 @@ void admin_add(vector<string> v){
 	show_airplane();
 }
 
-void show_airplane() {
-	//system("cls");
-	cout << "항공편 목록"<<endl;
-	cout << "Admin> ";
-	if (choice() == 1) {
-		check();
-	}
-}
 
 void admin_cancel(string s){
 	string line;
 	int offset;
 	
-	std::vector<std::string>?get_files_inDirectory(const?std::string & _path, const?std::string & _filter) {
-		std::string?searching? = _path? + _filter;?????std::vector<std::string>?return_;?????_finddata_t?fd;????long?handle? = _findfirst(searching.c_str(), &fd);?
+	
 	show_airplane();
 
 }
-void admin_edit(){
+void admin_edit(vector<string> v){
 
 }
+
+void error() {
+	printf("syntax error \n");
+	show_airplane();
+}
+
