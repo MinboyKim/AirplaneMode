@@ -12,6 +12,7 @@ information
 #include <windows.h>
 #include <vector>
 #include<iostream>
+#include "string_function.h"
 
 using namespace std;
 void help(vector<string> v) {
@@ -86,7 +87,7 @@ void show_guide() {
 	printf("|                           |                               |                                                            \n");
 	printf("|         list, li, l       |    Not exist or 1 flight      |       print flight imformation list or seat information    \n");
 	printf("|                           |                               |                                                            \n");
-	printf("|     reservation,reserve,r |  flight and seat information                             description                       \n");
+	printf("|     reservation,reserve,r |  flight and seat information  |                          description                       \n");
 	printf("|                           |                               |                                                            \n");
 	printf("|      cancel, can, c       |            flight             |                           quit flight                      \n");
 	printf("|                           |                               |                                                            \n");
@@ -96,7 +97,7 @@ void show_guide() {
 	printf("-------------------------------------------------------------------------------------------------------------------------\n");
 
 }
-vector<string> input_oder() {
+vector<string> user_input() {
 
 	vector<string> v;
 	v = split_space();
@@ -106,14 +107,19 @@ vector<string> input_oder() {
 
 void user_prompt(string s){
 	
+	int quit_num = 0;
 	vector<string> v;
 	while (1) {
-		printf("User>")
-		v = input_oder();
+		printf("User>");
+		v = user_input();
 		if (v[0] == "help" or v[0] == "he" or v[0] == "h") {
 			system("cls");
 			help(v);
 			continue;
+		}
+		if (v[0] == "quit" or v[0] == "qu" or v[0] == "q") {
+			system("cls");
+			break;
 		}
 	}
 
