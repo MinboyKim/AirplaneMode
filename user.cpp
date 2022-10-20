@@ -13,6 +13,12 @@ information
 #include <vector>
 #include<iostream>
 #include "string_function.h"
+#include<fstream>
+#include<io.h>
+#include<conio.h>
+#include<stdio.h>
+
+
 
 using namespace std;
 void help(vector<string> v) {
@@ -62,8 +68,91 @@ void help(vector<string> v) {
 		}
 	}
 }
-void list() {
+void list(vector<string> v) {
+	//리스트 출력
+	vector<string> fname;
+	vector<string> flight;//항공편 정보를 담는 벡터
 
+	int k = 0;
+	ifstream readFile;
+	_finddata_t fd;
+	long handle;
+	int result = 1;
+	handle = _findfirst(".", &fd);  //현재 폴더 내 모든 파일을 찾는다.
+	if (v.size() == 1) {//인자가 없는 경우
+		if (handle == -1)
+		{
+			printf("NO flights \n");
+			return;
+		}
+
+		while (result != -1)
+		{
+			fname.push_back(fd.name);
+			result = _findnext(handle, &fd);
+			k++;
+		}
+		_findclose(handle);
+
+		for (int i = 0; i < k + 1; i++) {
+
+			readFile.open("." + fname[i]);
+			if (readFile.is_open()) {
+				while (!readFile.eof()) {
+
+					flight = split_user_data(); // 항공편명^ 출발지 도착지 ^출발시각 도착시각 ^좌석 사이즈 ^ 금액 ^ 유저아이디^ 좌석........//7번 벡터부터 유저정보.
+				}
+
+			}
+			readFile.close();
+
+			for (int h = 0; h < 5; h++) {
+				if (h == 0) {
+					printf("%s ", flight[0]);//항공편명
+				}
+				if (h == 1) {//항공편 출발지 도착지
+					for (int j = 0; j < 3; j++) {
+						printf("%c", flight[1][j]);
+					}
+					printf(" /");
+					for (int j = 3; j < 6; j++) {
+						printf("%c", flight[1][j]);
+					}
+					printf("  ");
+				}
+				else if (h == 2) { //출발 시간 도착 시간
+
+					for (int j = 0; j < 12; j++) {
+						printf("%c", v[2][j]);
+					}
+					printf(" ~");
+					for (int j = 12; j < 24; j++) {
+						printf("%c", v[2][j]);
+					}
+					printf(" ");
+				}
+
+				else if (h == 3) {
+					printf("%s ", flight[3])//금액
+				}
+				else if (i == 4) {
+
+
+				}
+			}
+		}
+	}
+	else if (v, size() == 2) {//인자가 있는 경우. 좌석을 출력.
+
+		readFile.open("." + v.[1]+"txt");
+		if (readFile.is_open()) {
+
+			while (!readFile.eof()) {
+
+			}
+		}
+
+	}
 }
 void reservation() {
 
@@ -113,13 +202,21 @@ void user_prompt(string s){
 		printf("User>");
 		v = user_input();
 		if (v[0] == "help" or v[0] == "he" or v[0] == "h") {
-			system("cls");
 			help(v);
 			continue;
 		}
 		if (v[0] == "quit" or v[0] == "qu" or v[0] == "q") {
 			system("cls");
 			break;
+		}
+		if (v[0] == "list" or v[0] == "li" or v[0] == "l") {
+			list(v);
+			continue;
+		}
+		if (v[0] == "reservation" or v[0] == "reserve" or v[0] == "r") {
+			system("cls");
+			reservation(v);
+			continue;
 		}
 	}
 
