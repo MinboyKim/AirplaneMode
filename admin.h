@@ -1,4 +1,3 @@
-
 #include "integrity_check.h"
 #include <iostream>
 #include <windows.h>
