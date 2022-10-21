@@ -17,9 +17,9 @@ information
 #include<io.h>
 #include<conio.h>
 #include<stdio.h>
-
-qwewqeqweqweqweqweqweqwe
-
+qweqweqweqwewqeqwqweqweqwe
+qweqweqwewqeqwe
+wqeqwe
 using namespace std;
 void help(vector<string> v) {
 
@@ -248,5 +248,5 @@ void user_prompt(string s){
 
 
 int main() {
-	show_guide();
+	printf("@#@323");
 }

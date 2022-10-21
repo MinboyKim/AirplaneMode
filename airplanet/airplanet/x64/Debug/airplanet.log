@@ -1,0 +1,22 @@
+﻿  string_function.cpp
+  The contents of <filesystem> are available only with C++17 or later.
+  user.cpp
+C:\Users\cjkk0\OneDrive\문서\바탕 화면\AirplaneMode\user.cpp(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+  The contents of <filesystem> are available only with C++17 or later.
+C:\Users\cjkk0\OneDrive\문서\바탕 화면\AirplaneMode\user.cpp(80,21): warning C4244: '=': 'intptr_t'에서 'long'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\cjkk0\OneDrive\문서\바탕 화면\AirplaneMode\user.cpp(110,13): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 '_Ty'입니다.
+          with
+          [
+              _Ty=std::string
+          ]
+C:\Users\cjkk0\OneDrive\문서\바탕 화면\AirplaneMode\user.cpp(135,13): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 '_Ty'입니다.
+          with
+          [
+              _Ty=std::string
+          ]
+C:\Users\cjkk0\OneDrive\문서\바탕 화면\AirplaneMode\user.cpp(172,28): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+user.obj : error LNK2019: "void __cdecl reservation(class std::vector<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::allocator<class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > > >)" (?reservation@@YAXV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@@Z)"void __cdecl user_prompt(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?user_prompt@@YAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
+    정의되었으며 잠재적으로 일치할 수 있는 기호에 대한 힌트:
+      "void __cdecl reservation(void)" (?reservation@@YAXXZ)
+C:\Users\cjkk0\OneDrive\문서\바탕 화면\AirplaneMode\airplanet\x64\Debug\airplanet.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.
