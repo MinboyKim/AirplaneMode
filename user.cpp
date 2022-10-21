@@ -4,12 +4,15 @@
 #include<fstream>
 #include<io.h>
 #include<conio.h>
-#include<stdio.h>
 #include "string_function.h"
+#include "user.h"
+#include "integrity_check.h"
+#include <iostream>
+#include <string>
 
 using namespace std;
 
-void show_guide() {
+void user_show_guide() {
 	cout << ("-------------------------------------------------------------------------------------------------------------------------\n");
 	cout << ("|         command set       |           argument            |                          description                       \n");
 	cout << ("|                           |                               |                                                            \n");
@@ -38,11 +41,11 @@ vector<string> user_input() {
 
 }
 
-void help(vector<string> v) {
+void user_help(vector<string> v) {
 
 	if (v.size() == 1) {
 		system("cls");
-		show_guide();
+		user_show_guide();
 		return;
 	}
 
@@ -89,44 +92,19 @@ void help(vector<string> v) {
 		}
 		else {
 			system("cls");
-			show_guide();
+			user_show_guide();
 			return;
 		}
 	}
 }
 
-void user_prompt(string s) {
-
-	int quit_num = 0;
-	vector<string> v;
-
-	while (1) {
-		cout << "User>";
-
-		v = user_input();
-
-		if (v.at(0) == "help" or v.at(0) == "he" or v.at(0) == "h") {
-			help(v);
-			continue;
-		}
-		if (v.at(0) == "quit" or v.at(0) == "qu" or v.at(0) == "q") {
-			system("cls");
-			break;
-		}
-		if (v.at(0) == "list" or v.at(0) == "li" or v.at(0) == "l") {
-			continue;
-		}
-		if (v.at(0) == "reservation" or v.at(0) == "reserve" or v.at(0) == "r") {
-			system("cls");
-			continue;
-		}
-	}
-
+void user_quit()
+{
 }
 
 
 
-void list(vector<string> v) {
+void user_list(vector<string> v) {
 	//리스트 출력
 	vector<string> fname;
 	vector<string> flight;//항공편 정보를 담는 벡터
@@ -236,10 +214,60 @@ void list(vector<string> v) {
 
 	}
 }
+void user_reservation(vector<string> v)
+{
+}
+/*
+구현할 명령어 목록
+help
+quit
+list
+reservation
 
 
-int main(void) {
 
-	user_prompt("wewewe");
+cancel
+deposit
+information
+*/
 
+void user_prompt(string userID) {
+	system("cls");
+	printf("User> ");
+	string s;
+	cin.ignore();
+	getline(cin, s);
+	vector<string> v(1000);
+	v = split_space(s);
+	user_check(v, userID);
+}
+
+void user_cancel(string flightName, string userID)
+{
+}
+
+void user_deposit(string iMoney, string userID)
+{
+	int money = stoi(iMoney);
+	char dir[256];
+	_getcwd(dir, 256);
+	string server_dir(dir);
+	server_dir += "\\data\\Userlist.txt";
+	
+
+}
+
+void user_information(string userID)
+{
+}
+
+
+void user_check(vector<string> v, string userID) {
+	if (v.size() > 6) {
+		string cmd = v[0];
+		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel(v[1], userID);
+		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit(v[1], userID);
+		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information();
+	}
+	return;
 }
