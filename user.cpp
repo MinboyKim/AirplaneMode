@@ -18,13 +18,13 @@ information
 #include<conio.h>
 #include<stdio.h>
 
-
+qwewqeqweqweqweqweqweqwe
 
 using namespace std;
 void help(vector<string> v) {
 
 	if (v.size() == 1) {
-		showguide();
+		show_guide();
 		return;
 	}
 
@@ -44,12 +44,12 @@ void help(vector<string> v) {
 		}
 		else if (v[1] == "reservation" or v[1] == "reserve" or v[1] == "r") {
 			printf("description : Instruction \"reservation or reserve or r \" reserve seat. you can use this instuctrion with 2 arguments flight name and seat postion. \n");
-			printf("            : ex> User> reservation KOR 222 A1")
+			printf("            : ex> User> reservation KOR 222 A1");
 
 		}
 		else if (v[1] == "cancel" or v[1] == "can" or v[1] == "c") {
 			printf("description : Instruction \"cancel or can or c \" cancel reservation with 1 argument about flight name. the name is necessary in flight information list \n");
-			printf("            : ex> User> cancel KOR111")
+			printf("            : ex> User> cancel KOR111");
 
 		}
 		else if (v[1] == "deposit" or v[1] == "depo" or v[1] == "d") {
@@ -63,7 +63,7 @@ void help(vector<string> v) {
 			printf("            : cj2200 ChoiJungyu M 01050362323 1990622\n");
 		}
 		else {
-			showguide();
+			show_guide();
 			return;
 		}
 	}
@@ -72,6 +72,7 @@ void list(vector<string> v) {
 	//리스트 출력
 	vector<string> fname;
 	vector<string> flight;//항공편 정보를 담는 벡터
+	string str;
 
 	int k = 0;
 	ifstream readFile;
@@ -99,8 +100,8 @@ void list(vector<string> v) {
 			readFile.open("." + fname[i]);
 			if (readFile.is_open()) {
 				while (!readFile.eof()) {
-
-					flight = split_user_data(); // 항공편명^ 출발지 도착지 ^출발시각 도착시각 ^좌석 사이즈 ^ 금액 ^ 유저아이디^ 좌석........//7번 벡터부터 유저정보.
+					getline(readFile, str);
+					flight = split_user_data(str); // 항공편명^ 출발지 도착지 ^출발시각 도착시각 ^좌석 사이즈 ^ 금액 ^ 유저아이디^ 좌석........//7번 벡터부터 유저정보.
 				}
 
 			}
@@ -108,7 +109,7 @@ void list(vector<string> v) {
 
 			for (int h = 0; h < 5; h++) {
 				if (h == 0) {
-					printf("%s ", flight[0]);//항공편명
+					printf("%s", flight[0]);//항공편명
 				}
 				if (h == 1) {//항공편 출발지 도착지
 					for (int j = 0; j < 3; j++) {
@@ -133,7 +134,7 @@ void list(vector<string> v) {
 				}
 
 				else if (h == 3) {
-					printf("%s ", flight[3])//금액
+					printf("%s", flight[3]);//금액
 				}
 				else if (i == 4) {
 
@@ -142,12 +143,35 @@ void list(vector<string> v) {
 			}
 		}
 	}
-	else if (v, size() == 2) {//인자가 있는 경우. 좌석을 출력.
 
-		readFile.open("." + v.[1]+"txt");
+	else if (v.size() == 2) {//인자가 있는 경우. 좌석을 출력.
+		
+		//if v[1] 이 입력 형식에 맞으면.
+
+		string check_string;
+		check_string = v[1];
+
+		if (check_string.size() > 6) { //입력된 인자가 6글자 이상이므로 리턴
+			return;
+		}
+		for (int i = 0; i < 3; i++) {
+			if (check_string[i] < 'A' or check_string[i]>'Z') { //대문자로 이루어진 경우가 아닌 경우 리턴
+				return;
+				
+			}
+			if (check_string[i + 3] < '0' or check_string[i + 3]>'9') { // 숫자로 이루어진 경우가 아닌 경우 리턴
+				return;
+			}
+		}
+
+		readFile.open("." + v[1]+"txt");
 		if (readFile.is_open()) {
-
+			
 			while (!readFile.eof()) {
+				getline(readFile, str);
+				flight = split_user_data(str);
+
+				int fvs = flight.size();
 
 			}
 		}
