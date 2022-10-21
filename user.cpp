@@ -17,9 +17,6 @@ information
 #include<io.h>
 #include<conio.h>
 #include<stdio.h>
-qweqweqweqwewqeqwqweqweqwe
-qweqweqwewqeqwe
-wqeqwe
 using namespace std;
 void help(vector<string> v) {
 
