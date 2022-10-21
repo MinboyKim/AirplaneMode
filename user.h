@@ -25,4 +25,5 @@ void reservation(vector<string> v);
 void cancel();
 void deposit();
 void information();
+vector<string> get_files_indirectory(const string& _path, const string& _filter);
 
