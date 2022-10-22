@@ -140,7 +140,7 @@ void check_add(vector<string> v) {
 	else {error(); return;
 }
 
-	string newprice="a";
+	string newprice="";
 	for (char& c : price) {
 		if (c == ',') {
 		}
@@ -157,9 +157,18 @@ void check_add(vector<string> v) {
 }
 void admin_add(vector<string> v){
 	string line;
-	string fname = v[1] + ".txt";
+	string fname = "./data/airplane/"+v[1] + ".txt";
 	
-	ofstream listfile("fls::current_path()\\airplane\\Aplist.txt", std::ios_base::out | std::ios_base::app);
+	fls::path p("./data");
+	if (!fls::exists(p))
+		fls::create_directory(p);
+
+	fls::path p2("./data/airplane");
+	if (!fls::exists(p2))
+		fls::create_directory(p2);
+
+
+	ofstream listfile("data\\airplane\\Aplist.txt", std::ios_base::out | std::ios_base::app);
 	if (listfile.is_open()) {
 		listfile << v[1]<<"^";
 		listfile.close();
@@ -184,13 +193,13 @@ void admin_add(vector<string> v){
 		fs1.close();
 	}
 
-	fls::directory_iterator itr(fls::current_path() / "a");
+	/*fls::directory_iterator itr(fls::current_path() / "data"/"airplane");
 	while (itr != fls::end(itr)) {
 		const fls::directory_entry& entry = *itr;
 		std::cout << entry.path() << std::endl;
 		itr++;
 	}
-	show_airplane();
+	show_airplane();*/
 }
 
 
