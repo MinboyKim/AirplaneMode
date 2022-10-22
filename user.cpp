@@ -1,15 +1,18 @@
+#include<stdio.h>
 #include<vector>
 #include<windows.h>
 #include<fstream>
 #include<io.h>
 #include<conio.h>
-#include<stdio.h>
 #include "string_function.h"
 #include "user.h"
+#include "integrity_check.h"
+#include <iostream>
+#include <string>
 
 using namespace std;
 
-void show_guide() {
+void user_show_guide() {
 	cout << ("-------------------------------------------------------------------------------------------------------------------------\n");
 	cout << ("|         command set       |           argument            |                          description                       \n");
 	cout << ("|                           |                               |                                                            \n");
@@ -38,11 +41,11 @@ vector<string> user_input() {
 
 }
 
-void help(vector<string> v) {
+void user_help(vector<string> v) {
 
 	if (v.size() == 1) {
 		system("cls");
-		show_guide();
+		user_show_guide();
 		return;
 	}
 
@@ -89,133 +92,97 @@ void help(vector<string> v) {
 		}
 		else {
 			system("cls");
-			show_guide();
+			user_show_guide();
 			return;
 		}
 	}
 }
 
-void user_prompt(string s) {
-
-	int quit_num = 0;
-	vector<string> v;
-
-	while (1) {
-		cout << "User>";
-
-		v = user_input();
-
-		if (v.at(0) == "help" or v.at(0) == "he" or v.at(0) == "h") {
-			help(v);
-			continue;
-		}
-		if (v.at(0) == "quit" or v.at(0) == "qu" or v.at(0) == "q") {
-			system("cls");
-			break;
-		}
-		if (v.at(0) == "list" or v.at(0) == "li" or v.at(0) == "l") {
-			list(v);
-			continue;
-		}
-		if (v.at(0) == "reservation" or v.at(0) == "reserve" or v.at(0) == "r") {
-			system("cls");
-			continue;
-		}
-	}
-
+void user_quit()
+{
 }
 
-vector<string> get_files_indirectory(const string& _path, const string& _filter) {
 
-	string searching = _path + _filter;
 
-	vector<string> return_;
+void user_list(vector<string> v) {
+	//리스트 출력
+	vector<string> fname;
+	vector<string> flight;//항공편 정보를 담는 벡터
+	string str;
 
+	int k = 0;
+	ifstream readFile;
 	_finddata_t fd;
+	long handle;
+	int result = 1;
+	handle = _findfirst(".", &fd);  //현재 폴더 내 모든 파일을 찾는다.
+	if (v.size() == 1) {//인자가 없는 경우
+		if (handle == -1)
+		{
+			cout << ("NO flights \n");
+			return;
+		}
 
-	intptr_t handle = _findfirst(searching.c_str(), &fd);
-	if (handle == -1) return return_;
+		while (result != -1)
+		{
+			fname.push_back(fd.name);
+			result = _findnext(handle, &fd);
+			k++;
+		}
+		_findclose(handle);
 
-	int result = 0;
-	do {
-		return_.push_back(fd.name);
-		result = _findnext(handle, &fd);
-	} while (result != -1);
+		for (int i = 0; i < k + 1; i++) {
 
-	_findclose(handle);
-	return return_;
-
-}
-
-void list(vector<string> v) {
-
-	vector<string> flight; //항공편명 리스트벡터
-	vector<string> f_info;
-	vector<string> f_info_temp;
-	string path = "c:\\flights\\";
-	string temp = path;
-	if (v.size() == 1) { // 인자가 없는 경우.
-		
-		flight = get_files_indirectory("c:\\flights\\", "*.*");
-		
-		for (int i = 2; i < flight.size(); i++) {//파일 하나씩 읽어오기
-			path = temp;
-			path = path + flight.at(i);//읽어드릴 텍스트파일 경로
-			
-			ifstream readFile;
-			readFile.open(path);
-
-			while (!readFile.eof()) {
-				string str;
-				getline(readFile, str);
-				f_info_temp =  split_user_data(str);
-				f_info.insert(f_info.end(),f_info_temp.begin(),f_info_temp.end());
+			readFile.open("." + fname[i]);
+			if (readFile.is_open()) {
+				while (!readFile.eof()) {
+					getline(readFile, str);
+					flight = split_user_data(str); // 항공편명^ 출발지 도착지 ^출발시각 도착시각 ^좌석 사이즈 ^ 금액 ^ 유저아이디^ 좌석........//7번 벡터부터 유저정보.
+				}
 
 			}
 			readFile.close();
 
-			for (int k = 0; k < 5; k++) { //항공편명, 출발도착지,츨발도착지, 좌석, 가격
-				if (k == 1) {
+			for (int h = 0; h < 5; h++) {
+				if (h == 0) {
+					cout << flight[0];//항공편명
+				}
+				if (h == 1) {//항공편 출발지 도착지
 					for (int j = 0; j < 3; j++) {
-						cout << f_info.at(k)[j];
+						cout << flight[1][j];
 					}
-					cout << " / ";
+					cout << (" /");
 					for (int j = 3; j < 6; j++) {
-						cout << f_info.at(k)[j];
+						cout << flight[1][j];
 					}
-					cout << " ";
-					continue;
+					cout << ("  ");
+				}
+				else if (h == 2) { //출발 시간 도착 시간
+
+					for (int j = 0; j < 12; j++) {
+						cout << v[2][j];
+					}
+					cout << (" ~");
+					for (int j = 12; j < 24; j++) {
+						cout << v[2][j];
+					}
+					cout << (" ");
 				}
 
-				if (k == 2) {
-					for (int j = 0; j < 11; j++) {
-						cout << f_info.at(k)[j];
-					}
-					cout << " ~ ";
-					for (int j = 11; j < 24; j++) {
-						cout << f_info.at(k)[j];
-					}
-					cout << " ";
-					continue;
+				else if (h == 3) {
+					cout << flight[3];//금액
 				}
+				else if (i == 4) {
 
-				if (k == 3) {
-					continue;
+
 				}
-				cout << f_info.at(k); //5번-이름 6번-좌석정보 7번-이름 8번-좌석정보 f_info --> flight 마다 저장된 데이터 리스트.
-				cout << " ";
 			}
-			cout << endl;
-			f_info.clear();
-			f_info_temp.clear();
 		}
-
 	}
-	else if (v.size() == 2) {//인자가 2개일때.
 
-		cout << "2success" << endl;
-		cout << v.at(0) << endl;
-		cout << v.at(1) << endl;
+	else if (v.size() == 2) {//인자가 있는 경우. 좌석을 출력.
+
+		//if v.at(1) 이 입력 형식에 맞으면.
 
 		string check_string;
 		check_string = v.at(1);
@@ -232,93 +199,75 @@ void list(vector<string> v) {
 				return;
 			}
 		}
-		
-		flight = get_files_indirectory("c:\\flights\\", "*.*");
-		
-		int index = -1;
 
-		for (int a = 2; a < flight.size(); a++) {
-			cout << v.at(1)+".txt" << "/" << flight.at(a) << endl;
-			if ((v.at(1)+".txt") == flight.at(a)) {
-				index = a;
-			}
-		}
-		if (index == -1) {
+		readFile.open("." + v.at(1) + "txt");
+		if (readFile.is_open()) {
 
-			cout << "no flight name"<<endl;
-			return;
-
-		}
-		else
-		{
-
-			ifstream readFile;
-			path = path + flight.at(index);
-			readFile.open(path);
 			while (!readFile.eof()) {
-				string str;
 				getline(readFile, str);
-				f_info_temp = split_user_data(str);
-				f_info.insert(f_info.end(), f_info_temp.begin(), f_info_temp.end());
-			}
-			readFile.close();
+				flight = split_user_data(str);
 
-			if (f_info.size() < 6) {//예약된 좌석이 없는 경우 모두 0으로 출력.
-				for (int h = 0; h < 16; h++) {
-					cout << '0 ';
-					if( h % 4 == 1 ){
-						cout << endl;
-					}
-				}
-			}
-			else {
-				int c = -1;
-				int r = -1;
-				int Seat_array[4][4] = { 0 };
-				for(int h=6;h<f_info.size();h++){
-
-					if (h % 2 == 0) {
-
-						if (f_info.at(h)[0] == 'A')
-							c = 0;
-						else if (f_info.at(h)[0] == 'B')
-							c = 1;
-						else if (f_info.at(h)[0] == 'C')
-							c = 2;
-						else  c = 3;
-
-						if (f_info.at(h)[1] == '1')
-							r = 0;
-						else if (f_info.at(h)[1] == '2')
-							r = 1;
-						else if (f_info.at(h)[1] == '3')
-							r = 2;
-						else r = 3;
-
-						Seat_array[c][r] = 1;
-						c = -1;
-						r = -1;
-					}
-				}
-				for (int g = 0; g < 4; g++) {
-					for (int l = 0; l < 4; l++) {
-						cout << Seat_array[g][l] << " ";
-					}
-					cout << endl;
-				}
+				int fvs = flight.size();
 
 			}
 		}
-		
-
 
 	}
+}
+void user_reservation(vector<string> v)
+{
+}
+/*
+구현할 명령어 목록
+help
+quit
+list
+reservation
+
+
+
+cancel
+deposit
+information
+*/
+
+void user_prompt(string userID) {
+	system("cls");
+	printf("User> ");
+	string s;
+	cin.ignore();
+	getline(cin, s);
+	vector<string> v(1000);
+	v = split_space(s);
+	user_check(v, userID);
+}
+
+void user_cancel(string flightName, string userID)
+{
+}
+
+void user_deposit(string iMoney, string userID)
+{
+	int money = stoi(iMoney);
+	char dir[256];
+	_getcwd(dir, 256);
+	string server_dir(dir);
+	server_dir += "\\data\\Userlist.txt";
+	
 
 }
 
-void reservation(vector < string> v) {
-
+void user_information(string userID)
+{
 }
-int main() {
-	user_prompt("user_id");
+
+
+void user_check(vector<string> v, string userID) {
+	if (v.size() > 6) {
+		string cmd = v[0];
+		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel(v[1], userID);
+		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit(v[1], userID);
+		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information();
+	}
+	return;
 }
