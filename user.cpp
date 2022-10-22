@@ -490,9 +490,3 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
 		else return;
 }
-
-int main(void) {
-
-	user_prompt("wkwkek");
-
-}
