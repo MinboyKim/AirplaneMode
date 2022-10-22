@@ -238,10 +238,13 @@ bool is_userID_in_data(string str) {
             char data[256];
             user_data.getline(data, 256);
             string dataStr(data);
-            string ID_in_data = split_user_data(dataStr)[0];
-            if (str == ID_in_data) {
-                user_data.close();
-                return true;
+            vector<string> v = split_user_data(dataStr);
+            if (v.size() > 0) {
+                string ID_in_data = split_user_data(dataStr)[0];
+                if (str == ID_in_data) {
+                    user_data.close();
+                    return true;
+                }
             }
         }
     } else {

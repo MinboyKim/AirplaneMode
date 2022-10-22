@@ -9,6 +9,7 @@
 #include "integrity_check.h"
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -233,7 +234,6 @@ information
 
 void user_prompt(string userID) {
 	while (1) {
-
 		printf("User> ");
 		string s;
 		cin.clear();
@@ -258,7 +258,21 @@ void user_deposit(string iMoney, string userID)
 	string server_dir(dir);
 	server_dir += "\\data\\Userlist.txt";
 	
+	FILE* p_file = NULL;
+	vector<string> txtAll;
+	char buffer[128];
+	if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")); {
+		while (fgets(buffer, 128, p_file) != NULL) {
+			txtAll.push_back(buffer);
+		}
+		fclose(p_file);
+	}
+	for (auto i : txtAll) {
+		cout << i << endl;
+	}
 
+
+	
 }
 
 void user_information(string userID)
@@ -275,8 +289,4 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v, userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
 		else return;
-}
-
-int main(void) {
-	user_prompt("dede");
 }
