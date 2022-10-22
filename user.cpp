@@ -214,7 +214,7 @@ void user_list(vector<string> v) {
 
 	}
 }
-void user_reservation(vector<string> v)
+void user_reservation(vector<string> , string user_ID)
 {
 }
 /*
@@ -232,14 +232,18 @@ information
 */
 
 void user_prompt(string userID) {
-	system("cls");
-	printf("User> ");
-	string s;
-	cin.ignore();
-	getline(cin, s);
-	vector<string> v(1000);
-	v = split_space(s);
-	user_check(v, userID);
+	while (1) {
+
+		printf("User> ");
+		string s;
+		cin.clear();
+		getline(cin, s);
+		vector<string> v(1000);
+		v = split_space(s);
+		if (v.at(0) == "quit" || v.at(0) == "qu" || v.at(0) == "q")
+			break;
+		user_check(v, userID);
+	}
 }
 
 void user_cancel(string flightName, string userID)
@@ -263,11 +267,16 @@ void user_information(string userID)
 
 
 void user_check(vector<string> v, string userID) {
-	if (v.size() > 6) {
 		string cmd = v[0];
 		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel(v[1], userID);
 		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit(v[1], userID);
-		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information();
-	}
-	return;
+		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information(userID);
+		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help(v);
+		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v, userID);
+		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
+		else return;
+}
+
+int main(void) {
+	user_prompt("dede");
 }
