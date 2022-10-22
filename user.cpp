@@ -267,12 +267,33 @@ void user_deposit(string iMoney, string userID)
 		}
 		fclose(p_file);
 	}
-	for (auto i : txtAll) {
-		cout << i << endl;
-	}
-
-
 	
+	int index = 0;
+	string tempString;
+	for (auto i : txtAll) {
+		index++;
+		if (i.find(userID) != string::npos) {
+			istringstream ss(i);
+			string stringBuffer;
+			vector<string> tempVector;
+			while (getline(ss, stringBuffer, '^')) {
+				tempVector.push_back(stringBuffer);
+			}
+			tempVector[6] = to_string(money + stoi(tempVector[6]));
+			for (auto iter : tempVector) {
+				if (iter != "")tempString.append("^" + iter);
+			}
+			break;
+		}
+	}
+	txtAll[index - 1] = tempString;
+	
+	ofstream ofile;
+	ofile.open(server_dir);
+	for (auto i : txtAll) {
+		ofile << i;
+	}
+	ofile.close();
 }
 
 void user_information(string userID)
