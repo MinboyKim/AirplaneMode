@@ -15,8 +15,10 @@ void admin_cancel(string s);
 void admin_edit(vector<string> v);
 int choice();
 void show_airplane();
-void check(vector<string> v);
+void admin_check(vector<string> v);
 void check_add(vector<string> v);
 void error();
+int check_integer(char a);
+char admin_check_argv(char c);
 /*******************daehoon***************/
 
