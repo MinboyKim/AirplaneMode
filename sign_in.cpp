@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+namespace fls = std::filesystem;
 
 bool make_new_user(vector<string> new_user_data, string user_ID) {
     string will_write = "^" + user_ID + "^";
@@ -18,7 +19,12 @@ bool make_new_user(vector<string> new_user_data, string user_ID) {
     char dir[256];
     _getcwd(dir, 256);
     string server_dir(dir);
-    server_dir += "\\data\\Userlist.txt";
+    fls::path p("./data");
+    if(!fls::exists(p))
+        fls::create_directory(p);
+    server_dir += "./data/Userlist.txt";
+    
+
     ofstream user_data;
     user_data.open(server_dir, ios::app);
     if (user_data.is_open()) {
