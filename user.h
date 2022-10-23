@@ -36,3 +36,4 @@ void user_list_check(vector<string> v, string user_ID);
 void user_help_check(vector<string> v, string user_ID);
 void user_reservation_check(vector<string> v, string user_ID);
 void user_error();
+void user_quit_check(vector<string> v, string userID);

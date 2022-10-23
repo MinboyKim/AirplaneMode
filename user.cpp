@@ -126,6 +126,8 @@ void user_help(vector<string> v, string userID) {
 
 void user_quit()
 {
+	cout << "Good bye" << endl;
+	return;
 }
 void user_list(vector<string> v,string userID) {
 	
@@ -585,7 +587,8 @@ void user_information(string userID)
 			break;
 		}
 	}
-	tempVector[7] = "";
+	if(tempVector.size() > 7)
+		tempVector[7] = "";
 	for (auto i : tempVector) {
 		if(i != "")cout << i << " ";
 	}
@@ -595,13 +598,18 @@ void user_information(string userID)
 
 void user_check(vector<string> v, string userID) {
 		string cmd = v[0];
-		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel_check(v, userID);
+		if (v.size() == 0) {
+			user_show_guide();
+			user_prompt(userID);
+			return;
+		}
+		else if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel_check(v, userID);
 		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit_check(v, userID);
 		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information_check(v, userID);
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help_check(v, userID);
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation_check(v, userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list_check(v, userID);
-		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") exit(0);
+		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") user_quit_check(v, userID);
 		else return;
 }
 
@@ -667,6 +675,18 @@ void user_error()
 {
 	cout << "Syntax ERROR" << endl;
 	return;
+}
+void user_quit_check(vector<string> v, string userID)
+{
+	if (v.size() != 1) {
+		user_error();
+		user_prompt(userID);
+		return;
+	}
+	else {
+		user_quit();
+		return;
+	}
 }
 void user_help_check(vector<string> v,string user_ID) {
 
