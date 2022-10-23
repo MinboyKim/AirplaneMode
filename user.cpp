@@ -267,16 +267,71 @@ void user_deposit(string iMoney, string userID)
 		}
 		fclose(p_file);
 	}
-	for (auto i : txtAll) {
-		cout << i << endl;
-	}
-
-
 	
+	int index = 0;
+	string tempString;
+	for (auto i : txtAll) {
+		index++;
+		if (i.find(userID) != string::npos) {
+			istringstream ss(i);
+			string stringBuffer;
+			vector<string> tempVector;
+			while (getline(ss, stringBuffer, '^')) {
+				tempVector.push_back(stringBuffer);
+			}
+			tempVector[6] = to_string(money + stoi(tempVector[6]));
+			for (auto iter : tempVector) {
+				if (iter != "")tempString.append("^" + iter);
+			}
+			break;
+		}
+	}
+	txtAll[index - 1] = tempString;
+	
+	ofstream ofile;
+	ofile.open(server_dir);
+	for (auto i : txtAll) {
+		ofile << i;
+	}
+	ofile.close();
 }
 
 void user_information(string userID)
 {
+	char dir[256];
+	_getcwd(dir, 256);
+	string server_dir(dir);
+	server_dir += "\\data\\Userlist.txt";
+
+	FILE* p_file = NULL;
+	vector<string> txtAll;
+	char buffer[128];
+	if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")) {
+		while (fgets(buffer, 128, p_file) != NULL) {
+			txtAll.push_back(buffer);
+		}
+		fclose(p_file);
+	}
+
+	int index = 0;
+	string tempString;
+	vector<string> tempVector;
+	for (auto i : txtAll) {
+		index++;
+		if (i.find(userID) != string::npos) {
+			istringstream ss(i);
+			string stringBuffer;
+			while (getline(ss, stringBuffer, '^')) {
+				tempVector.push_back(stringBuffer);
+			}
+			break;
+		}
+	}
+	tempVector[7] = "";
+	for (auto i : tempVector) {
+		if(i != "")cout << i << " ";
+	}
+	cout << endl;
 }
 
 
