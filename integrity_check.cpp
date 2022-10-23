@@ -57,7 +57,7 @@ void available_check()
 	cout << "Start available check" << endl;
 	string path_airplane = ".\\data\\airplane";
 	vector<string> files = get_files_indirectory(path_airplane, "*"); //for all files in folder
-	for(int i=2; i<sizeof(files); i++){ // file starts from '2'
+	for(int i=2; i<files.size(); i++) { // file starts from '2'
 		string fn = files[i];
 		if (fn.substr(fn.find_last_of(".") + 1) != "txt") { 
 			cout << "ERROR! Files that cannot be used in File I/O exist\n" << endl;
@@ -72,7 +72,7 @@ void rule_check()
 	string userData;
 	string airplaneData;
 	string airplaneName;
-	string path_airplane = ".\\data\\airplane";
+	const char* path_airplane = ".\\data\\airplane";
 	ifstream ifs1;
 	ifs1.open(".\\data\\Userlist.txt");
 	if (ifs1.is_open()) {
@@ -87,26 +87,33 @@ void rule_check()
 	}
 	ifs1.close();
 	
-	fs::directory_iterator itr(fs::current_path() / "data" / "airplane");
-	while (itr != fs::end(itr)) {
-		const fs::directory_entry& entry = *itr;
-		ifstream ifs2(entry.path());
-		if (ifs2.is_open()) {
-			getline(ifs2, airplaneName);
-			while (!ifs2.eof()) {
-				int i = 1;
-				getline(ifs2, airplaneData);
-				if (airplane_integrity_check(airplaneData)==0) {
-					printf("ERROR! Incorrect data exist! ( file name : %s , In row %d)\n", airplaneName,i);
-				}
-				i++;
-			}
-		}
-		ifs2.close();
-		itr++;
-	}
-	cout << "Integrity check completed!\n" << endl;
 	
+	if (!(_access(path_airplane, 0))) {
+		fs::directory_iterator itr(fs::current_path() / "data" / "airplane");
+		while (itr != fs::end(itr)) {
+			const fs::directory_entry& entry = *itr;
+			ifstream ifs2(entry.path());
+			if (ifs2.is_open()) {
+				getline(ifs2, airplaneName);
+				while (!ifs2.eof()) {
+					int i = 1;
+					getline(ifs2, airplaneData);
+					if (i == 1) {
+						if (airplaneData == "") { //데이터 없음
+							break;
+						}
+					}
+					if (airplane_integrity_check(airplaneData) == 0) {
+						printf("ERROR! Incorrect data exist! ( file name : %s , In row %d)\n", airplaneName, i);
+					}
+					i++;
+				}
+			}
+			ifs2.close();
+			itr++;
+		}
+		cout << "Integrity check completed!\n" << endl;
+	}
 }	
 
 
