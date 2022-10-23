@@ -52,15 +52,15 @@ int choice() {
 }
 
 void admin_check(vector<string> v) {
-	
+	if (v.size() > 0) {
 		string cmd = v[0];
 		if (cmd == "add" || cmd == "d" || cmd == "ad") admin_check_add(v);
-		else if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") admin_cancel(v[1]);
+		else if (v.size() == 2 && (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c")) admin_cancel(v[1]);
 		else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);
 		else if (cmd == "list" || cmd == "li" || cmd == "l") admin_show_airplane();
 		else if (cmd == "quit" || cmd == "qu" || cmd == "q") admin_quit();
 		else error();
-
+	}
 		admin_prompt();
 	return;
 
