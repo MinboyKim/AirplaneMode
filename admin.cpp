@@ -1,7 +1,7 @@
 #include "admin.h"
 #include "integrity_check.h"
 #include <iostream>
-#include <windows.h>
+//#include <windows.h>
 #include <fstream>
 #include <string>
 #include <vector>
