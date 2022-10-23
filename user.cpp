@@ -127,6 +127,8 @@ void user_help(vector<string> v, string userID) {
 
 void user_quit()
 {
+	cout << "Good Bye" << endl;
+	return;
 }
 void user_list(vector<string> v,string userID) {
 	
@@ -605,7 +607,7 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help_check(v, userID);
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation_check(v, userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list_check(v, userID);
-		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") exit(0);
+		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") user_quit_check(v, userID);
 		else return;
 }
 
@@ -699,4 +701,15 @@ void user_list_check(vector<string> v, string user_ID) {
 		user_prompt(user_ID);
 	}
 	else user_list(v, user_ID);
+}
+
+void user_quit_check(vector<string> v, string user_ID) {
+	if (v.size() != 1) {
+		user_error();
+		user_prompt(user_ID);
+	}
+	else {
+		user_quit();
+		return;
+	}
 }
