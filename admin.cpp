@@ -316,7 +316,15 @@ char admin_check_argv(char c) {
 }
 
 int admin_flight_is_exist(vector<string> v) {
+	fls::path p("./data");
+	if (!fls::exists(p))
+		fls::create_directory(p);
+
+	fls::path p2("./data/airplane");
+	if (!fls::exists(p2))
+		fls::create_directory(p2);
 	fls::directory_iterator itr(fls::current_path() / "data" / "airplane");
+
 	while (itr != fls::end(itr)) {
 		const fls::directory_entry& entry = *itr;
 		std::filesystem::path paths = "./data/airplane/" + v[1] + ".txt";
