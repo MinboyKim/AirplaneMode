@@ -538,10 +538,11 @@ void user_deposit(string iMoney, string userID)
 			while (getline(ss, stringBuffer, '^')) {
 				tempVector.push_back(stringBuffer);
 			}
-			tempVector[6] = to_string(money + stoi(tempVector[6])) + '^';
+			tempVector[6] = to_string(money + stoi(tempVector[6]));
 			for (auto iter : tempVector) {
 				if (iter != "")tempString.append("^" + iter);
 			}
+			if (tempVector.size() == 7) tempString.append("^");
 			break;
 		}
 	}
