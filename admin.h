@@ -20,6 +20,7 @@ void error();
 int check_integer(char a);
 char admin_check_argv(char c);
 void admin_quit();
+int admin_flight_is_exist(vector<string> v);
 /*******************daehoon***************/
 
 /******************yeonggyo***************/
