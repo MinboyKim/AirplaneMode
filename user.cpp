@@ -12,8 +12,10 @@
 #include <sstream>
 #include<typeinfo>
 #include <regex>
-using namespace std;
+#include <filesystem>
 
+using namespace std;
+namespace fls = std::filesystem;
 
 vector<string> get_files_indirectory(const string& _path, const string& _filter) {
 	string searching = _path + _filter;
@@ -435,18 +437,55 @@ information
 */
 
 void user_prompt(string userID) {
-		printf("User> ");
-		string s;
-		cin.clear();
-		getline(cin, s);
-		vector<string> v(1000);
-		v = split_space(s);
-		user_check(v, userID);
+	printf("User> ");
+	string s;
+	cin.clear();
+	getline(cin, s);
+	vector<string> v(1000);
+	v = split_space(s);
+	user_check(v, userID);
 }
 
 void user_cancel(string flightName, string userID)
 {
-	cout << "flight name correct\n";
+	char dir[256];
+	_getcwd(dir, 256);
+	string server_dir(dir);
+	server_dir += "\\data\\" + flightName;
+	fls::path p(server_dir);
+	if (fls::exists(p)) {
+		FILE* p_file = NULL;
+		vector<string> txtAll;
+		char buffer[128];
+		if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")) {
+			while (fgets(buffer, 128, p_file) != NULL) {
+				txtAll.push_back(buffer);
+			}
+			fclose(p_file);
+		}
+
+		int index = 0;
+		string tempString;
+		for (auto i : txtAll) {
+			index++;
+			if (i.find(userID) != string::npos) {
+				break;
+			}
+		}
+		txtAll[index] = "";
+		ofstream ofile;
+		ofile.open(server_dir);
+		for (auto i : txtAll) {
+			ofile << i;
+		}
+		ofile.close();
+		cout << "Delete success" << endl;
+		return;
+	}
+	else {
+		cout << "There is no flight " << '"' << flightName << '"' << endl;
+		return;
+	}
 }
 
 void user_deposit(string iMoney, string userID)
