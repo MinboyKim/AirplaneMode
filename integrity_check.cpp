@@ -91,7 +91,9 @@ void rule_check()
 		fs::directory_iterator itr(fs::current_path() / "data" / "airplane");
 		while (itr != fs::end(itr)) {
 			const fs::directory_entry& entry = *itr;
-			ifstream ifs2(entry.path());
+			ifstream ifs2;
+			ifs2.open(entry.path());
+			//ifstream ifs2(entry.path());
 			if (ifs2.is_open()) {
 				getline(ifs2, airplaneName);
 				while (!ifs2.eof()) {
@@ -102,13 +104,14 @@ void rule_check()
 							break;
 						}
 					}
-					if (airplane_integrity_check(airplaneData) == 0) {
+					if (!(airplane_integrity_check(airplaneData))) {
 						printf("ERROR! Incorrect data exist! ( file name : %s , In row %d)\n", airplaneName, i);
+						return;
 					}
 					i++;
 				}
 			}
-			ifs2.close();
+			ifs2.close();	
 			itr++;
 		}
 		cout << "Integrity check completed!" << endl;
