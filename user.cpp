@@ -473,7 +473,7 @@ void user_cancel(string flightName, string userID)
 	char dir[256];
 	_getcwd(dir, 256);
 	string server_dir(dir);
-	server_dir += "\\data\\" + flightName;
+	server_dir += "\\data\\airplane\\" + flightName + ".txt";
 	fls::path p(server_dir);
 	if (fls::exists(p)) {
 		FILE* p_file = NULL;
@@ -494,7 +494,7 @@ void user_cancel(string flightName, string userID)
 				break;
 			}
 		}
-		txtAll[index] = "";
+		txtAll[index-1] = "";
 		ofstream ofile;
 		ofile.open(server_dir);
 		for (auto i : txtAll) {
@@ -539,7 +539,7 @@ void user_deposit(string iMoney, string userID)
 			while (getline(ss, stringBuffer, '^')) {
 				tempVector.push_back(stringBuffer);
 			}
-			tempVector[6] = to_string(money + stoi(tempVector[6]));
+			tempVector[6] = to_string(money + stoi(tempVector[6])) + '^';
 			for (auto iter : tempVector) {
 				if (iter != "")tempString.append("^" + iter);
 			}
@@ -597,13 +597,13 @@ void user_information(string userID)
 
 
 void user_check(vector<string> v, string userID) {
-		string cmd = v[0];
 		if (v.size() == 0) {
 			user_show_guide();
 			user_prompt(userID);
 			return;
 		}
-		else if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel_check(v, userID);
+		string cmd = v[0];
+		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel_check(v, userID);
 		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit_check(v, userID);
 		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information_check(v, userID);
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help_check(v, userID);
