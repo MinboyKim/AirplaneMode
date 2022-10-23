@@ -197,5 +197,3 @@ bool airplane_integrity_check(string str) {
 		return false;
 	}
 }
-
-
