@@ -25,10 +25,16 @@ bool integrity_check_name(string str);
 bool is_userID_in_data(string str);
 bool is_male(string str);
 bool is_number(string str);
+bool check_airplane_name(string str); //앞 3글자 영문대문자 , 뒤 숫자3개
+bool check_place(string str);
+bool check_time(string str);
+bool check_deposit(string str);
+bool check_all_seat(string str);
+bool check_seat(string str1, string str2);
+
 string make_name_data(string str);
 string make_TEL_data(string str);
 string make_birth_data(string str);
-bool user_integrity_check(string str);
 void print_ID_warning();
 void print_name_warning();
 void print_sex_warning();

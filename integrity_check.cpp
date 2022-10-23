@@ -72,6 +72,7 @@ void rule_check()
 {
 	char* userData;
 	char* airplaneData;
+	char* airplaneName;
 	string path_airplane = ".\\data\\airplane";
 	ifstream ifs1;
 	ifs1.open(".\\data\\Userlist.txt");
@@ -92,11 +93,13 @@ void rule_check()
 		const fs::directory_entry& entry = *itr;
 		ifstream ifs2(entry.path());
 		if (ifs2.is_open()) {
+			ifs2.getline(airplaneName, sizeof(airplaneName));
 			while (!ifs2.eof()) {
 				int i = 1;
+				
 				ifs2.getline(airplaneData, sizeof(airplaneData));
 				if (airplane_integrity_check(airplaneData)==0) {
-					printf("ERROR! Incorrect data exist! ( file name : %s , In row %d)\n", entry.path(),i);
+					printf("ERROR! Incorrect data exist! ( file name : %s , In row %d)\n", airplaneName,i);
 				}
 				i++;
 			}
@@ -104,8 +107,6 @@ void rule_check()
 		ifs2.close();
 		itr++;
 	}
-
-
 	cout << "Integrity check completed!\n" << endl;
 	
 }	
@@ -169,6 +170,32 @@ bool user_integrity_check(string str) {
 
 
 bool airplane_integrity_check(string str) {
-	
+	vector<string> integrity_data;
+	if (str[0] != '^' || str.back() != '^') {
+		return false;
+	}
+	integrity_data = split_user_data(str); //airplane data split
+	if (integrity_data.size() != 5) {
+		return false;
+	}
+	else if (!(check_airplane_name(integrity_data[0]))) {
+		return false;
+	}
+	else if (!(check_place(integrity_data[1]))) {
+		return false;
+	}
+	else if (!(check_time(integrity_data[2]))) {
+		return false;
+	}
+	else if (!(check_deposit(integrity_data[3]))) {
+		return false;
+	}
+	else if (!(check_all_seat(integrity_data[4]))) {
+		return false;
+	}
+	else if (!(check_seat(integrity_data[4], integrity_data[5]))) {
+		return false;
+	}
 }
+
 
