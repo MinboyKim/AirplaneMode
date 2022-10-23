@@ -366,6 +366,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 		return;
 	}
 	if (check_seat[1]<'0' || check_seat[1] > '9') {
+		cout << v.at(2) << endl;
 		cout << "Syntax Error" << endl; //좌석 입력 두번째가 숫자가 아니므로 리턴.
 		user_prompt(userID);
 		return;
@@ -401,14 +402,16 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 		string str;
 		getline(readFile, str);
 		f_info_temp = split_user_data(str);
-		f_info.insert(f_info.end(), f_info_temp.begin(), f_info_temp.end()); // 5번부터 유저 정보 좌석정보는 3번.
+		f_info.insert(f_info.end(), f_info_temp.begin(), f_info_temp.end()); // 5번부터 유저 정보 좌석정보는 3번.//가격 4번.
 
 	}
 	readFile.close();
 
+
+	
 	char seat_number_1 = f_info.at(3)[0]; //좌석 개수 몇곱하기 몇의 앞자리만 따와서
 	char seat_number_2 = f_info.at(3)[2]; //좌석 개수 몇곱하기 몇의 뒷자리만 따와서
-
+	
 	
 	if (seat_number_1-48 < v.at(2)[0] - 65 || seat_number_2 - 48 < v.at(2)[1] - 48) {
 		cout << "No flight seat" << endl;
@@ -426,9 +429,59 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 			}
 
 		}
+
+		char dirA[256];
+		_getcwd(dirA, 256);
+		string path2(dirA);
+		vector<string> user_datal;
+		vector<string> user_temp;
+		path2 += "\\data\\Userlist.txt";
+		readFile.open(path2);
+
+		if (!readFile.is_open()) {
+			return;
+		}
+		while (!readFile.eof()) {
+
+			string str;
+			getline(readFile, str);
+			user_temp = split_user_data(str);
+			user_datal.insert(user_datal.end(), user_temp.begin(), user_temp.end()); // 0번 아이디 5번 금액 6번 아이디 10번 금액 0 6 12...아이디 5 11 17 금액
+
+		}
+		readFile.close();
+
+		for (int i = 0; i < user_datal.size(); i = i + 6) { // 유저 아이디 검사.
+
+			if (user_datal.at(i) == userID) {
+
+				if (user_datal.at(i + 5) < f_info.at(4)) {
+					cout << "Not enought user asset for flight!" << endl;
+					user_prompt(userID);
+					return;
+				}
+				else {// 유저데이터 파일에 가격 바꿔쓰기.
+
+					int result = stoi(user_datal.at(i+5)) - stoi(f_info.at(4));
+					stringstream ssint;
+					ssint << result;
+					user_datal.at(i+5) = ssint.str();
+
+					ofstream writeFile_user;
+					writeFile_user.open(path2, ios::out);
+					if (writeFile_user.is_open()) {
+						for (int j = 0; j < user_datal.size(); j = j + 6) {
+							writeFile_user << "^" + user_datal.at(j) + "^" + user_datal.at(j + 1) + "^" + user_datal.at(j + 2) + "^" + user_datal.at(j + 3) + "^" + user_datal.at(j + 4)+ "^" + user_datal.at(j + 5)+"^" << endl;
+						}
+					}
+					writeFile_user.close();
+				}
+				break;
+			}
+
+		}
 		ofstream writeFile;
 		writeFile.open(path,ios::app);
-
 		if (writeFile.is_open()) {
 
 			writeFile << "^"+userID + "^" + v.at(2) + "^" << endl;
