@@ -418,6 +418,14 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	}
 	readFile.close();
 
+	for (int i = 0; i < f_info.size(); i++) {
+		if (f_info.at(i) == userID) {
+			cout << "You can not reserve more than two seats" << endl;
+			user_prompt(userID);
+			return;
+		}
+	}
+
 
 	
 	char seat_number_1 = f_info.at(3)[0]; //좌석 개수 몇곱하기 몇의 앞자리만 따와서
@@ -483,6 +491,9 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 					if (writeFile_user.is_open()) {
 						for (int j = 0; j < user_datal.size(); j = j + 6) {
 							writeFile_user << "^" + user_datal.at(j) + "^" + user_datal.at(j + 1) + "^" + user_datal.at(j + 2) + "^" + user_datal.at(j + 3) + "^" + user_datal.at(j + 4)+ "^" + user_datal.at(j + 5)+"^" << endl;
+							if (j == user_datal.size() - 1) {
+								writeFile_user << "^" + user_datal.at(j) + "^" + user_datal.at(j + 1) + "^" + user_datal.at(j + 2) + "^" + user_datal.at(j + 3) + "^" + user_datal.at(j + 4) + "^" + user_datal.at(j + 5) + "^";
+							}
 						}
 					}
 					writeFile_user.close();
@@ -494,8 +505,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 		ofstream writeFile;
 		writeFile.open(path,ios::app);
 		if (writeFile.is_open()) {
-
-			writeFile << "^"+userID + "^" + v.at(2) + "^" << endl;
+			writeFile << "\n" << "^" + userID + "^" + v.at(2) + "^";
 			cout << "reservation completed!" << endl;
 		}
 		writeFile.close();
