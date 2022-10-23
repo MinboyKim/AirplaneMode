@@ -14,7 +14,7 @@ namespace fs = std::filesystem;
 
 
 void integrity_check() {
-	cout << "Start integrity check\n" << endl;
+	cout << "Start integrity check" << endl;
 	path_check();
 	userList_check();
 	available_check();
@@ -27,7 +27,7 @@ void path_check()
 	int result_data = _access(path_data, 0);
 
 	if (result_data != 0) {
-		cout << "ERROR! Not found server path!\n" << endl;
+		cout << "ERROR! Not found server path!" << endl;
 		return;
 	}
 }
@@ -38,13 +38,13 @@ void userList_check() {
 	int result_userList = _access(path_userList, 0);
 
 	if (result_userList != 0) {
-		cout << "Alert! Necessary file missing.\n" << endl;
+		cout << "Alert! Necessary file missing." << endl;
 		ofstream userList(".\\data\\Userlist.txt");
 		if (result_userList == 0) {
-			cout << "File create successfully\n" << endl;
+			cout << "File create successfully" << endl;
 		}
 		else {
-			cout << "ERROR! failed to make file.\n" << endl;
+			cout << "ERROR! failed to make file." << endl;
 			return;
 		}
 	}
@@ -54,13 +54,12 @@ void available_check()
 {
 	//Userlist is already checked so don't need to check it again
 	//only check airplane
-	cout << "Start available check" << endl;
 	string path_airplane = ".\\data\\airplane";
 	vector<string> files = get_files_indirectory(path_airplane, "*"); //for all files in folder
 	for(int i=2; i<files.size(); i++) { // file starts from '2'
 		string fn = files[i];
 		if (fn.substr(fn.find_last_of(".") + 1) != "txt") { 
-			cout << "ERROR! Files that cannot be used in File I/O exist\n" << endl;
+			cout << "ERROR! Files that cannot be used in File I/O exist" << endl;
 			return;
 		}
 	}
@@ -112,7 +111,11 @@ void rule_check()
 			ifs2.close();
 			itr++;
 		}
-		cout << "Integrity check completed!\n" << endl;
+		cout << "Integrity check completed!" << endl;
+	}
+	else {
+		cout << "no airplane list exist" << endl;
+		cout << "Integrity check completed!" << endl;
 	}
 }	
 

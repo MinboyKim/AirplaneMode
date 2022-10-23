@@ -11,7 +11,7 @@ using namespace std;
 void run();
 
 void run() {
-    /*integrity_check();*/
+    integrity_check();
     log_in_prompt();
 }
 
