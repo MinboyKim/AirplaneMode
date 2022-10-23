@@ -17,11 +17,13 @@ deposit
 information
 */
 
+using namespace std;
+
 void user_show_guide();
-void user_help(vector<string> v,string userID);
+void user_help(vector<string> v, string userID);
 void user_quit();
-void user_list(vector<string> v,string userID);
-void user_reservation(vector<string> v,string userID);
+void user_list(vector<string> v, string userID);
+void user_reservation(vector<string> v, string userID);
 void user_prompt(string userID);
 void user_cancel(string flightName, string userID);
 void user_deposit(string iMoney, string userID);

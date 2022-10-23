@@ -14,6 +14,10 @@ namespace fs = std::filesystem;
 
 void integrity_check() {
 	cout << "Start integrity check\n" << endl;
+	path_check();
+	userList_check();
+	available_check();
+	rule_check();
 }
 
 void path_check()
