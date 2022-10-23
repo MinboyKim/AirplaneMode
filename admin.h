@@ -22,3 +22,8 @@ char admin_check_argv(char c);
 void admin_quit();
 /*******************daehoon***************/
 
+/******************yeonggyo***************/
+void admin_help(vector<string> v);
+void admin_show_user(string s);
+void admin_show_guide();
+/******************yeonggyo***************/
