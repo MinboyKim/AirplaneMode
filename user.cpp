@@ -31,23 +31,23 @@ vector<string> get_files_indirectory(const string& _path, const string& _filter)
 
 }
 void user_show_guide() {
-	cout << ("-------------------------------------------------------------------------------------------------------------------------\n");
-	cout << ("|         command set       |           argument            |                          description                       \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|         help, he,h        |         none or 1 command     |                 print all commands or detail of            \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|         quit, qu,q        |             none              |                          quit program                      \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|         list, li, l       |    Not exist or 1 flight      |       print flight imformation list or seat information    \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|     reservation,reserve,r |  flight and seat information  |                          description                       \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|      cancel, can, c       |            flight             |                           quit flight                      \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|      deposit, depo,d      |         deposit amount        |                        add user's amount                   \n");
-	cout << ("|                           |                               |                                                            \n");
-	cout << ("|    information, info, i   |             none              |                        print my information                \n");
-	cout << ("-------------------------------------------------------------------------------------------------------------------------\n");
+	cout << ("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+	cout << ("|                    command set                            |           argument            |                          description                       \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|                    help, he,h                             |         none or 1 command     |                 print all commands or detail of            \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|                    quit, qu,q                             |             none              |                          quit program                      \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|                    list, li, l                            |    Not exist or 1 flight      |       print flight imformation list or seat information    \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|     reservation,reserve,resrv, reser, rese, res, re, r    |  flight and seat information  |                          description                       \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|      cancel, cance, canc, can, ca, c                      |            flight             |                           quit flight                      \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|      deposit, depo,depos, depo, dep, de, d                |         deposit amount        |                        add user's amount                   \n");
+	cout << ("|                                                           |                               |                                                            \n");
+	cout << ("|    information, inform, infor, info, inf, in, i           |             none              |                        print my information                \n");
+	cout << ("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
 }
 
@@ -59,11 +59,12 @@ vector<string> user_input() {
 
 }
 
-void user_help(vector<string> v) {
+void user_help(vector<string> v, string userID) {
 
 	if (v.size() == 1) {
 		system("cls");
 		user_show_guide();
+		user_prompt(userID);
 		return;
 	}
 
@@ -74,35 +75,35 @@ void user_help(vector<string> v) {
 			cout << "              if you use it with 1 argument that composed of 1 instruction like \" quit \" you can read about more detail information \n" << endl;
 			cout << "              if you use it with no argument, you can see basic information about all instructions\n" << endl;
 		}
-		else if (v.at(1) == "quit" or v.at(1) == "qu" or v.at(1) == "q") {
+		else if (v.at(1) == "quit" or v.at(1) == "qu" or v.at(1) == "q" or v.at(1) == "qui") {
 			system("cls");
 			cout << "description : Instruction \"quit or qu or q \" quits program \n" << endl;
 		}
-		else if (v.at(1) == "list" or v.at(1) == "li" or v.at(1) == "l") {
+		else if (v.at(1) == "list" or v.at(1) == "lis" or v.at(1) == "li" or v.at(1) == "l") {
 			system("cls");
 			cout << "description : Instruction \"list or li or l \" prints flight list \n" << endl;
 			cout << "              if you use it with 1 flight you can see about seat information. \n" << endl;
 			cout << "              if you use it with no argument, you can see all flight information in list \n" << endl;
 		}
-		else if (v.at(1) == "reservation" or v.at(1) == "reserve" or v.at(1) == "r") {
+		else if (v.at(1) == "reservation" or v.at(1) == "reserve" or v.at(1) == "reserv" or v.at(1) == "reser" or v.at(1) == "rese" or v.at(1) == "res" or v.at(1) == "re" or v.at(1) == "r") {
 			system("cls");
 			cout << "description : Instruction \"reservation or reserve or r \" reserve seat. you can use this instuctrion with 2 arguments flight name and seat postion. \n" << endl;
 			cout << "            : ex> User> reservation KOR 222 A1" << endl;
 
 		}
-		else if (v.at(1) == "cancel" or v.at(1) == "can" or v.at(1) == "c") {
+		else if (v.at(1) == "cancel" or v.at(1) == "cance" or v.at(1) == "canc" or v.at(1) == "can" or v.at(1) == "ca" or v.at(1) == "c") {
 			system("cls");
 			cout << "description : Instruction \"cancel or can or c \" cancel reservation with 1 argument about flight name. the name is necessary in flight information list \n" << endl;
 			cout << "            : ex> User> cancel KOR111" << endl;
 
 		}
-		else if (v.at(1) == "deposit" or v.at(1) == "depo" or v.at(1) == "d") {
+		else if (v.at(1) == "deposit" or v.at(1) == "deposi" or v.at(1) == "depos" or v.at(1) == "dep" or v.at(1) == "de" or v.at(1) == "d") {
 			system("cls");
 			cout << "description : Instruction \" deposit or depo or d \" deposit user's money. You can use this instruction with 1 argument about amount. \n" << endl;
 			cout << "            : ex> User> deposit 1120" << endl;
 
 		}
-		else if (v.at(1) == "information" or v.at(1) == "info" or v.at(1) == "i") {
+		else if (v.at(1) == "information" or v.at(1) == "inform" or v.at(1) == "infor" or v.at(1) == "info" or v.at(1) == "inf" or v.at(1) == "in" or v.at(1) == "i") {
 			system("cls");
 			cout << "description : Instruction \" information or info or i \" prints user's information with no argument.\n" << endl;
 			cout << "            : ex> User> informaiton\n" << endl;
@@ -112,15 +113,17 @@ void user_help(vector<string> v) {
 			system("cls");
 			user_show_guide();
 			cout << "Syntex Error" << endl;
+			user_prompt(userID);
 			return;
 		}
 	}
+	user_prompt(userID);
 }
 
 void user_quit()
 {
 }
-void user_list(vector<string> v) {
+void user_list(vector<string> v,string userID) {
 	
 			// 인자가 없는 경우.
 			vector<string> flight; //항공편명 리스트벡터
@@ -196,13 +199,16 @@ void user_list(vector<string> v) {
 		if (check_string.size() != 6) { //입력된 인자가 6글자 이상이므로 리턴
 			system("cls");
 			cout << "Syntex Error" << endl;
+			user_prompt(userID);
 			return;
 		}
 		for (int i = 0; i < 3; i++) {
 			if (check_string[i] < 'A' or check_string[i]>'Z') { //대문자로 이루어진 경우가 아닌 경우 리턴
+				user_prompt(userID);
 				return;
 			}
 			if (check_string[i + 3] < '0' or check_string[i + 3]>'9') { // 숫자로 이루어진 경우가 아닌 경우 리턴
+				user_prompt(userID);
 				return;
 			}
 		}
@@ -219,6 +225,7 @@ void user_list(vector<string> v) {
 		if (index == -1) {
 
 			cout << "no flight name" << endl;
+			user_prompt(userID);
 			return;
 		}
 		else
@@ -260,6 +267,7 @@ void user_list(vector<string> v) {
 
 						if (c < 0) {
 							cout << "error" << endl;
+							user_prompt(userID);
 							return;
 						}
 
@@ -284,6 +292,7 @@ void user_list(vector<string> v) {
 			}
 		}
 	}
+	user_prompt(userID);
 }
 
 
@@ -294,6 +303,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 
 	if (v.size() != 3) { //인자 개수 맞게 입력 안하면 
 		cout << "Syntax Error" << endl;
+		user_prompt(userID);
 		return;
 	}
 
@@ -302,15 +312,18 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	check_string = v.at(1);
 	if (check_string.size() != 6) { //입력된 인자가 6글자 이상이므로 리턴
 		cout << "Syntax Error" << endl;
+		user_prompt(userID);
 		return;
 	}
 	for (int i = 0; i < 3; i++) {
 		if (check_string[i] < 'A' or check_string[i]>'Z') { //대문자로 이루어진 경우가 아닌 경우 리턴
 			cout << "Syntax Error" << endl;
+			user_prompt(userID);
 			return;
 		}
 		if (check_string[i + 3] < '0' or check_string[i + 3]>'9') { // 숫자로 이루어진 경우가 아닌 경우 리턴
 			cout << "Syntax Error" << endl;
+			user_prompt(userID);
 			return;
 		}
 	}
@@ -318,14 +331,17 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	string check_seat = v.at(2);
 	if (check_seat.size() != 2) {
 		cout << "Syntax Error" << endl; //입력된 글자가 2글자가 아니므로 리턴
+		user_prompt(userID);
 		return;
 	}
 	if (check_seat[0]<'A' or check_seat[0] > 'Z') {
 		cout << "Syntax Error" << endl; //좌석 첫번째가 영어가 아니므로 리턴
+		user_prompt(userID);
 		return;
 	}
 	if (check_seat[1]<'0' or check_seat[1] > '9') {
 		cout << "Syntax Error" << endl; //좌석 입력 두번째가 숫자가 아니므로 리턴.
+		user_prompt(userID);
 		return;
 	}
 
@@ -344,6 +360,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	if (indexf == -1) {
 		system("cls");
 		cout << "No flight sorry man" << endl;
+		user_prompt(userID);
 		return;
 	}
 
@@ -372,6 +389,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 		cout << v.at(2)[0]-65 << endl;
 		cout << v.at(2)[1] -48 << endl;
 		cout << "No flight seat" << endl;
+		user_prompt(userID);
 		return;
 	}
 	else { 
@@ -380,6 +398,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 			
 			if (v.at(2) == f_info.at(j)) {
 				cout << "alreay reserved seat sorry man" << endl;
+				user_prompt(userID);
 				return;
 			}
 
@@ -393,10 +412,11 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 			cout << "reservation completed!" << endl;
 		}
 		writeFile.close();
+		user_prompt(userID);
 		return;
 	}
 
-	
+	user_prompt(userID);
 	
 
 }
@@ -587,4 +607,15 @@ void user_error()
 {
 	cout << "Syntax ERROR" << endl;
 	return;
+}
+void user_help_check(vector<string> v) {
+
+	if (v.size() == 0) {
+
+
+
+
+		
+	}
+
 }
