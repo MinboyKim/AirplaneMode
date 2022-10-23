@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-
+#include<typeinfo>
 using namespace std;
 
 void user_show_guide() {
@@ -94,6 +94,7 @@ void user_help(vector<string> v) {
 		else {
 			system("cls");
 			user_show_guide();
+			cout << "Syntex Error" << endl;
 			return;
 		}
 	}
@@ -102,121 +103,285 @@ void user_help(vector<string> v) {
 void user_quit()
 {
 }
-
-
-
 void user_list(vector<string> v) {
-	//리스트 출력
-	vector<string> fname;
-	vector<string> flight;//항공편 정보를 담는 벡터
-	string str;
+	
+			// 인자가 없는 경우.
+			vector<string> flight; //항공편명 리스트벡터
+			vector<string> f_info;
+			vector<string> f_info_temp;
+			string path = "c:\\flights\\";
+			string temp = path;
 
-	int k = 0;
-	ifstream readFile;
-	_finddata_t fd;
-	long handle;
-	int result = 1;
-	handle = _findfirst(".", &fd);  //현재 폴더 내 모든 파일을 찾는다.
-	if (v.size() == 1) {//인자가 없는 경우
-		if (handle == -1)
-		{
-			cout << ("NO flights \n");
-			return;
-		}
+			if (v.size() == 1) { // 인자가 없는 경우.
 
-		while (result != -1)
-		{
-			fname.push_back(fd.name);
-			result = _findnext(handle, &fd);
-			k++;
-		}
-		_findclose(handle);
+				flight = get_files_indirectory("c:\\flights\\", "*.*");
 
-		for (int i = 0; i < k + 1; i++) {
+				for (int i = 2; i < flight.size(); i++) {//파일 하나씩 읽어오기
+					path = temp;
+					path = path + flight.at(i);//읽어드릴 텍스트파일 경로
 
-			readFile.open("." + fname[i]);
-			if (readFile.is_open()) {
-				while (!readFile.eof()) {
-					getline(readFile, str);
-					flight = split_user_data(str); // 항공편명^ 출발지 도착지 ^출발시각 도착시각 ^좌석 사이즈 ^ 금액 ^ 유저아이디^ 좌석........//7번 벡터부터 유저정보.
-				}
+					ifstream readFile;
+					readFile.open(path);
+					while (!readFile.eof()) {
+						string str;
+						getline(readFile, str);
+						f_info_temp = split_user_data(str);
+						f_info.insert(f_info.end(), f_info_temp.begin(), f_info_temp.end());
 
-			}
-			readFile.close();
-
-			for (int h = 0; h < 5; h++) {
-				if (h == 0) {
-					cout << flight[0];//항공편명
-				}
-				if (h == 1) {//항공편 출발지 도착지
-					for (int j = 0; j < 3; j++) {
-						cout << flight[1][j];
 					}
-					cout << (" /");
-					for (int j = 3; j < 6; j++) {
-						cout << flight[1][j];
+					readFile.close();
+
+
+					for (int k = 0; k < 5; k++) { //항공편명, 출발도착지,츨발도착지, 좌석, 가격
+						if (k == 1) {
+							for (int j = 0; j < 3; j++) {
+								cout << f_info.at(k)[j];
+							}
+							cout << " / ";
+							for (int j = 3; j < 6; j++) {
+								cout << f_info.at(k)[j];
+							}
+							cout << " ";
+							continue;
+						}
+						if (k == 2) {
+							for (int j = 0; j < 11; j++) {
+								cout << f_info.at(k)[j];
+							}
+							cout << " ~ ";
+							for (int j = 11; j < 24; j++) {
+								cout << f_info.at(k)[j];
+							}
+
+							cout << " ";
+							continue;
+						}
+
+						if (k == 3) {
+							cout << f_info.at(k)[0] << "," << f_info.at(k)[2]<<" ";
+						}
+						cout << f_info.at(k); //5번-이름 6번-좌석정보 7번-이름 8번-좌석정보 f_info --> flight 마다 저장된 데이터 리스트.
+						cout << " ";
 					}
-					cout << ("  ");
-				}
-				else if (h == 2) { //출발 시간 도착 시간
-
-					for (int j = 0; j < 12; j++) {
-						cout << v[2][j];
-					}
-					cout << (" ~");
-					for (int j = 12; j < 24; j++) {
-						cout << v[2][j];
-					}
-					cout << (" ");
-				}
-
-				else if (h == 3) {
-					cout << flight[3];//금액
-				}
-				else if (i == 4) {
-
-
+					cout << endl;
+					f_info.clear();
+					f_info_temp.clear();
 				}
 			}
-		}
-	}
+		
+	
 
-	else if (v.size() == 2) {//인자가 있는 경우. 좌석을 출력.
 
-		//if v.at(1) 이 입력 형식에 맞으면.
 
+	else if (v.size() == 2) {//인자가 2개일때.
 		string check_string;
 		check_string = v.at(1);
-
-		if (check_string.size() > 6) { //입력된 인자가 6글자 이상이므로 리턴
+		if (check_string.size() != 6) { //입력된 인자가 6글자 이상이므로 리턴
+			system("cls");
+			cout << "Syntex Error" << endl;
 			return;
 		}
 		for (int i = 0; i < 3; i++) {
 			if (check_string[i] < 'A' or check_string[i]>'Z') { //대문자로 이루어진 경우가 아닌 경우 리턴
 				return;
-
 			}
 			if (check_string[i + 3] < '0' or check_string[i + 3]>'9') { // 숫자로 이루어진 경우가 아닌 경우 리턴
 				return;
 			}
 		}
 
-		readFile.open("." + v.at(1) + "txt");
-		if (readFile.is_open()) {
+		flight = get_files_indirectory("c:\\flights\\", "*.*");
 
+		int index = -1;
+
+		for (int a = 2; a < flight.size(); a++) {
+			if ((v.at(1) + ".txt") == flight.at(a)) {
+				index = a;
+			}
+		}
+		if (index == -1) {
+
+			cout << "no flight name" << endl;
+			return;
+		}
+		else
+		{
+			ifstream readFile;
+			path = path + flight.at(index);
+			readFile.open(path);
 			while (!readFile.eof()) {
+				string str;
 				getline(readFile, str);
-				flight = split_user_data(str);
+				f_info_temp = split_user_data(str);
+				f_info.insert(f_info.end(), f_info_temp.begin(), f_info_temp.end());
+			}
+			readFile.close();
+			if (f_info.size() < 6) {//예약된 좌석이 없는 경우 모두 0으로 출력.
+				
+				int co = 0;
+				int ru = 0;
+				co = f_info.at(3)[0] - 48; //행
+				ru = f_info.at(3)[2] - 48; //렬
 
-				int fvs = flight.size();
+				for (int h = 0; h < co*ru; h++) {
+					cout << '0 ';
+					if (h % 4 == 1) {
+						cout << endl;
+					}
+				}
+			}
+			else {
+				int c = -1;
+				int r = -1;
+				int Seat_array[100][100] = { 0 };
+
+				for (int h = 6; h < f_info.size(); h++) {
+					if (h % 2 == 0) {
+
+						c = f_info.at(h)[0] - 65;
+						r = f_info.at(h)[1] - 48;
+
+						if (c < 0) {
+							cout << "error" << endl;
+							return;
+						}
+
+						Seat_array[c][r] = 1;
+						c = -1;
+						r = -1;
+					}
+				}
+				int co = 0;
+				int ru = 0;
+				co = f_info.at(3)[0] - 48; //행
+				ru = f_info.at(3)[2] - 48; //렬
+
+
+				for (int g = 0; g < co; g++) {
+					for (int l = 0; l < ru; l++) {
+						cout << Seat_array[g][l] << " ";
+					}
+					cout << endl;
+				}
 
 			}
 		}
-
 	}
 }
-void user_reservation(vector<string> , string user_ID)
+
+
+
+
+void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight name v[1] - seat_information v[2]
 {
+
+	if (v.size() != 3) { //인자 개수 맞게 입력 안하면 
+		cout << "Syntax Error" << endl;
+		return;
+	}
+
+	string check_string;
+	//항공편 리스트 문법
+	check_string = v.at(1);
+	if (check_string.size() != 6) { //입력된 인자가 6글자 이상이므로 리턴
+		cout << "Syntax Error" << endl;
+		return;
+	}
+	for (int i = 0; i < 3; i++) {
+		if (check_string[i] < 'A' or check_string[i]>'Z') { //대문자로 이루어진 경우가 아닌 경우 리턴
+			cout << "Syntax Error" << endl;
+			return;
+		}
+		if (check_string[i + 3] < '0' or check_string[i + 3]>'9') { // 숫자로 이루어진 경우가 아닌 경우 리턴
+			cout << "Syntax Error" << endl;
+			return;
+		}
+	}
+	//항공편 리스트 자리 문법
+	string check_seat = v.at(2);
+	if (check_seat.size() != 2) {
+		cout << "Syntax Error" << endl; //입력된 글자가 2글자가 아니므로 리턴
+		return;
+	}
+	if (check_seat[0]<'A' or check_seat[0] > 'Z') {
+		cout << "Syntax Error" << endl; //좌석 첫번째가 영어가 아니므로 리턴
+		return;
+	}
+	if (check_seat[1]<'0' or check_seat[1] > '9') {
+		cout << "Syntax Error" << endl; //좌석 입력 두번째가 숫자가 아니므로 리턴.
+		return;
+	}
+
+	int indexf = -1;
+	vector<string> flight_vector;
+	string path;
+	path = "C:\\flights\\";
+	flight_vector = get_files_indirectory(path, "*.*"); // flight_vector 에 폴더에있는 파일 이름 명저장 ex KOR111.txt
+
+	for (int i = 2; i < flight_vector.size(); i++) {
+		if ((v.at(1)+".txt") == flight_vector.at(i)) {
+			indexf = i;
+			break;
+		}
+	}
+	if (indexf == -1) {
+		system("cls");
+		cout << "No flight sorry man" << endl;
+		return;
+	}
+
+	ifstream readFile;
+	vector<string> f_info;
+	vector<string> f_info_temp;
+	path = path + flight_vector.at(indexf);
+	readFile.open(path);
+	while (!readFile.eof()) {
+
+		string str;
+		getline(readFile, str);
+		f_info_temp = split_user_data(str);
+		f_info.insert(f_info.end(), f_info_temp.begin(), f_info_temp.end()); // 5번부터 유저 정보 좌석정보는 3번.
+
+	}
+	readFile.close();
+
+	char seat_number_1 = f_info.at(3)[0]; //좌석 개수 몇곱하기 몇의 앞자리만 따와서
+	char seat_number_2 = f_info.at(3)[2]; //좌석 개수 몇곱하기 몇의 뒷자리만 따와서
+	cout << seat_number_1 << endl;
+	cout << seat_number_2 << endl;
+
+	
+	if (seat_number_1-48 < v.at(2)[0] - 65 || seat_number_2 - 48 < v.at(2)[1] - 48) {
+		cout << v.at(2)[0]-65 << endl;
+		cout << v.at(2)[1] -48 << endl;
+		cout << "No flight seat" << endl;
+		return;
+	}
+	else { 
+
+		for (int j = 6; j<f_info.size(); j++) {
+			
+			if (v.at(2) == f_info.at(j)) {
+				cout << "alreay reserved seat sorry man" << endl;
+				return;
+			}
+
+		}
+		ofstream writeFile;
+		writeFile.open(path,ios::app);
+
+		if (writeFile.is_open()) {
+
+			writeFile << "^"+userID + "^" + v.at(2) + "^" << endl;
+			cout << "reservation completed!" << endl;
+		}
+		writeFile.close();
+		return;
+	}
+
+	
+	
+
 }
 /*
 구현할 명령어 목록
@@ -240,6 +405,10 @@ void user_prompt(string userID) {
 		getline(cin, s);
 		vector<string> v(1000);
 		v = split_space(s);
+		if (v.size() == 0) {
+			cout << "Syntex Error" << endl;
+			continue;
+		}
 		if (v.at(0) == "quit" || v.at(0) == "qu" || v.at(0) == "q")
 			break;
 		user_check(v, userID);
@@ -341,7 +510,7 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit(v[1], userID);
 		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information(userID);
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help(v);
-		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v, userID);
+		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v,userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
 		else return;
 }
