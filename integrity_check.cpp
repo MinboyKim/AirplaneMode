@@ -18,10 +18,8 @@ vector<string> user_ID_set;
 vector<string> user_TEL_set;
 vector<string> reservaton_user_ID;
 
-
 void integrity_check() {
-    cout << "Start integrity check\n"
-         << endl;
+    cout << "Start integrity check\n" << endl;
     path_check();
     userList_check();
     available_check();
@@ -29,30 +27,28 @@ void integrity_check() {
 }
 
 void path_check() {
-    const char* path_data = ".\\data";
+    const char *path_data = ".";
     int result_data = _access(path_data, 0);
 
     if (result_data != 0) {
-        cout << "ERROR! Not found server path!\n"
-             << endl;
+        cout << "ERROR! Not found server path!\n" << endl;
         exit(0);
     }
     return;
 }
 
 void userList_check() {
-    const char* path_userList = ".\\data\\Userlist.txt";
-
+    const char *path_userList = ".\\data\\Userlist.txt";
+    fs::path p("./data");
+    if (!fs::exists(p))
+        fs::create_directory(p);
     if (_access(path_userList, 0) == -1) {
-        cout << "Alert! Necessary file missing.\n"
-             << endl;
+        cout << "Alert! Necessary file missing.\n" << endl;
         ofstream userList(".\\data\\Userlist.txt");
         if (_access(path_userList, 0) != -1) {
-            cout << "File create successfully\n"
-                 << endl;
+            cout << "File create successfully\n" << endl;
         } else {
-            cout << "ERROR! failed to make file.\n"
-                 << endl;
+            cout << "ERROR! failed to make file.\n" << endl;
             exit(0);
         }
         userList.close();
@@ -61,7 +57,7 @@ void userList_check() {
 }
 
 void available_check() {
-    const char* path_userList = ".\\data\\Userlist.txt";
+    const char *path_userList = ".\\data\\Userlist.txt";
     if (_access(path_userList, 4) == -1) {
         cout << "ERROR! Files that cannot be used in File I/O exist\n";
         exit(0);
@@ -74,8 +70,7 @@ void available_check() {
     string dir = "./data/airplane";
     vector<string> paths;
     if (_access(dir.c_str(), 0) != -1) {
-        for (auto& p : std::filesystem::directory_iterator(dir))
-        {
+        for (auto &p : std::filesystem::directory_iterator(dir)) {
             paths.push_back(p.path().string());
         }
         for (int i = 0; i < paths.size(); i++) {
@@ -97,7 +92,7 @@ void rule_check() {
     string userData;
     string airplaneData;
     string airplaneName;
-    const char* path_airplane = "./data/airplane";
+    const char *path_airplane = "./data/airplane";
     ifstream ifs1;
     ifs1.open(".\\data\\Userlist.txt");
     if (ifs1.is_open()) {
@@ -107,13 +102,11 @@ void rule_check() {
             if (i == 1) {
                 if (userData == "") {
                     break;
-                }
-                else if (user_integrity_check(userData) == 0) {
+                } else if (user_integrity_check(userData) == 0) {
                     printf("ERROR! Incorrect data exist! ( file name : Userlist.txt , In row %d)\n", i);
                     exit(0);
                 }
-            }
-            else if (user_integrity_check(userData) == 0) {
+            } else if (user_integrity_check(userData) == 0) {
                 printf("ERROR! Incorrect data exist! ( file name : Userlist.txt , In row %d)\n", i);
                 exit(0);
             }
@@ -126,28 +119,26 @@ void rule_check() {
         string dir = "./data/airplane";
         vector<string> paths;
         if (_access(dir.c_str(), 0) != -1) {
-            for (auto& p : std::filesystem::directory_iterator(dir))
-            {
+            for (auto &p : std::filesystem::directory_iterator(dir)) {
                 paths.push_back(p.path().string());
             }
         }
-        for (int l = 0; l < paths.size();l++) {
+        for (int l = 0; l < paths.size(); l++) {
             string temp_str = split_backslash(paths[l]).back();
             reservaton_user_ID.clear();
             if (temp_str.size() != 10) {
                 cout << "ERROR! Incorrect file Name! ( file name : " << temp_str << "\n";
                 exit(0);
-            }
-            else if(temp_str.substr(6,4) != ".txt") {
+            } else if (temp_str.substr(6, 4) != ".txt") {
                 cout << "ERROR! Incorrect file Name! ( file name : " << temp_str << "\n";
                 exit(0);
             }
             airplaneName = temp_str.substr(0, 6);
-            
+
             ifstream ifs2(paths[l]);
             if (ifs2.is_open()) {
                 getline(ifs2, airplaneData);
-                if (airplaneData == "") {  //데이터 없음
+                if (airplaneData == "") { //데이터 없음
                     cout << "ERROR! Incorrect data exist! ( file name : " << airplaneName << ", In row 1)\n";
                     exit(0);
                 }
@@ -167,15 +158,14 @@ void rule_check() {
                 while (!ifs2.eof()) {
                     getline(ifs2, airplaneData);
                     if (!reservation_integrity_check(airplaneData, seat_data)) {
-                        cout << "ERROR! Incorrect data exist! ( file name : " << airplaneName << ", In row "<< i <<")\n";
+                        cout << "ERROR! Incorrect data exist! ( file name : " << airplaneName << ", In row " << i << ")\n";
                     }
                     i++;
                 }
             }
             ifs2.close();
         }
-        cout << "Integrity check completed!\n"
-             << endl;
+        cout << "Integrity check completed!\n" << endl;
     }
 }
 
@@ -238,7 +228,7 @@ bool airplane_integrity_check(string str) {
     if (str[0] != '^' || str.back() != '^') {
         return false;
     }
-    integrity_data = split_user_data(str);  // airplane data split
+    integrity_data = split_user_data(str); // airplane data split
     if (integrity_data.size() != 5) {
         return false;
     } else if (!(check_airplane_name(integrity_data[0]))) {
