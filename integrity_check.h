@@ -1,5 +1,10 @@
 #include <iostream>
-
+#include <io.h>
+#include <fstream>
+#include <vector>
+#include <Windows.h>
+#include <filesystem>
+#include "string_function.h"
 
 void integrity_check();
 void path_check();

@@ -23,7 +23,7 @@ void integrity_check() {
 void path_check()
 {
 	const char* path_data = ".\\data";
-	int result_data = access(path_data, 0);
+	int result_data = _access(path_data, 0);
 
 	if (result_data == 0) {
 	}
@@ -37,7 +37,7 @@ void path_check()
 
 void userList_check() {
 	const char* path_userList = ".\\data\\Userlist.txt";
-	int result_userList = access(path_userList, 0);
+	int result_userList = _access(path_userList, 0);
 
 	if (path_userList == 0) {
 	}
@@ -74,16 +74,16 @@ void available_check()
 
 void rule_check()
 {
-	char* userData;
-	char* airplaneData;
-	char* airplaneName;
+	string userData;
+	string airplaneData;
+	string airplaneName;
 	string path_airplane = ".\\data\\airplane";
 	ifstream ifs1;
 	ifs1.open(".\\data\\Userlist.txt");
 	if (ifs1.is_open()) {
 		while (!ifs1.eof()) {
 			int i = 1;
-			ifs1.getline(userData, sizeof(userData));
+			getline(ifs1, userData);
 			if (user_integrity_check(userData)==0) {
 				printf("ERROR! Incorrect data exist! ( file name : Userlist.txt , In row %d)\n", i);
 			}
@@ -97,11 +97,10 @@ void rule_check()
 		const fs::directory_entry& entry = *itr;
 		ifstream ifs2(entry.path());
 		if (ifs2.is_open()) {
-			ifs2.getline(airplaneName, sizeof(airplaneName));
+			getline(ifs2, airplaneName);
 			while (!ifs2.eof()) {
 				int i = 1;
-				
-				ifs2.getline(airplaneData, sizeof(airplaneData));
+				getline(ifs2, airplaneData);
 				if (airplane_integrity_check(airplaneData)==0) {
 					printf("ERROR! Incorrect data exist! ( file name : %s , In row %d)\n", airplaneName,i);
 				}
@@ -200,4 +199,5 @@ bool airplane_integrity_check(string str) {
 	else if (!(check_seat(integrity_data[4], integrity_data[5]))) {
 		return false;
 	}
+	return true;
 }
