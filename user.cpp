@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <direct.h>
 
+
 using namespace std;
 
 namespace fls = std::filesystem;
@@ -126,8 +127,6 @@ void user_help(vector<string> v, string userID) {
 
 void user_quit()
 {
-	cout << "Good bye" << endl;
-	return;
 }
 void user_list(vector<string> v,string userID) {
 	
@@ -140,16 +139,19 @@ void user_list(vector<string> v,string userID) {
 			char dir[256];
 			_getcwd(dir, 256);
 			string server_dir(dir);
-			fls::path p("./data");
-			if (!fls::exists(p))
-				fls::create_directory(p);
-			server_dir += "./data/Userlist.txt";
+			server_dir += "\\data\\airplane\\";
 			path = server_dir;
 			string temp = path;
 
 			if (v.size() == 1) { // 인자가 없는 경우.
 
-				flight = get_files_indirectory("c:\\flights\\", "*.*");
+				flight = get_files_indirectory(server_dir, "*.*");
+				
+				if (flight.size() == 0) {
+					cout << "No flights list" << endl;
+					user_prompt(userID);
+					return;
+				}
 
 				for (int i = 2; i < flight.size(); i++) {//파일 하나씩 읽어오기
 					path = temp;
@@ -194,6 +196,7 @@ void user_list(vector<string> v,string userID) {
 
 						if (k == 3) {
 							cout << f_info.at(k)[0] << "," << f_info.at(k)[2]<<" ";
+							continue;
 						}
 						cout << f_info.at(k); //5번-이름 6번-좌석정보 7번-이름 8번-좌석정보 f_info --> flight 마다 저장된 데이터 리스트.
 						cout << " ";
@@ -320,10 +323,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	char dir[256];
 	_getcwd(dir, 256);
 	string server_dir(dir);
-	fls::path p("./data");
-	if (!fls::exists(p))
-		fls::create_directory(p);
-	server_dir += "./data/Userlist.txt";
+	server_dir += "\\data\\airplane\\";
 
 	if (v.size() != 3) { //인자 개수 맞게 입력 안하면 
 		cout << "Syntax Error" << endl;
@@ -373,6 +373,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	vector<string> flight_vector;
 	string path;
 	path = "C:\\flights\\";
+	path =server_dir;
 	flight_vector = get_files_indirectory(server_dir, "*.*"); // flight_vector 에 폴더에있는 파일 이름 명저장 ex KOR111.txt
 
 	for (int i = 2; i < flight_vector.size(); i++) {
@@ -405,13 +406,9 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 
 	char seat_number_1 = f_info.at(3)[0]; //좌석 개수 몇곱하기 몇의 앞자리만 따와서
 	char seat_number_2 = f_info.at(3)[2]; //좌석 개수 몇곱하기 몇의 뒷자리만 따와서
-	cout << seat_number_1 << endl;
-	cout << seat_number_2 << endl;
 
 	
 	if (seat_number_1-48 < v.at(2)[0] - 65 || seat_number_2 - 48 < v.at(2)[1] - 48) {
-		cout << v.at(2)[0]-65 << endl;
-		cout << v.at(2)[1] -48 << endl;
 		cout << "No flight seat" << endl;
 		user_prompt(userID);
 		return;
@@ -587,8 +584,7 @@ void user_information(string userID)
 			break;
 		}
 	}
-	if(tempVector.size() > 7)
-		tempVector[7] = "";
+	tempVector[7] = "";
 	for (auto i : tempVector) {
 		if(i != "")cout << i << " ";
 	}
@@ -609,7 +605,7 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help_check(v, userID);
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation_check(v, userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list_check(v, userID);
-		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") user_quit_check(v, userID);
+		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") exit(0);
 		else return;
 }
 
@@ -675,18 +671,6 @@ void user_error()
 {
 	cout << "Syntax ERROR" << endl;
 	return;
-}
-void user_quit_check(vector<string> v, string userID)
-{
-	if (v.size() != 1) {
-		user_error();
-		user_prompt(userID);
-		return;
-	}
-	else {
-		user_quit();
-		return;
-	}
 }
 void user_help_check(vector<string> v,string user_ID) {
 
