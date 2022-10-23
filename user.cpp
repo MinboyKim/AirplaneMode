@@ -120,12 +120,17 @@ void user_help(vector<string> v, string userID) {
 		else {
 			system("cls");
 			user_show_guide();
-			cout << "Syntex Error" << endl;
+			cout << "Syntax Error" << endl;
 			user_prompt(userID);
 			return;
 		}
 	}
-	user_prompt(userID);
+	else {
+		system("cls");
+		cout << "Syntax ERROR" << endl;
+		user_prompt(userID);
+		return;
+	}
 }
 
 void user_quit()
@@ -638,7 +643,7 @@ void user_information(string userID)
 			break;
 		}
 	}
-	if(tempVector.size() > 7) tempVector[7] = "";
+	tempVector[7] = "";
 	for (auto i : tempVector) {
 		if(i != "")cout << i << " ";
 	}
