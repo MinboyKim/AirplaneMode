@@ -216,13 +216,12 @@ void user_list(vector<string> v,string userID) {
 					f_info.clear();
 					f_info_temp.clear();
 				}
+
+				user_prompt(userID);
+				return;
 			}
-		
-	
 
-
-
-	else if (v.size() == 2) {//인자가 2개일때.
+			else if (v.size() == 2) {//인자가 2개일때.
 
 		string check_string;
 		check_string = v.at(1);
@@ -324,7 +323,12 @@ void user_list(vector<string> v,string userID) {
 			}
 		}
 	}
+	else {
+	system("cls");
+	cout << "Syntax Error" << endl;
 	user_prompt(userID);
+	return;
+	}
 }
 
 
