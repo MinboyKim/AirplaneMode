@@ -226,6 +226,20 @@ bool check_birth(string str) {
     return true;
 }
 
+bool integrity_check_name(string str)[bool space = false; for (int i = 0; i < str.size(); i++) {
+    if (str[i] == ' ') {
+        if (space) {
+            return false;
+        } else {
+            space = true;
+        }
+    } else if (str[i] >= 'A' && str[i] <= 'Z') {
+    } else {
+        return false;
+    }
+    return true;
+}
+
 bool is_userID_in_data(string str) {
     char dir[256];
     _getcwd(dir, 256);
@@ -259,6 +273,15 @@ bool is_male(string str) {
         return true;
     }
     return false;
+}
+
+bool is_number(string str) {
+    for (int i = 0; i < str.size(); i++) {
+        if (isdifit(str[i]) == 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 string make_name_data(string str) {
@@ -310,12 +333,56 @@ string make_birth_data(string str) {
     return mod_str;
 }
 
-void print_ID_warning() { cout << "Id gramatical error\n"; }
+bool user_integrity_check(string str) {
+    vector<string> integrity_data;
+    if (str[0] != '^' || str.back != '^') {
+        return false;
+    }
+    integrity_data = split_user_data(str);
+    if (integrity_data.size() != 6) {
+        return false;
+    }
+    if (!check_ID(integrity_data[0])) {
+        return false;
+    }
 
-void print_name_warning() { cout << "Name gramatical error\n"; }
+    if (!integrity_check_name(integrity_data[1])) {
+        return false;
+    }
 
-void print_sex_warning() { cout << "Sex gramatical error\n"; }
+    if (integrity_data[2] != "1" && integrity_data[2] != "0") {
+        return false;
+    }
 
-void print_TEL_warning() { cout << "TEL gramatical error\n"; }
+    if (!is_number(integrity_data[3]) || integrity_data[3].size() != 8) {
+        return false;
+    } else if (!check_TEL(integrity_data[3])) {
+        return false;
+    }
 
-void print_birth_warning() { cout << "birth gramatical error\n"; }
+    if (!is_number(integrity_data[4]) || integrity_data[4].size() != 8) {
+        return false;
+    } else if (!check_birth(integrity_data[4])) {
+        return false;
+    }
+
+    if (!is_number(integrity_data[5])) {
+        return false;
+    }
+    return true;
+}
+
+void print_ID_warning() {
+    cout << "Id gramatical error\n"; }
+
+void print_name_warning() {
+    cout << "Name gramatical error\n"; }
+
+void print_sex_warning() {
+    cout << "Sex gramatical error\n"; }
+
+void print_TEL_warning() {
+    cout << "TEL gramatical error\n"; }
+
+void print_birth_warning() {
+    cout << "birth gramatical error\n"; }
