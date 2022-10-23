@@ -13,6 +13,22 @@
 #include<typeinfo>
 using namespace std;
 
+
+vector<string> get_files_indirectory(const string& _path, const string& _filter) {
+	string searching = _path + _filter;
+	vector<string> return_;
+	_finddata_t fd;
+	intptr_t handle = _findfirst(searching.c_str(), &fd);
+	if (handle == -1) return return_;
+	int result = 0;
+	do {
+		return_.push_back(fd.name);
+		result = _findnext(handle, &fd);
+	} while (result != -1);
+	_findclose(handle);
+	return return_;
+
+}
 void user_show_guide() {
 	cout << ("-------------------------------------------------------------------------------------------------------------------------\n");
 	cout << ("|         command set       |           argument            |                          description                       \n");
