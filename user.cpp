@@ -654,7 +654,7 @@ void user_information(string userID)
 			break;
 		}
 	}
-	tempVector[7] = "";
+	if(tempVector.size() > 7) tempVector[7] = "";
 	for (auto i : tempVector) {
 		if(i != "")cout << i << " ";
 	}
