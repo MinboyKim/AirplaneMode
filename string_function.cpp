@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "string_function.h"
 
 using namespace std;
 
@@ -285,6 +286,34 @@ bool is_number(string str) {
         }
     }
     return true;
+}
+
+bool check_airplane_name(string str)
+{
+    if (str.size() > 6) {
+        return false;
+    }
+
+    for (int i = 0; i < 3; i++) {
+        if (!(str[i] >= 'A' && str[i] <= 'Z')) {
+            return false;
+        }
+    }
+    for (int i = 3; i < 6; i++) {
+        if (!(str[i] >= '1' && str[i] <= '9')) {
+            return false;
+        }
+    }
+}
+
+bool check_place(string str)
+{
+    return false;
+}
+
+bool check_time(string str)
+{
+    return false;
 }
 
 string make_name_data(string str) {
