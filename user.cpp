@@ -666,7 +666,11 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation_check(v, userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list_check(v, userID);
 		else if (cmd == "quit" || cmd == "qu" || cmd == "qui" || cmd == "q") user_quit_check(v, userID);
-		else return;
+		else {
+			user_show_guide();
+			user_prompt(userID);
+			return;
+		}
 }
 
 void user_cancel_check(vector<string> v, string userID)
