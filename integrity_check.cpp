@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include "string_function.h"
+#include "user.h"
 
 
 using namespace std;
@@ -114,21 +115,7 @@ void rule_check()
 	
 }	
 
-vector<string> get_files_indirectory(const string& _path, const string& _filter) {
-	string searching = _path + _filter;
-	vector<string> return_;
-	_finddata_t fd;
-	intptr_t handle = _findfirst(searching.c_str(), &fd);
-	if (handle == -1) return return_;
-	int result = 0;
-	do {
-		return_.push_back(fd.name);
-		result = _findnext(handle, &fd);
-	} while (result != -1);
-	_findclose(handle);
-	return return_;
 
-}
 
 bool user_integrity_check(string str) {
 	vector<string> integrity_data;
