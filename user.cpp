@@ -443,19 +443,6 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	
 
 }
-/*
-구현할 명령어 목록
-help
-quit
-list
-reservation
-
-
-
-cancel
-deposit
-information
-*/
 
 void user_prompt(string userID) {
 	printf("User> ");
@@ -486,12 +473,18 @@ void user_cancel(string flightName, string userID)
 		}
 
 		int index = 0;
+		bool user_cancel_flag = false;
 		string tempString;
 		for (auto i : txtAll) {
 			index++;
 			if (i.find(userID) != string::npos) {
+				user_cancel_flag = true;
 				break;
 			}
+		}
+		if (!user_cancel_flag) {
+			cout << "You have not booked this flight" << endl;
+			return;
 		}
 		txtAll[index-1] = "";
 		ofstream ofile;
