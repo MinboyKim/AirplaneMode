@@ -112,6 +112,7 @@ void user_help(vector<string> v) {
 		else {
 			system("cls");
 			user_show_guide();
+			cout << "Syntex Error" << endl;
 			return;
 		}
 	}
@@ -196,6 +197,8 @@ void user_list(vector<string> v) {
 		string check_string;
 		check_string = v.at(1);
 		if (check_string.size() != 6) { //입력된 인자가 6글자 이상이므로 리턴
+			system("cls");
+			cout << "Syntex Error" << endl;
 			return;
 		}
 		for (int i = 0; i < 3; i++) {
@@ -419,6 +422,10 @@ void user_prompt(string userID) {
 		getline(cin, s);
 		vector<string> v(1000);
 		v = split_space(s);
+		if (v.size() == 0) {
+			cout << "Syntex Error" << endl;
+			continue;
+		}
 		if (v.at(0) == "quit" || v.at(0) == "qu" || v.at(0) == "q")
 			break;
 		user_check(v, userID);
@@ -489,4 +496,9 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v,userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
 		else return;
+}
+
+
+int main(void) {
+	user_prompt("aiekwdz");
 }
