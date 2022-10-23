@@ -304,6 +304,7 @@ bool check_airplane_name(string str)
             return false;
         }
     }
+    return true;
 }
 
 bool check_place(string str)
@@ -316,6 +317,7 @@ bool check_place(string str)
             return false;
         }
     }
+    return true;
 }
 
 bool check_time(string str)
@@ -352,6 +354,7 @@ bool check_time(string str)
     else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) == stoi(str.substr(4, 4)) && stoi(str.substr(20, 2)) == stoi(str.substr(8, 2)) && stoi(str.substr(22, 2)) < stoi(str.substr(10, 2))) {
         return false;
     }
+    return true;
 }
 
 bool check_deposit(string str)
@@ -364,6 +367,7 @@ bool check_deposit(string str)
     if (str[0] == '0') {
         return false;
     }
+    return true;
 }
 
 bool check_all_seat(string str)
@@ -371,6 +375,7 @@ bool check_all_seat(string str)
     if (!((str[0] >= '0' && str[0] <= '9') && (str[2]>='0' && str[2] <= '9'))) {
         return false;
     }
+    return true;
 }
 
 bool check_seat(string str1 , string str2) // str1-->all seat , str2 --> current seat
@@ -384,7 +389,7 @@ bool check_seat(string str1 , string str2) // str1-->all seat , str2 --> current
     else if (int(str2[0]) - 64 == int(str1[0]) && int(str2[1]) > int(str1[2])) {
         return false;
     }
-
+    return true;
 }
 
 string make_name_data(string str) {
@@ -436,44 +441,7 @@ string make_birth_data(string str) {
     return mod_str;
 }
 
-bool user_integrity_check(string str) {
-    vector<string> integrity_data;
-    if (str[0] != '^' || str.back() != '^') {
-        return false;
-    }
-    integrity_data = split_user_data(str);
-    if (integrity_data.size() != 6) {
-        return false;
-    }
-    if (!check_ID(integrity_data[0])) {
-        return false;
-    }
 
-    if (!integrity_check_name(integrity_data[1])) {
-        return false;
-    }
-
-    if (integrity_data[2] != "1" && integrity_data[2] != "0") {
-        return false;
-    }
-
-    if (!is_number(integrity_data[3]) || integrity_data[3].size() != 8) {
-        return false;
-    } else if (!check_TEL(integrity_data[3])) {
-        return false;
-    }
-
-    if (!is_number(integrity_data[4]) || integrity_data[4].size() != 8) {
-        return false;
-    } else if (!check_birth(integrity_data[4])) {
-        return false;
-    }
-
-    if (!is_number(integrity_data[5])) {
-        return false;
-    }
-    return true;
-}
 
 void print_ID_warning() { cout << "Id gramatical error\n"; }
 
