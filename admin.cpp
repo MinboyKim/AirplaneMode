@@ -55,7 +55,7 @@ void admin_check(vector<string> v) {
 	
 		string cmd = v[0];
 		if (cmd == "add" || cmd == "d" || cmd == "ad") {
-			if (admin_flight_is_exist(v)== 1) {
+			if (admin_flight_is_exist(v) == 1) {
 				if (admin_check_add(v) == 1) {
 					admin_add(v);
 				}
@@ -67,6 +67,7 @@ void admin_check(vector<string> v) {
 		else if (cmd == "quit" || cmd == "qui" || cmd == "qu" || cmd == "q") admin_quit();
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") admin_help(v);
 		else if (cmd == "user" || cmd == "use" || cmd == "us" || cmd == "u") admin_show_user(v[1]);
+		else if (cmd == "test") integrity_check();
 		else error();
 
 		admin_prompt();
