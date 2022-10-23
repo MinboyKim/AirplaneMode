@@ -23,3 +23,8 @@ void admin_quit();
 int admin_flight_is_exist(vector<string> v);
 /*******************daehoon***************/
 
+/******************yeonggyo***************/
+void admin_help(vector<string> v);
+void admin_show_user(string s);
+void admin_show_guide();
+/******************yeonggyo***************/
