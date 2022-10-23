@@ -54,7 +54,13 @@ int choice() {
 void admin_check(vector<string> v) {
 	
 		string cmd = v[0];
-		if (cmd == "add" || cmd == "d" || cmd == "ad") admin_check_add(v);
+		if (cmd == "add" || cmd == "d" || cmd == "ad") {
+			if (admin_flight_is_exist(v)== 1) {
+				if (admin_check_add(v) == 1) {
+					admin_add(v);
+				}
+			}
+		}
 		else if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") admin_cancel(v[1]);
 		else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);
 		else if (cmd == "list" || cmd == "li" || cmd == "l") admin_show_airplane();
@@ -63,14 +69,13 @@ void admin_check(vector<string> v) {
 
 		admin_prompt();
 	return;
-
 }
 
 int admin_check_add(vector<string> v) {
 	/*for (auto i : v) {
 		cout << i << " ";
 	}*/
-	if (v.size() <= 5) {
+	if (v.size() < 6) {
 		error(); return 0;
 	}
 	string planename = v[1];
@@ -78,6 +83,7 @@ int admin_check_add(vector<string> v) {
 	string time = v[3];
 	string price = v[4];
 	string seats = v[5];
+
 
 	for (int i = 0; i < 3; i++) {
 		planename[i]=admin_check_argv(planename[i]);
@@ -91,7 +97,8 @@ int admin_check_add(vector<string> v) {
 		}
 	}
 	for (int j = 0; j < 3; j++) {
-		if (departture_destination[j] = admin_check_argv(departture_destination[j]) != '!') {
+		if ( admin_check_argv(departture_destination[j]) != '!') {
+			departture_destination[j] = admin_check_argv(departture_destination[j]);
 		}
 		else { error(); return 0;
 		}
@@ -100,8 +107,9 @@ int admin_check_add(vector<string> v) {
 	}
 	else { error(); return 0;
 	}
-	for (int j = 4; j < 6; j++) {
-		if (departture_destination[j] = admin_check_argv(departture_destination[j]) != '!') {
+	for (int j = 4; j < 7; j++) {
+		if (admin_check_argv(departture_destination[j]) != '!') {
+			departture_destination[j] = admin_check_argv(departture_destination[j]);
 		}
 		else { error(); return 0;
 		}
@@ -169,7 +177,7 @@ int admin_check_add(vector<string> v) {
 	}
 	v[4] = newprice;
 	if (check_integer(seats[0]) == -1 || (seats[1] != ',' && seats[1] != '*' && seats[1] != '-') || check_integer(seats[2]) == -1) { error(); return 0; }
-	return admin_add(v);
+	return 1;
 	
 }
 
@@ -219,7 +227,7 @@ void admin_edit(vector<string> v){
 		if (exists(paths)) {
 			if (admin_check_add(v) == 1) {
 				remove(paths);
-				admin_check_add(v);
+				admin_add(v);
 			}
 			admin_prompt();
 		}
@@ -228,8 +236,6 @@ void admin_edit(vector<string> v){
 			admin_prompt();
 		}
 
-		
-			
 		itr++;
 	}
 }
@@ -253,9 +259,22 @@ char admin_check_argv(char c) {
 		c -= 32;
 	}
 	else {  return '!'; }
-
 	return c;
 
+}
+
+int admin_flight_is_exist(vector<string> v) {
+	fls::directory_iterator itr(fls::current_path() / "data" / "airplane");
+	while (itr != fls::end(itr)) {
+		const fls::directory_entry& entry = *itr;
+		std::filesystem::path paths = "./data/airplane/" + v[1] + ".txt";
+		if (exists(paths)) {
+			error();
+			return 0;
+		}
+		itr++;
+	}
+	return 1;
 }
 
 void admin_quit() {
