@@ -27,3 +27,10 @@ void user_cancel(string flightName, string userID);
 void user_deposit(string iMoney, string userID);
 void user_information(string userID);
 void user_check(vector<string> v, string userID);
+
+
+void user_cancel_check(vector<string> v, string userID);
+void user_deposit_check(vector<string> v, string userID);
+void user_information_check(vector<string> v, string userID);
+
+void user_error();

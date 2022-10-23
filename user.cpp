@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include<typeinfo>
+#include <regex>
 using namespace std;
 
 
@@ -414,25 +415,18 @@ information
 */
 
 void user_prompt(string userID) {
-	while (1) {
 		printf("User> ");
 		string s;
 		cin.clear();
 		getline(cin, s);
 		vector<string> v(1000);
 		v = split_space(s);
-		if (v.size() == 0) {
-			cout << "Syntex Error" << endl;
-			continue;
-		}
-		if (v.at(0) == "quit" || v.at(0) == "qu" || v.at(0) == "q")
-			break;
 		user_check(v, userID);
-	}
 }
 
 void user_cancel(string flightName, string userID)
 {
+	cout << "flight name correct\n";
 }
 
 void user_deposit(string iMoney, string userID)
@@ -479,6 +473,7 @@ void user_deposit(string iMoney, string userID)
 		ofile << i;
 	}
 	ofile.close();
+	cout << "deposition complete" << endl;
 }
 
 void user_information(string userID)
@@ -499,7 +494,6 @@ void user_information(string userID)
 	}
 
 	int index = 0;
-	string tempString;
 	vector<string> tempVector;
 	for (auto i : txtAll) {
 		index++;
@@ -522,11 +516,75 @@ void user_information(string userID)
 
 void user_check(vector<string> v, string userID) {
 		string cmd = v[0];
-		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel(v[1], userID);
-		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit(v[1], userID);
-		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information(userID);
+		if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") user_cancel_check(v, userID);
+		else if (cmd == "deposit" || cmd == "deposi" || cmd == "depos" || cmd == "depo" || cmd == "dep" || cmd == "de" || cmd == "d") user_deposit_check(v, userID);
+		else if (cmd == "information" || cmd == "inform" || cmd == "infor" || cmd == "info" || cmd == "inf" || cmd == "in" || cmd == "i") user_information_check(v, userID);
 		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") user_help(v);
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v,userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
 		else return;
+}
+
+void user_cancel_check(vector<string> v, string userID)
+{
+	if (v.size() != 2) {
+		user_error();
+		user_prompt(userID);
+		return;
+	}
+	else {
+		regex re("[A-Z]{3}[0-9]{3}");
+		if (regex_match(v[1], re)) {
+			user_cancel(v[1], userID);
+			user_prompt(userID);
+			return;
+		}
+		else {
+			user_error();
+			user_prompt(userID);
+			return;
+		}
+	}
+}
+
+void user_deposit_check(vector<string> v, string userID)
+{
+	if (v.size() != 2 ) {
+		user_error();
+		user_prompt(userID);
+		return;
+	}
+	else {
+		regex re("\\d*");
+		if (regex_match(v[1], re)) {
+			user_deposit(v[1], userID);
+			user_prompt(userID);
+			return;
+		}
+		else {
+			user_error();
+			user_prompt(userID);
+			return;
+		}
+	}
+}
+
+void user_information_check(vector<string> v, string userID)
+{
+	if (v.size() != 1) {
+		user_error();
+		user_prompt(userID);
+		return;
+	}
+	else {
+		user_information(userID);
+		user_prompt(userID);
+		return;
+	}
+}
+
+void user_error()
+{
+	cout << "Syntax ERROR" << endl;
+	return;
 }
