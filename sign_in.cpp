@@ -20,15 +20,29 @@ bool make_new_user(vector<string> new_user_data, string user_ID) {
     _getcwd(dir, 256);
     string server_dir(dir);
     fls::path p("./data");
-    if(!fls::exists(p))
+    if (!fls::exists(p))
         fls::create_directory(p);
     server_dir += "./data/Userlist.txt";
-    
+
+    bool enter = true;
+    ifstream user_data_r;
+    user_data_r.open(server_dir);
+    if (user_data_r.is_open()) {
+        string first_line;
+        getline(user_data_r, first_line);
+        if (first_line == "") {
+            enter = false;
+        }
+        user_data_r.close();
+    }
 
     ofstream user_data;
     user_data.open(server_dir, ios::app);
     if (user_data.is_open()) {
-        user_data << endl << will_write;
+        if (enter) {
+            user_data << endl;
+        }
+        user_data << will_write;
         user_data.close();
         return true;
     } else {
