@@ -460,7 +460,7 @@ void user_deposit(string iMoney, string userID)
 	FILE* p_file = NULL;
 	vector<string> txtAll;
 	char buffer[128];
-	if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")); {
+	if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")) {
 		while (fgets(buffer, 128, p_file) != NULL) {
 			txtAll.push_back(buffer);
 		}
