@@ -3,10 +3,10 @@
 #include <io.h>
 #include <fstream>
 #include <vector>
-#include <Windows.h>
 #include <filesystem>
 #include "string_function.h"
 #include "user.h"
+#include <stdio.h>
 
 
 using namespace std;
@@ -26,10 +26,7 @@ void path_check()
 	const char* path_data = ".\\data";
 	int result_data = _access(path_data, 0);
 
-	if (result_data == 0) {
-	}
-
-	else {
+	if (result_data != 0) {
 		cout << "ERROR! Not found server path!\n" << endl;
 		return;
 	}
@@ -40,13 +37,10 @@ void userList_check() {
 	const char* path_userList = ".\\data\\Userlist.txt";
 	int result_userList = _access(path_userList, 0);
 
-	if (path_userList == 0) {
-	}
-
-	else {
+	if (result_userList != 0) {
 		cout << "Alert! Necessary file missing.\n" << endl;
 		ofstream userList(".\\data\\Userlist.txt");
-		if (path_userList == 0) {
+		if (result_userList == 0) {
 			cout << "File create successfully\n" << endl;
 		}
 		else {

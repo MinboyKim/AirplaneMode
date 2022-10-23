@@ -2,7 +2,6 @@
 #define INTEGRITY_CHECK_H
 
 #include "string_function.h"
-#include <Windows.h>
 #include <filesystem>
 #include <fstream>
 #include <io.h>
