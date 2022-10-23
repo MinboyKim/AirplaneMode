@@ -18,9 +18,9 @@ information
 */
 
 void user_show_guide();
-void user_help(vector<string> v);
+void user_help(vector<string> v,string userID);
 void user_quit();
-void user_list(vector<string> v);
+void user_list(vector<string> v,string userID);
 void user_reservation(vector<string> v,string userID);
 void user_prompt(string userID);
 void user_cancel(string flightName, string userID);
@@ -32,5 +32,7 @@ void user_check(vector<string> v, string userID);
 void user_cancel_check(vector<string> v, string userID);
 void user_deposit_check(vector<string> v, string userID);
 void user_information_check(vector<string> v, string userID);
-
+void user_list_check(vector<string> v, string user_ID);
+void user_help_check(vector<string> v, string user_ID);
+void user_reservation_check(vector<string> v, string user_ID);
 void user_error();
