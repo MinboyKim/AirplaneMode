@@ -280,7 +280,7 @@ bool is_male(string str) {
 
 bool is_number(string str) {
     for (int i = 0; i < str.size(); i++) {
-        if (isdifit(str[i]) == 0) {
+        if (isdigit(str[i]) == 0) {
             return false;
         }
     }
@@ -338,7 +338,7 @@ string make_birth_data(string str) {
 
 bool user_integrity_check(string str) {
     vector<string> integrity_data;
-    if (str[0] != '^' || str.back != '^') {
+    if (str[0] != '^' || str.back() != '^') {
         return false;
     }
     integrity_data = split_user_data(str);
