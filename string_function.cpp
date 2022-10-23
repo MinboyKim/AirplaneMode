@@ -289,7 +289,7 @@ bool is_number(string str) {
 
 string make_name_data(string str) {
     std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-    return str;
+        return str; 
 }
 
 string make_TEL_data(string str) {
