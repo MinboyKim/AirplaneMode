@@ -127,6 +127,7 @@ void user_help(vector<string> v, string userID) {
 	}
 	else {
 		system("cls");
+		user_show_guide();
 		cout << "Syntax ERROR" << endl;
 		user_prompt(userID);
 		return;
