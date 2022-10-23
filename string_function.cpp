@@ -1,3 +1,4 @@
+#include "string_function.h"
 #include <algorithm>
 #include <direct.h>
 #include <filesystem>
@@ -6,7 +7,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "string_function.h"
 
 using namespace std;
 
@@ -49,6 +49,21 @@ vector<string> split_user_data(string str) {
 
     v.clear();
     while (getline(ss, strBuffer, '^')) {
+        if (strBuffer != "") {
+            v.push_back(strBuffer);
+        }
+    }
+
+    return v;
+}
+
+vector<string> split_backslash(string str) {
+    istringstream ss(str);
+    string strBuffer;
+    vector<string> v;
+
+    v.clear();
+    while (getline(ss, strBuffer, '\\')) {
         if (strBuffer != "") {
             v.push_back(strBuffer);
         }
@@ -288,8 +303,7 @@ bool is_number(string str) {
     return true;
 }
 
-bool check_airplane_name(string str)
-{
+bool check_airplane_name(string str) {
     if (str.size() != 6) {
         return false;
     }
@@ -307,8 +321,7 @@ bool check_airplane_name(string str)
     return true;
 }
 
-bool check_place(string str)
-{
+bool check_place(string str) {
     if (str.size() != 6) {
         return false;
     }
@@ -320,8 +333,7 @@ bool check_place(string str)
     return true;
 }
 
-bool check_time(string str)
-{
+bool check_time(string str) {
     if (str.size() != 24) {
         return false;
     }
@@ -333,33 +345,29 @@ bool check_time(string str)
     // check if it's before 2022/1003/0000
     if (stoi(str.substr(0, 4)) < 2022) {
         return false;
-    }
-    else if (stoi(str.substr(0, 4))==2022 && stoi(str.substr(4, 2))<10) {
+    } else if (stoi(str.substr(0, 4)) == 2022 && stoi(str.substr(4, 2)) < 10) {
         return false;
-    }
-    else if (stoi(str.substr(0, 4)) == 2022 && stoi(str.substr(4, 2)) == 10 && stoi(str.substr(6,2))<3) {
+    } else if (stoi(str.substr(0, 4)) == 2022 && stoi(str.substr(4, 2)) == 10 && stoi(str.substr(6, 2)) < 3) {
         return false;
     }
 
-    //check if arrival time faster than departure time
+    // check if arrival time faster than departure time
     if (stoi(str.substr(12, 4)) < stoi(str.substr(0, 4))) {
         return false;
-    }
-    else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) < stoi(str.substr(4, 4))) {
+    } else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) < stoi(str.substr(4, 4))) {
         return false;
-    }
-    else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) == stoi(str.substr(4, 4)) && stoi(str.substr(20, 2)) < stoi(str.substr(8, 2))) {
+    } else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) == stoi(str.substr(4, 4)) &&
+               stoi(str.substr(20, 2)) < stoi(str.substr(8, 2))) {
         return false;
-    }
-    else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) == stoi(str.substr(4, 4)) && stoi(str.substr(20, 2)) == stoi(str.substr(8, 2)) && stoi(str.substr(22, 2)) < stoi(str.substr(10, 2))) {
+    } else if (stoi(str.substr(12, 4)) == stoi(str.substr(0, 4)) && stoi(str.substr(16, 4)) == stoi(str.substr(4, 4)) &&
+               stoi(str.substr(20, 2)) == stoi(str.substr(8, 2)) && stoi(str.substr(22, 2)) < stoi(str.substr(10, 2))) {
         return false;
     }
     return true;
 }
 
-bool check_deposit(string str)
-{
-    for (int i = 0; i < sizeof(str); i++) {
+bool check_deposit(string str) {
+    for (int i = 0; i < str.size(); i++) {
         if (!(str[i] >= '0' && str[i] <= '9')) {
             return false; // check if they're all number
         }
@@ -370,23 +378,21 @@ bool check_deposit(string str)
     return true;
 }
 
-bool check_all_seat(string str)
-{
-    if (!((str[0] >= '0' && str[0] <= '9') && (str[2]>='0' && str[2] <= '9'))) {
+bool check_all_seat(string str) {
+    if (!((str[0] >= '0' && str[0] <= '9') && (str[2] >= '0' && str[2] <= '9'))) {
         return false;
     }
     return true;
 }
 
-bool check_seat(string str1 , string str2) // str1-->all seat , str2 --> current seat
+bool check_seat(string str1, string str2) // str1-->all seat , str2 --> current seat
 {
     if (!((str2[0] >= 'A' && str2[0] <= 'Z') && (str2[2] >= '0' && str2[2] <= '9'))) {
         return false;
     }
     if (int(str2[0]) - 64 > int(str1[0])) {
         return false;
-    }
-    else if (int(str2[0]) - 64 == int(str1[0]) && int(str2[1]) > int(str1[2])) {
+    } else if (int(str2[0]) - 64 == int(str1[0]) && int(str2[1]) > int(str1[2])) {
         return false;
     }
     return true;
@@ -394,7 +400,7 @@ bool check_seat(string str1 , string str2) // str1-->all seat , str2 --> current
 
 string make_name_data(string str) {
     std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-        return str; 
+    return str;
 }
 
 string make_TEL_data(string str) {
@@ -440,8 +446,6 @@ string make_birth_data(string str) {
 
     return mod_str;
 }
-
-
 
 void print_ID_warning() { cout << "Id gramatical error\n"; }
 
