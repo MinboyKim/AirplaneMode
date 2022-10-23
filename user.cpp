@@ -22,6 +22,7 @@ using namespace std;
 namespace fls = std::filesystem;
 
 vector<string> get_files_indirectory(const string& _path, const string& _filter) {
+	
 	string searching = _path + _filter;
 	vector<string> return_;
 	_finddata_t fd;
@@ -36,6 +37,7 @@ vector<string> get_files_indirectory(const string& _path, const string& _filter)
 	return return_;
 
 }
+
 void user_show_guide() {
 	cout << ("---------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 	cout << ("|                    command set                            |           argument            |                          description                       \n");
@@ -270,11 +272,13 @@ void user_list(vector<string> v,string userID) {
 				ru = f_info.at(3)[2] - 48; //렬
 
 				for (int h = 0; h < co*ru; h++) {
-					cout << '0 ';
-					if (h % 4 == 1) {
+					if (h != 0 && h % ru == 0) {
 						cout << endl;
 					}
+					cout << '0' << ' ';
+					
 				}
+				cout << endl;
 			}
 			else {
 				int c = -1;
