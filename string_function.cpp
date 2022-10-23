@@ -226,16 +226,19 @@ bool check_birth(string str) {
     return true;
 }
 
-bool integrity_check_name(string str)[bool space = false; for (int i = 0; i < str.size(); i++) {
-    if (str[i] == ' ') {
-        if (space) {
-            return false;
+bool integrity_check_name(string str) {
+    bool space = false;
+    for (int i = 0; i < str.size(); i++) {
+        if (str[i] == ' ') {
+            if (space) {
+                return false;
+            } else {
+                space = true;
+            }
+        } else if (str[i] >= 'A' && str[i] <= 'Z') {
         } else {
-            space = true;
+            return false;
         }
-    } else if (str[i] >= 'A' && str[i] <= 'Z') {
-    } else {
-        return false;
     }
     return true;
 }
@@ -372,17 +375,12 @@ bool user_integrity_check(string str) {
     return true;
 }
 
-void print_ID_warning() {
-    cout << "Id gramatical error\n"; }
+void print_ID_warning() { cout << "Id gramatical error\n"; }
 
-void print_name_warning() {
-    cout << "Name gramatical error\n"; }
+void print_name_warning() { cout << "Name gramatical error\n"; }
 
-void print_sex_warning() {
-    cout << "Sex gramatical error\n"; }
+void print_sex_warning() { cout << "Sex gramatical error\n"; }
 
-void print_TEL_warning() {
-    cout << "TEL gramatical error\n"; }
+void print_TEL_warning() { cout << "TEL gramatical error\n"; }
 
-void print_birth_warning() {
-    cout << "birth gramatical error\n"; }
+void print_birth_warning() { cout << "birth gramatical error\n"; }
