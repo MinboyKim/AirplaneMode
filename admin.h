@@ -1,9 +1,12 @@
+#ifndef ADMIN_H
+#define ADMIN_H
+
 #include "integrity_check.h"
-#include <iostream>
-#include <windows.h>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
+#include <windows.h>
 
 using namespace std;
 
@@ -28,3 +31,5 @@ void admin_help(vector<string> v);
 void admin_show_user(string s);
 void admin_show_guide();
 /******************yeonggyo***************/
+
+#endif

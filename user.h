@@ -1,3 +1,6 @@
+#ifndef USER_H
+#define USER_H
+
 #include "string_function.h"
 #include <filesystem>
 #include <fstream>
@@ -37,3 +40,5 @@ void user_help_check(vector<string> v, string user_ID);
 void user_reservation_check(vector<string> v, string user_ID);
 void user_error();
 void user_quit_check(vector<string> v, string userID);
+
+#endif
