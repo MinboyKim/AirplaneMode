@@ -324,7 +324,13 @@ void user_list(vector<string> v,string userID) {
 			}
 		}
 	}
+
+	else {
+	system("cls");
+	cout << "Syntax Error" << endl;
 	user_prompt(userID);
+	return;
+			}
 }
 
 
