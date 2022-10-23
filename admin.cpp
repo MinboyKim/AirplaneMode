@@ -54,23 +54,30 @@ int choice() {
 void admin_check(vector<string> v) {
 	
 		string cmd = v[0];
-		if (cmd == "add" || cmd == "d" || cmd == "ad") admin_check_add(v);
-		else if (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c") admin_cancel(v[1]);
+		if (cmd == "add" || cmd == "d" || cmd == "ad") {
+			if (admin_flight_is_exist(v)== 1) {
+				if (admin_check_add(v) == 1) {
+					admin_add(v);
+				}
+			}
+		}
+		else if (v.size() == 2 && (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c")) admin_cancel(v[1]);
 		else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);
-		else if (cmd == "list" || cmd == "li" || cmd == "l") admin_show_airplane();
-		else if (cmd == "quit" || cmd == "qu" || cmd == "q") admin_quit();
+		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") admin_show_airplane();
+		else if (cmd == "quit" || cmd == "qui" || cmd == "qu" || cmd == "q") admin_quit();
+		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") admin_help(v);
+		else if (cmd == "user" || cmd == "use" || cmd == "us" || cmd == "u") admin_show_user(v[1]);
 		else error();
 
 		admin_prompt();
 	return;
-
 }
 
 int admin_check_add(vector<string> v) {
 	/*for (auto i : v) {
 		cout << i << " ";
 	}*/
-	if (v.size() <= 5) {
+	if (v.size() < 6) {
 		error(); return 0;
 	}
 	string planename = v[1];
@@ -78,6 +85,7 @@ int admin_check_add(vector<string> v) {
 	string time = v[3];
 	string price = v[4];
 	string seats = v[5];
+
 
 	for (int i = 0; i < 3; i++) {
 		planename[i]=admin_check_argv(planename[i]);
@@ -91,7 +99,8 @@ int admin_check_add(vector<string> v) {
 		}
 	}
 	for (int j = 0; j < 3; j++) {
-		if (departture_destination[j] = admin_check_argv(departture_destination[j]) != '!') {
+		if ( admin_check_argv(departture_destination[j]) != '!') {
+			departture_destination[j] = admin_check_argv(departture_destination[j]);
 		}
 		else { error(); return 0;
 		}
@@ -100,8 +109,9 @@ int admin_check_add(vector<string> v) {
 	}
 	else { error(); return 0;
 	}
-	for (int j = 4; j < 6; j++) {
-		if (departture_destination[j] = admin_check_argv(departture_destination[j]) != '!') {
+	for (int j = 4; j < 7; j++) {
+		if (admin_check_argv(departture_destination[j]) != '!') {
+			departture_destination[j] = admin_check_argv(departture_destination[j]);
 		}
 		else { error(); return 0;
 		}
@@ -169,7 +179,7 @@ int admin_check_add(vector<string> v) {
 	}
 	v[4] = newprice;
 	if (check_integer(seats[0]) == -1 || (seats[1] != ',' && seats[1] != '*' && seats[1] != '-') || check_integer(seats[2]) == -1) { error(); return 0; }
-	return admin_add(v);
+	return 1;
 	
 }
 
@@ -219,7 +229,7 @@ void admin_edit(vector<string> v){
 		if (exists(paths)) {
 			if (admin_check_add(v) == 1) {
 				remove(paths);
-				admin_check_add(v);
+				admin_add(v);
 			}
 			admin_prompt();
 		}
@@ -228,8 +238,6 @@ void admin_edit(vector<string> v){
 			admin_prompt();
 		}
 
-		
-			
 		itr++;
 	}
 }
@@ -253,11 +261,140 @@ char admin_check_argv(char c) {
 		c -= 32;
 	}
 	else {  return '!'; }
-
 	return c;
 
 }
 
-void admin_quit() {
-	return;
+int admin_flight_is_exist(vector<string> v) {
+	fls::directory_iterator itr(fls::current_path() / "data" / "airplane");
+	while (itr != fls::end(itr)) {
+		const fls::directory_entry& entry = *itr;
+		std::filesystem::path paths = "./data/airplane/" + v[1] + ".txt";
+		if (exists(paths)) {
+			error();
+			return 0;
+		}
+		itr++;
+	}
+	return 1;
 }
+
+void admin_quit() {
+	exit(0);
+}
+
+void admin_show_user(string s)
+{
+	
+}
+
+void admin_show_guide()
+{
+	cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+	cout << ("|         command set       |                argument                  |                          description                       \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|         help, he,h        |           none or 1 command              |            print all commands or detail of argument        \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|         quit, qu,q        |                  none                    |                          quit program                      \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|         test, te, t       |                  none                    |                        integrity check                     \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|         list, li, l       |           none or flight name            |                print flight imformation list or            \n");
+	cout << ("|                           |                                          |                   specific flight information              \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|                           |          flight name, departure,         |                                                            \n");
+	cout << ("|         add, ad, a        |       destination, departure time,       |                            add flght                       \n");
+	cout << ("|                           |  arrival time, price, number of seats    |                                                            \n"); 
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|      cancel, canc, c      |               flight name                |                          delete flight                     \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|                           |          flight name, departure,         |                                                            \n");
+	cout << ("|        edit, ed, e        |       destination, departure time,       |                        add user's amount                   \n");
+	cout << ("|                           |  arrival time, price, number of seats    |                                                            \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|                           |                                          |                                                            \n");
+	cout << ("|        user, usr, u       |               flight name                |                  print user list of the flight             \n");
+	cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+}
+
+void admin_help(vector<string> v)
+{
+	if (v.size() == 1) {			 // help만 입력
+		system("cls");
+		admin_show_guide();
+		return;
+	}
+
+	else if (v.size() == 2) {		// help와 인자 입력
+		string h_command = v[1];
+		if (h_command == "help" or h_command == "hel" or h_command == "he" or h_command == "h") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|         help, he,h        |           none or 1 command              |            print all commands or detail of argument        \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+		}
+		else if (h_command == "quit" or h_command == "qu" or h_command == "q") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|         quit, qu,q        |                  none                    |                          quit program                      \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+		}
+		else if (h_command == "test" or h_command == "te" or h_command == "t") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|         test, te, t       |                  none                    |                        integrity check                     \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+		}
+		else if (h_command == "list" or h_command == "li" or h_command == "l") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|         list, li, l       |           none or flight name            |                print flight imformation list or            \n");
+			cout << ("|                           |                                          |                   specific flight information              \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+
+		}
+		else if (h_command == "add" or h_command == "ad" or h_command == "a") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|                           |          flight name, departure,         |                                                            \n");
+			cout << ("|         add, ad, a        |       destination, departure time,       |                            add flght                       \n");
+			cout << ("|                           |  arrival time, price, number of seats    |                                                            \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+
+		}
+		else if (h_command == "cancel" or h_command == "canc" or h_command == "c") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|      cancel, canc, c      |               flight name                |                          delete flight                     \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+
+		}
+		else if (h_command == "edit" or h_command == "ed" or h_command == "e") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|                           |          flight name, departure,         |                                                            \n");
+			cout << ("|        edit, ed, e        |       destination, departure time,       |                        add user's amount                   \n");
+			cout << ("|                           |  arrival time, price, number of seats    |                                                            \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+		}
+		else if (h_command == "user" or h_command == "usr" or h_command == "u") {
+			system("cls");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+			cout << ("|        user, usr, u       |               flight name                |                  print user list of the flight             \n");
+			cout << ("------------------------------------------------------------------------------------------------------------------------------------\n");
+		}
+		else {
+			system("cls");
+			cout << "There is no command \"" << h_command << "\"\n.";
+			admin_show_guide();
+			return;
+		}
+	}
+	else {
+		system("cls");
+		cout << "There are 2 or more arguments.\n";
+		admin_show_guide();
+		return;
+	}
+}
+

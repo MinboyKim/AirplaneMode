@@ -20,5 +20,11 @@ void error();
 int check_integer(char a);
 char admin_check_argv(char c);
 void admin_quit();
+int admin_flight_is_exist(vector<string> v);
 /*******************daehoon***************/
 
+/******************yeonggyo***************/
+void admin_help(vector<string> v);
+void admin_show_user(string s);
+void admin_show_guide();
+/******************yeonggyo***************/

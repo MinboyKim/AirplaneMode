@@ -13,24 +13,6 @@
 #include<typeinfo>
 using namespace std;
 
-
-
-vector<string> get_files_indirectory(const string& _path, const string& _filter) {
-	string searching = _path + _filter;
-	vector<string> return_;
-	_finddata_t fd;
-	intptr_t handle = _findfirst(searching.c_str(), &fd);
-	if (handle == -1) return return_;
-	int result = 0;
-	do {
-		return_.push_back(fd.name);
-		result = _findnext(handle, &fd);
-	} while (result != -1);
-	_findclose(handle);
-	return return_;
-
-}
-
 void user_show_guide() {
 	cout << ("-------------------------------------------------------------------------------------------------------------------------\n");
 	cout << ("|         command set       |           argument            |                          description                       \n");
@@ -121,8 +103,6 @@ void user_help(vector<string> v) {
 void user_quit()
 {
 }
-
-
 void user_list(vector<string> v) {
 	
 			// 인자가 없는 경우.
@@ -288,6 +268,9 @@ void user_list(vector<string> v) {
 		}
 	}
 }
+
+
+
 
 void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight name v[1] - seat_information v[2]
 {
@@ -484,6 +467,40 @@ void user_deposit(string iMoney, string userID)
 
 void user_information(string userID)
 {
+	char dir[256];
+	_getcwd(dir, 256);
+	string server_dir(dir);
+	server_dir += "\\data\\Userlist.txt";
+
+	FILE* p_file = NULL;
+	vector<string> txtAll;
+	char buffer[128];
+	if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")) {
+		while (fgets(buffer, 128, p_file) != NULL) {
+			txtAll.push_back(buffer);
+		}
+		fclose(p_file);
+	}
+
+	int index = 0;
+	string tempString;
+	vector<string> tempVector;
+	for (auto i : txtAll) {
+		index++;
+		if (i.find(userID) != string::npos) {
+			istringstream ss(i);
+			string stringBuffer;
+			while (getline(ss, stringBuffer, '^')) {
+				tempVector.push_back(stringBuffer);
+			}
+			break;
+		}
+	}
+	tempVector[7] = "";
+	for (auto i : tempVector) {
+		if(i != "")cout << i << " ";
+	}
+	cout << endl;
 }
 
 
@@ -496,9 +513,4 @@ void user_check(vector<string> v, string userID) {
 		else if (cmd == "reservation" || cmd == "reserve" || cmd == "reserv" || cmd == "reser" || cmd == "rese" || cmd == "res" || cmd == "re" || cmd == "r")user_reservation(v,userID);
 		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") user_list(v);
 		else return;
-}
-
-
-int main(void) {
-	user_prompt("aiekwdz");
 }
