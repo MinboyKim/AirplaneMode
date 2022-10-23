@@ -24,13 +24,15 @@ bool make_new_user(vector<string> new_user_data, string user_ID) {
         fls::create_directory(p);
     server_dir += "./data/Userlist.txt";
 
-    bool enter = true;
+    bool enter = false;
     ifstream user_data_r;
     user_data_r.open(server_dir);
     if (user_data_r.is_open()) {
         string first_line;
         getline(user_data_r, first_line);
-        if (first_line == "") {
+        if (first_line != "") {
+            enter = true;
+        } else {
             enter = false;
         }
         user_data_r.close();

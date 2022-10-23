@@ -15,6 +15,7 @@ using namespace std;
 vector<string> split_space();
 vector<string> split_space(string str);
 vector<string> split_user_data(string str);
+vector<string> split_backslash(string str);
 string getline_trim();
 bool check_ID(string str);
 bool check_name(string str);
@@ -25,7 +26,7 @@ bool integrity_check_name(string str);
 bool is_userID_in_data(string str);
 bool is_male(string str);
 bool is_number(string str);
-bool check_airplane_name(string str); //앞 3글자 영문대문자 , 뒤 숫자3개
+bool check_airplane_name(string str);
 bool check_place(string str);
 bool check_time(string str);
 bool check_deposit(string str);
