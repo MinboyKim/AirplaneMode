@@ -60,7 +60,7 @@
 //
 //void available_check()
 //{
-//	//Userlist is already checked so don't need to check it again
+//	Userlist is already checked so don't need to check it again
 //	cout << "Start available check" << endl;
 //	string path_airplane = ".\\data\\airplane";
 //	vector<string> files = get_files_indirectory(path_airplane, "*");
