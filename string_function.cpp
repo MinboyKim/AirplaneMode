@@ -447,12 +447,12 @@ string make_birth_data(string str) {
     return mod_str;
 }
 
-void print_ID_warning() { cout << "Id gramatical error\n"; }
+void print_ID_warning() { cout << "ERROR not correct input.(You can input between 4 or 16 english characters or numbers allowed)\n"; }
 
-void print_name_warning() { cout << "Name gramatical error\n"; }
+void print_name_warning() { cout << "ERROR not correct input. (You can input between 3 or 30 english characters. And only 1 space allowed.)\n"; }
 
-void print_sex_warning() { cout << "Sex gramatical error\n"; }
+void print_sex_warning() { cout << "ERROR not correct input. You should input M,MALE,MAN or F,FEMALE,WOMAN\n"; }
 
-void print_TEL_warning() { cout << "TEL gramatical error\n"; }
+void print_TEL_warning() { cout << "ERROR not correct input. You should input 8 numbers or 11 numbers start with 010\n"; }
 
-void print_birth_warning() { cout << "birth gramatical error\n"; }
+void print_birth_warning() { cout << "ERROR not correct input. (You can input between 6 or 8 characters. And you can use ¡®/¡¯ or  ¡®.¡¯ to divide date. Ex 1998.06.11, 1998/06/11)\n"; }
