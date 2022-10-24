@@ -193,11 +193,11 @@ void user_list(vector<string> v,string userID) {
 							continue;
 						}
 						if (k == 2) {
-							for (int j = 0; j < 11; j++) {
+							for (int j = 0; j < 12; j++) {
 								cout << f_info.at(k)[j];
 							}
 							cout << " ~ ";
-							for (int j = 11; j < 24; j++) {
+							for (int j = 12; j < 24; j++) {
 								cout << f_info.at(k)[j];
 							}
 
@@ -206,7 +206,7 @@ void user_list(vector<string> v,string userID) {
 						}
 
 						if (k == 3) {
-							cout << f_info.at(k)[0] << "," << f_info.at(k)[2]<<" ";
+							cout << f_info.at(k)<<" ";
 							continue;
 						}
 						cout << f_info.at(k); //5번-이름 6번-좌석정보 7번-이름 8번-좌석정보 f_info --> flight 마다 저장된 데이터 리스트.
@@ -390,7 +390,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	int indexf = -1;
 	vector<string> flight_vector;
 	string path;
-	path = "C:\\flights\\";
+	path = "\\data\\airplane";
 	path =server_dir;
 	flight_vector = get_files_indirectory(server_dir, "*.*"); // flight_vector 에 폴더에있는 파일 이름 명저장 ex KOR111.txt
 
