@@ -390,7 +390,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 	int indexf = -1;
 	vector<string> flight_vector;
 	string path;
-	path = "C:\\flights\\";
+	path = "\\data\\airplane";
 	path =server_dir;
 	flight_vector = get_files_indirectory(server_dir, "*.*"); // flight_vector 에 폴더에있는 파일 이름 명저장 ex KOR111.txt
 
