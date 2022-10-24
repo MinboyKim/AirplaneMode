@@ -1,6 +1,6 @@
 #ifndef USER_H
 #define USER_H
-#define _HAS_STD_BYTE 0
+//#define _HAS_STD_BYTE 0
 #include "string_function.h"
 #include <filesystem>
 #include <fstream>

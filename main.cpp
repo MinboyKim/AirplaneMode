@@ -1,4 +1,3 @@
-
 #include "integrity_check.h"
 #include "log_in.h"
 #include <iostream>
