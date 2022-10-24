@@ -242,7 +242,6 @@ vector<string> admin_check_add(vector<string> v) {
 	}
 	*/
 	v[2] = departture_destination;
-
 	if (time.length() == 21) {
 		for (int i = 0; i < 10; i++) {
 			if (check_integer(time[i]) != 0) {
@@ -282,7 +281,6 @@ vector<string> admin_check_add(vector<string> v) {
 		}
 		time.resize(23);
 
-
 	}
 	else if (time.length() == 23 && (time[12] == '-' || time[12] == ',' || time[12] == '~')) {
 		for (int i = 0; i < 10; i++) {
@@ -318,7 +316,6 @@ vector<string> admin_check_add(vector<string> v) {
 
 		}
 		time.resize(24);
-
 	}
 	else {
 		error(); return errorvertor;
@@ -485,7 +482,6 @@ void admin_edit(vector<string> v) {
 			else { error(); return; }
 		}
 		v[4] = newprice;
-
 		if (v[5][0] < '0' || v[5][0] > '9') {
 			error();
 			return;
@@ -854,13 +850,13 @@ int admin_check_edit(vector<string> v)
 
 void admin_help(vector<string> v)
 {
-	if (v.size() == 1) {			 // help¸¸ ÀÔ·Â
+	if (v.size() == 1) {			 // helpÂ¸Â¸ Ã€Ã”Â·Ã‚
 		system("cls");
 		admin_show_guide();
 		return;
 	}
 
-	else if (v.size() == 2) {		// help¿Í ÀÎÀÚ ÀÔ·Â
+	else if (v.size() == 2) {		// helpÂ¿Ã Ã€ÃÃ€Ãš Ã€Ã”Â·Ã‚
 		string h_command = v[1];
 		if (h_command == "help" or h_command == "hel" or h_command == "he" or h_command == "h") {
 			h_help();
