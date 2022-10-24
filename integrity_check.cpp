@@ -24,6 +24,7 @@ void integrity_check() {
     userList_check();
     available_check();
     rule_check();
+    cout << "Integrity check completed!\n" << endl;
 }
 
 void path_check() {
@@ -165,7 +166,6 @@ void rule_check() {
             }
             ifs2.close();
         }
-        cout << "Integrity check completed!\n" << endl;
     }
 }
 
