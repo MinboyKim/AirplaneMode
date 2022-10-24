@@ -29,8 +29,9 @@ void admin_prompt() {
 }
 
 void admin_show_airplane(vector<string> v) {
-	if (v.size() > 3) {
-		error();
+	if (v.size() >= 3) {
+		h_list();
+		admin_prompt();
 		return;
 	}
 
@@ -121,6 +122,7 @@ void admin_show_airplane(vector<string> v) {
 			}
 		}
 	}
+	admin_prompt();
 	return;
 }
 
@@ -152,7 +154,11 @@ void admin_check(vector<string> v) {
 			else
 				admin_show_user(v[1]);
 		}
-		else if (cmd == "test") integrity_check();
+		else if (cmd == "test" || cmd == "tes" || cmd == "te" || cmd == "t") {
+			if (cmd.size() == 1)
+				integrity_check();
+			else error;
+		}
 		else error();
 
 		admin_prompt();
@@ -164,7 +170,7 @@ vector<string> admin_check_add(vector<string> v) {
 		cout << i << " ";
 	}*/
 	vector<string> errorvertor;
-	if (v.size() < 6) {
+	if (v.size() < 6 && v.size()>6) {
 		error(); h_add(); return errorvertor;
 	}
 	string planename = v[1];
@@ -220,7 +226,14 @@ vector<string> admin_check_add(vector<string> v) {
 			departture_destination[j] = NULL;
 		}
 	}
+	departture_destination.resize(6);
+	/*string d = "abcdef";
+	for (int i = 0; i < 6; i++) {
+		d[i] = departture_destination[i];
+	}
+	*/
 	v[2] = departture_destination;
+	
 	if (time.length() == 21) {
 		for (int i = 0; i < 10; i++) {
 			if (check_integer(time[i]) != 0) { error();
@@ -237,6 +250,8 @@ vector<string> admin_check_add(vector<string> v) {
 			}
 			time[i - 1] = time[i];
 		}
+		time.resize(21);
+
 	}
 	else if (time.length() == 23 && (time[10] == '-' || time[10] == ',' || time[10] == '~')) {
 		for (int i = 0; i < 10; i++) {
@@ -250,6 +265,7 @@ vector<string> admin_check_add(vector<string> v) {
 			}
 			time[i - 1] = time[i];
 		}
+		time.resize(23);
 		
 
 	}
@@ -265,7 +281,7 @@ vector<string> admin_check_add(vector<string> v) {
 			}
 			time[i - 1] = time[i];
 		}
-
+		time.resize(23);
 	}
 	else if (time.length() == 25) {
 		for (int i = 0; i < 12; i++) {
@@ -283,7 +299,8 @@ vector<string> admin_check_add(vector<string> v) {
 			time[i - 1] = time[i];
 			
 		}
-		time[24] = NULL;
+		time.resize(25);
+		
 	}
 	else { error(); return errorvertor; 
 	}
@@ -324,10 +341,10 @@ int admin_add(vector<string> v){
 
 	ofstream fs(fname, std::ios_base::out | std::ios_base::app);
 	if (fs.is_open()) {
+		fs << "^";
 		for (vector<string>::iterator iter = v.begin()+1; iter != v.end(); iter++) {
 			fs << *iter<<"^";
 		}
-		fs << endl;
 		fs.close();
 	}
 	cout << "Add success\n";
@@ -368,22 +385,121 @@ void admin_cancel(string s) {
 	admin_prompt();
 }
 
-void admin_edit(vector<string> v){
-	if (admin_check_edit(v) != 1)
+void admin_edit(vector<string> v) {
+	if (v.size() != 6) {
+		error();
+		h_edit();
 		admin_prompt();
-	//system("cls");
-	fls::directory_iterator itr(fls::current_path() / "data" / "airplane");
-	while (itr != fls::end(itr)) {
-		const fls::directory_entry& entry = *itr;
-		std::filesystem::path paths = "./data/airplane/" + v[1] + ".txt";
-		if (exists(paths)) {
-			remove(paths);
-			admin_add(v);
-			admin_prompt();
-		}
-		itr++;
 	}
-	cout << "There is no flight \"" << v[1] << "\"" << endl;
+	string s = v[1];
+
+	if (s.size() != 6) {
+		error();
+		return;
+	}
+	else {
+		for (int i = 0; i < 3; i++) {
+			if (!(s[i] >= 'A' && s[i] <= 'Z')) {
+				error();
+				return;
+			}
+			if (!(s[i + 3] >= '0' && s[i + 3] <= '9')) {
+				error();
+				return;
+			}
+		}
+	}
+
+	string dir = "./data/airplane";
+	vector<string> paths;
+	if (_access(dir.c_str(), 0) != -1) {
+		for (auto& p : std::filesystem::directory_iterator(dir)) {
+			paths.push_back(p.path().string());
+		}
+	}
+	int is_find = -1;
+	for (int l = 0; l < paths.size(); l++) {
+		string temp_str = split_backslash(paths[l]).back().substr(0, 6);
+		if (temp_str == s) {
+			is_find = l;
+			break;
+		}
+	}
+	if (is_find == -1) {
+		std::cout << "There is no flight \"" << v[1] << "\"" << endl;
+	}
+	else {
+		for (int i = 0; i < 3; i++) {
+			if (!(v[2][i] >= 'A' && v[2][i] <= 'Z')) {
+				error();
+				return;
+			}
+			if (!(v[2][i + 4] >= 'A' && v[2][i + 4] <= 'Z')) {
+				error();
+				return;
+			}
+		}
+		if (v[2][3] != '/' && v[2][3] != ',' && v[2][3] != '-') {
+			error();
+			return;
+		}
+		string mod_str = v[3];
+		if (mod_str[12] != '~' && mod_str[12] != ',' && mod_str[12] != '-') {
+			error();
+			return;
+		}
+		mod_str = mod_str.substr(0, 12) + mod_str.substr(13, 12);
+		if (!(check_time(mod_str))) {
+			error();
+			return;
+		}
+
+		string newprice = "";
+		for (char& c : v[4]) {
+			if (c == ',') {
+			}
+			else if (check_integer(c) == 0) {
+				newprice += c;
+			}
+			else { error(); return; }
+		}
+		v[4] = newprice;
+
+		if (v[5][0] < '0' || v[5][0] > '1') {
+			error();
+			return;
+		}
+		if (v[5][1] != '*' && v[5][1] != '-' && v[5][1] != ',') {
+			error();
+			return;
+		}
+		if (v[5][2] < '0' || v[5][2] > '1') {
+			error();
+			return;
+		}
+
+		string plane_path = "./data/airplane/" + s + ".txt"; \
+			const char* path = plane_path.c_str();
+		int r = remove(path);
+
+		string line;
+		string fname = "./data/airplane/" + v[1] + ".txt";
+
+		fls::path p("./data");
+		if (!fls::exists(p))
+			fls::create_directory(p);
+
+		fls::path p2("./data/airplane");
+		if (!fls::exists(p2))
+			fls::create_directory(p2);
+		ofstream fs(fname, std::ios_base::out | std::ios_base::app);
+		if (fs.is_open()) {
+			fs << "^";
+			fs << v[1] << '^' << v[2].substr(0, 3) + v[2].substr(4, 3) << '^' << mod_str << '^' << v[4] << '^' << v[5][0] << '*' << v[5][2] << '^';
+			fs.close();
+		}
+		cout << "Update success\n";
+	}
 	admin_prompt();
 }
 
@@ -496,6 +612,7 @@ void admin_show_user(string s)
 			ifs2.close();
 		}
 	}
+	admin_prompt();
 	return;
 }
 
@@ -645,7 +762,7 @@ int admin_check_edit(vector<string> v)
 	}
 	for (int j = 4; j < 7; j++) {
 		if (admin_check_argv(departture_destination[j]) != '!') {
-			departture_destination[j] = admin_check_argv(departture_destination[j]);
+			departture_destination[j-1] = admin_check_argv(departture_destination[j]);
 		}
 		else {
 			error();
