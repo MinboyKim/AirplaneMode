@@ -35,10 +35,9 @@ void admin_show_airplane(vector<string> v) {
 		string planename = v[1];
 
 		for (int i = 0; i < 3; i++) {
-			if (admin_check_argv(planename[i]) == '!') {}
+			if (admin_check_argv(planename[i]) != '!') {}
 			else {
 				error();
-				h_edit();
 				admin_prompt();
 			}
 		}
@@ -47,23 +46,42 @@ void admin_show_airplane(vector<string> v) {
 			if (planename[i] < '0' && planename[i] > '9')
 			{
 				error();
-				h_edit();
 				admin_prompt();
 			}
 		}
-		string line;
-		ifstream fs3("./data/airplane/" + v[1] + ".txt");
-		if (fs3.is_open()) {
-			while (getline(fs3, line)) {
-				cout << line << endl;
+		char dir[256];
+		_getcwd(dir, 256);
+		string server_dir(dir);
+		server_dir += "\\data\\airplane\\"+v[1]+".txt";
+
+		FILE* p_file = NULL;
+		vector<string> txtAll;
+		char buffer[128];
+		if (0 == fopen_s(&p_file, server_dir.c_str(), "rt")) {
+			while (fgets(buffer, 128, p_file) != NULL) {
+				txtAll.push_back(buffer);
 			}
-			fs3.close();
-			admin_prompt();
+			fclose(p_file);
 		}
-		else {
-			cout << "There is no flight \"" << v[1] << "\"\n";
-			admin_prompt();
+
+		int index = 0;
+		vector<string> tempVector;
+		for (auto i : txtAll) {
+			index++;
+			if (i.find(v[1]) != string::npos) {
+				istringstream ss(i);
+				string stringBuffer;
+				while (getline(ss, stringBuffer, '^')) {
+					tempVector.push_back(stringBuffer);
+				}
+				break;
+			}
 		}
+		if (tempVector.size() > 7) tempVector[7] = "";
+		for (auto i : tempVector) {
+			if (i != "")cout << i << " ";
+		}
+		cout << endl;
 	}
 	else if (v.size() == 1) {
 		string line;
@@ -162,7 +180,7 @@ int admin_check_add(vector<string> v) {
 	}
 	for (int j = 4; j < 7; j++) {
 		if (admin_check_argv(departture_destination[j]) != '!') {
-			departture_destination[j] = admin_check_argv(departture_destination[j]);
+			departture_destination[j-1] = admin_check_argv(departture_destination[j]);
 		}
 		else { error();
 		h_add(); 
@@ -184,6 +202,7 @@ int admin_check_add(vector<string> v) {
 		for (int i = 11; i < 21; i++) {
 			if (check_integer(time[i]) != 0) { error(); h_add(); return 0;
 			}
+			time[i - 1] = time[i];
 		}
 	}
 	else if (time.length() == 23 && (time[10] == '-' || time[10] == ',' || time[10] == '~')) {
@@ -193,7 +212,9 @@ int admin_check_add(vector<string> v) {
 		if (time[10] != '-' && time[10] != ',' && time[10] != '~') { error(); h_add(); return 0; }
 		for (int i = 11; i < 23; i++) {
 			if (check_integer(time[i]) != 0) { error(); h_add(); return 0; }
+			time[i - 1] = time[i];
 		}
+		
 
 	}
 	else if (time.length() == 23 && (time[12] == '-' || time[12] == ',' || time[12] == '~')) {
@@ -203,6 +224,7 @@ int admin_check_add(vector<string> v) {
 		if (time[12] != '-' && time[12] != ',' && time[12] != '~') { error(); h_add(); return 0; }
 		for (int i = 13; i < 23; i++) {
 			if (check_integer(time[i]) != 0) { error(); h_add(); return 0; }
+			time[i - 1] = time[i];
 		}
 
 	}
@@ -219,6 +241,7 @@ int admin_check_add(vector<string> v) {
 			if (check_integer(time[i]) != 0) {
 				error(); h_add(); return 0;
 			}
+			time[i - 1] = time[i];
 		}
 
 	}
@@ -256,7 +279,7 @@ int admin_add(vector<string> v){
 	ofstream fs(fname, std::ios_base::out | std::ios_base::app);
 	if (fs.is_open()) {
 		for (vector<string>::iterator iter = v.begin()+1; iter != v.end(); iter++) {
-			fs << *iter<<" ";
+			fs << *iter<<"^";
 		}
 		fs << endl;
 		fs.close();
