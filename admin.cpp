@@ -153,8 +153,8 @@ void admin_check(vector<string> v) {
 				admin_show_user(v[1]);
 		}
 		else if (cmd == "test") integrity_check();
-		else error();
 
+		else error();
 		admin_prompt();
 		return;
 }
