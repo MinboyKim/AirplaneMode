@@ -32,6 +32,9 @@ void log_in_prompt() {
                     break;
                 }
             }
+            else {
+                print_ID_warning();
+            }
         }
     }
 }
