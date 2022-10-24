@@ -19,6 +19,9 @@ vector<string> user_TEL_set;
 vector<string> reservaton_user_ID;
 
 void integrity_check() {
+    user_ID_set.clear();
+    user_TEL_set.clear();
+    reservaton_user_ID.clear();
     cout << "Start integrity check\n" << endl;
     path_check();
     userList_check();
