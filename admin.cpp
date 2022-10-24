@@ -25,7 +25,7 @@ void admin_prompt() {
 	vector<string> v(1000);
 	v = split_space(s);
 	admin_check(v);
-	
+
 }
 
 void admin_show_airplane(vector<string> v) {
@@ -79,6 +79,12 @@ void admin_show_airplane(vector<string> v) {
 			ifstream ifs2(paths[is_find]);
 			if (ifs2.is_open()) {
 				getline(ifs2, airplaneData);
+				vector<string> print_data = split_user_data(airplaneData);
+				cout << print_data[0] << ' ';
+				cout << print_data[1].substr(0, 3) << '/' << print_data[1].substr(3, 3) << ' ';
+				cout << print_data[2].substr(0, 12) << '~' << print_data[2].substr(12, 12) << ' ';
+				cout << print_data[3] << ' ';
+				cout << print_data[4][0] << ',' << print_data[4][2] << endl;
 				while (!ifs2.eof()) {
 					getline(ifs2, airplaneData);
 					string res_user = split_user_data(airplaneData)[0];
@@ -133,36 +139,36 @@ int choice() {
 }
 
 void admin_check(vector<string> v) {
-	
-		string cmd = v[0];
-		if (cmd == "add" || cmd == "a" || cmd == "ad") {
-			if (admin_flight_is_exist(v) == 1) {
-				if ((admin_check_add(v).size()==6)) {
-					v = admin_check_add(v);
-					admin_add(v);
-				}
+
+	string cmd = v[0];
+	if (cmd == "add" || cmd == "a" || cmd == "ad") {
+		if (admin_flight_is_exist(v) == 1) {
+			if ((admin_check_add(v).size() == 6)) {
+				v = admin_check_add(v);
+				admin_add(v);
 			}
 		}
-		else if (v.size() == 2 && (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c")) admin_cancel(v[1]);
-		else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);
-		else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") admin_show_airplane(v);
-		else if (cmd == "quit" || cmd == "qui" || cmd == "qu" || cmd == "q") admin_quit();
-		else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") admin_help(v);
-		else if (cmd == "user" || cmd == "use" || cmd == "us" || cmd == "u") {
-			if (cmd.size() != 2)
-				error();
-			else
-				admin_show_user(v[1]);
-		}
-		else if (cmd == "test" || cmd == "tes" || cmd == "te" || cmd == "t") {
-			if (cmd.size() == 1)
-				integrity_check();
-			else error;
-		}
+	}
+	else if (v.size() == 2 && (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c")) admin_cancel(v[1]);
+	else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);
+	else if (cmd == "list" || cmd == "lis" || cmd == "li" || cmd == "l") admin_show_airplane(v);
+	else if (cmd == "quit" || cmd == "qui" || cmd == "qu" || cmd == "q") admin_quit();
+	else if (cmd == "help" || cmd == "hel" || cmd == "he" || cmd == "h") admin_help(v);
+	else if (cmd == "user" || cmd == "use" || cmd == "us" || cmd == "u") {
+		if (v.size() != 2)
+			error();
+		else
+			admin_show_user(v[1]);
+	}
+	else if (cmd == "test" || cmd == "tes" || cmd == "te" || cmd == "t") {
+		if (v.size() == 1)
+			integrity_check();
 		else error();
+	}
+	else error();
 
-		admin_prompt();
-		return;
+	admin_prompt();
+	return;
 }
 
 vector<string> admin_check_add(vector<string> v) {
@@ -170,7 +176,7 @@ vector<string> admin_check_add(vector<string> v) {
 		cout << i << " ";
 	}*/
 	vector<string> errorvertor;
-	if (v.size() < 6 && v.size()>6) {
+	if (v.size() < 6 && v.size() > 6) {
 		error(); h_add(); return errorvertor;
 	}
 	string planename = v[1];
@@ -178,7 +184,7 @@ vector<string> admin_check_add(vector<string> v) {
 	string time = v[3];
 	string price = v[4];
 	string seats = v[5];
-	
+
 
 	for (int i = 0; i < 3; i++) {
 		if (admin_check_argv(planename[i]) != '!') {}
@@ -190,7 +196,7 @@ vector<string> admin_check_add(vector<string> v) {
 		planename[i] = admin_check_argv(planename[i]);
 	}
 	v[1] = planename;
-	
+
 	for (int i = 3; i < 6; i++) {
 		if (planename[i] < '0' && planename[i] > '9')
 		{
@@ -200,27 +206,30 @@ vector<string> admin_check_add(vector<string> v) {
 		}
 	}
 	for (int j = 0; j < 3; j++) {
-		if ( admin_check_argv(departture_destination[j]) != '!') {
+		if (admin_check_argv(departture_destination[j]) != '!') {
 			departture_destination[j] = admin_check_argv(departture_destination[j]);
 		}
-		else { error();
-		h_add(); 
-		return errorvertor;
+		else {
+			error();
+			h_add();
+			return errorvertor;
 		}
 	}
 	if (departture_destination[3] == '/' || departture_destination[3] == ',' || departture_destination[3] == '-') {
 	}
-	else { error();
-	h_add(); 
-	return errorvertor;
+	else {
+		error();
+		h_add();
+		return errorvertor;
 	}
 	for (int j = 4; j < 7; j++) {
 		if (admin_check_argv(departture_destination[j]) != '!') {
-			departture_destination[j-1] = admin_check_argv(departture_destination[j]);
+			departture_destination[j - 1] = admin_check_argv(departture_destination[j]);
 		}
-		else { error();
-		h_add(); 
-		return errorvertor;
+		else {
+			error();
+			h_add();
+			return errorvertor;
 		}
 		if (j == 6) {
 			departture_destination[j] = NULL;
@@ -233,20 +242,22 @@ vector<string> admin_check_add(vector<string> v) {
 	}
 	*/
 	v[2] = departture_destination;
-	
 	if (time.length() == 21) {
 		for (int i = 0; i < 10; i++) {
-			if (check_integer(time[i]) != 0) { error();
-			h_add(); 
-			return errorvertor;
+			if (check_integer(time[i]) != 0) {
+				error();
+				h_add();
+				return errorvertor;
 			}
 		}
-		if (time[10] != '-' && time[10] != ',' && time[10] != '~') { error();
-		h_add(); 
-		return errorvertor;
+		if (time[10] != '-' && time[10] != ',' && time[10] != '~') {
+			error();
+			h_add();
+			return errorvertor;
 		}
 		for (int i = 11; i < 21; i++) {
-			if (check_integer(time[i]) != 0) { error(); h_add(); return errorvertor;
+			if (check_integer(time[i]) != 0) {
+				error(); h_add(); return errorvertor;
 			}
 			time[i - 1] = time[i];
 		}
@@ -255,29 +266,34 @@ vector<string> admin_check_add(vector<string> v) {
 	}
 	else if (time.length() == 23 && (time[10] == '-' || time[10] == ',' || time[10] == '~')) {
 		for (int i = 0; i < 10; i++) {
-			if (check_integer(time[i]) != 0) { error(); h_add(); return errorvertor;
+			if (check_integer(time[i]) != 0) {
+				error(); h_add(); return errorvertor;
 			}
 		}
-		if (time[10] != '-' && time[10] != ',' && time[10] != '~') { error(); h_add(); return errorvertor;
+		if (time[10] != '-' && time[10] != ',' && time[10] != '~') {
+			error(); h_add(); return errorvertor;
 		}
 		for (int i = 11; i < 23; i++) {
-			if (check_integer(time[i]) != 0) { error(); h_add(); return errorvertor;
+			if (check_integer(time[i]) != 0) {
+				error(); h_add(); return errorvertor;
 			}
 			time[i - 1] = time[i];
 		}
 		time.resize(23);
-		
 
 	}
 	else if (time.length() == 23 && (time[12] == '-' || time[12] == ',' || time[12] == '~')) {
 		for (int i = 0; i < 10; i++) {
-			if (check_integer(time[i]) != 0) { error(); h_add(); return errorvertor;
+			if (check_integer(time[i]) != 0) {
+				error(); h_add(); return errorvertor;
 			}
 		}
-		if (time[12] != '-' && time[12] != ',' && time[12] != '~') { error(); h_add(); return errorvertor;
+		if (time[12] != '-' && time[12] != ',' && time[12] != '~') {
+			error(); h_add(); return errorvertor;
 		}
 		for (int i = 13; i < 23; i++) {
-			if (check_integer(time[i]) != 0) { error(); h_add(); return errorvertor;
+			if (check_integer(time[i]) != 0) {
+				error(); h_add(); return errorvertor;
 			}
 			time[i - 1] = time[i];
 		}
@@ -297,39 +313,41 @@ vector<string> admin_check_add(vector<string> v) {
 				error(); h_add(); return errorvertor;
 			}
 			time[i - 1] = time[i];
-			
+
 		}
-		time.resize(25);
-		
+		time.resize(24);
 	}
-	else { error(); return errorvertor; 
+	else {
+		error(); return errorvertor;
 	}
 	v[3] = time;
-	
 
-	string newprice="";
+
+	string newprice = "";
 	for (char& c : price) {
 		if (c == ',') {
 		}
 		else if (check_integer(c) == 0) {
 			newprice += c;
 		}
-		else  {error(); return errorvertor;
+		else {
+			error(); return errorvertor;
 		}
 	}
 	v[4] = newprice;
-	if (check_integer(seats[0]) == -1 || (seats[1] != ',' && seats[1] != '*' && seats[1] != '-') || check_integer(seats[2]) == -1) { error(); return errorvertor;
+	if (check_integer(seats[0]) == -1 || (seats[1] != ',' && seats[1] != '*' && seats[1] != '-') || check_integer(seats[2]) == -1) {
+		error(); return errorvertor;
 	}
 	seats[1] = '*';
 	v[5] = seats;
 	return v;
-	
+
 }
 
-int admin_add(vector<string> v){
+int admin_add(vector<string> v) {
 	string line;
-	string fname = "./data/airplane/"+v[1] + ".txt";
-	
+	string fname = "./data/airplane/" + v[1] + ".txt";
+
 	fls::path p("./data");
 	if (!fls::exists(p))
 		fls::create_directory(p);
@@ -342,8 +360,8 @@ int admin_add(vector<string> v){
 	ofstream fs(fname, std::ios_base::out | std::ios_base::app);
 	if (fs.is_open()) {
 		fs << "^";
-		for (vector<string>::iterator iter = v.begin()+1; iter != v.end(); iter++) {
-			fs << *iter<<"^";
+		for (vector<string>::iterator iter = v.begin() + 1; iter != v.end(); iter++) {
+			fs << *iter << "^";
 		}
 		fs.close();
 	}
@@ -464,8 +482,7 @@ void admin_edit(vector<string> v) {
 			else { error(); return; }
 		}
 		v[4] = newprice;
-
-		if (v[5][0] < '0' || v[5][0] > '1') {
+		if (v[5][0] < '0' || v[5][0] > '9') {
 			error();
 			return;
 		}
@@ -473,7 +490,7 @@ void admin_edit(vector<string> v) {
 			error();
 			return;
 		}
-		if (v[5][2] < '0' || v[5][2] > '1') {
+		if (v[5][2] < '0' || v[5][2] > '9') {
 			error();
 			return;
 		}
@@ -516,11 +533,11 @@ int check_integer(char a) {
 }
 
 char admin_check_argv(char c) {
-	if (c>= 'A' && c<='Z') {}
+	if (c >= 'A' && c <= 'Z') {}
 	else if (c >= 'a' && c <= 'z') {
 		c -= 32;
 	}
-	else {  return '!'; }
+	else { return '!'; }
 	return c;
 
 }
@@ -632,7 +649,7 @@ void admin_show_guide()
 	cout << ("|                           |                                          |                                                            \n");
 	cout << ("|                           |          flight name, departure,         |                                                            \n");
 	cout << ("|         add, ad, a        |       destination, departure time,       |                            add flght                       \n");
-	cout << ("|                           |  arrival time, price, number of seats    |                                                            \n"); 
+	cout << ("|                           |  arrival time, price, number of seats    |                                                            \n");
 	cout << ("|                           |                                          |                                                            \n");
 	cout << ("|      cancel, canc, c      |               flight name                |                          delete flight                     \n");
 	cout << ("|                           |                                          |                                                            \n");
@@ -762,7 +779,7 @@ int admin_check_edit(vector<string> v)
 	}
 	for (int j = 4; j < 7; j++) {
 		if (admin_check_argv(departture_destination[j]) != '!') {
-			departture_destination[j-1] = admin_check_argv(departture_destination[j]);
+			departture_destination[j - 1] = admin_check_argv(departture_destination[j]);
 		}
 		else {
 			error();
@@ -833,13 +850,13 @@ int admin_check_edit(vector<string> v)
 
 void admin_help(vector<string> v)
 {
-	if (v.size() == 1) {			 // help∏∏ ¿‘∑¬
+	if (v.size() == 1) {			 // help¬∏¬∏ √Ä√î¬∑√Ç
 		system("cls");
 		admin_show_guide();
 		return;
 	}
 
-	else if (v.size() == 2) {		// helpøÕ ¿Œ¿⁄ ¿‘∑¬
+	else if (v.size() == 2) {		// help¬ø√ç √Ä√é√Ä√ö √Ä√î¬∑√Ç
 		string h_command = v[1];
 		if (h_command == "help" or h_command == "hel" or h_command == "he" or h_command == "h") {
 			h_help();
@@ -885,4 +902,3 @@ void admin_help(vector<string> v)
 		return;
 	}
 }
-
