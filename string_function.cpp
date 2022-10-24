@@ -94,6 +94,8 @@ bool check_ID(string str) {
 }
 
 bool check_name(string str) {
+    if (str.size() < 3 || str.size() > 30)
+        return false;
     int space_check = 0;
     for (int i = 0; i < str.size(); i++) {
         if (str[i] == ' ') {
