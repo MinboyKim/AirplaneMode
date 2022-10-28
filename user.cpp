@@ -341,6 +341,8 @@ void user_list(vector<string> v,string userID) {
 	user_prompt(userID);
 	return;
 	}
+	user_prompt(userID);
+	return;
 }
 
 
@@ -490,14 +492,14 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 
 			if (user_datal.at(i) == userID) {
 
-				if (user_datal.at(i + 5) < f_info.at(4)) {
+				if (user_datal.at(i + 5) < f_info.at(3)) {
 					cout << "Not enought user asset for flight!" << endl;
 					user_prompt(userID);
 					return;
 				}
 				else {// 유저데이터 파일에 가격 바꿔쓰기.
 
-					int result = stoi(user_datal.at(i+5)) - stoi(f_info.at(4));
+					int result = stoi(user_datal.at(i+5)) - stoi(f_info.at(3));
 					stringstream ssint;
 					ssint << result;
 					user_datal.at(i+5) = ssint.str();
@@ -506,9 +508,11 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 					writeFile_user.open(path2, ios::out);
 					if (writeFile_user.is_open()) {
 						for (int j = 0; j < user_datal.size(); j = j + 6) {
-							writeFile_user << "^" + user_datal.at(j) + "^" + user_datal.at(j + 1) + "^" + user_datal.at(j + 2) + "^" + user_datal.at(j + 3) + "^" + user_datal.at(j + 4)+ "^" + user_datal.at(j + 5)+"^" << endl;
-							if (j == user_datal.size() - 1) {
+							if (j+5 == user_datal.size() - 1) {
 								writeFile_user << "^" + user_datal.at(j) + "^" + user_datal.at(j + 1) + "^" + user_datal.at(j + 2) + "^" + user_datal.at(j + 3) + "^" + user_datal.at(j + 4) + "^" + user_datal.at(j + 5) + "^";
+							}
+							else {
+								writeFile_user << "^" + user_datal.at(j) + "^" + user_datal.at(j + 1) + "^" + user_datal.at(j + 2) + "^" + user_datal.at(j + 3) + "^" + user_datal.at(j + 4) + "^" + user_datal.at(j + 5) + "^" << endl; ;
 							}
 						}
 					}
