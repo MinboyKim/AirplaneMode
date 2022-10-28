@@ -492,7 +492,7 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 
 			if (user_datal.at(i) == userID) {
 
-				if (user_datal.at(i + 5) < f_info.at(3)) {
+				if (stoi(user_datal.at(i + 5)) < stoi(f_info.at(3))) {
 					cout << "Not enought user asset for flight!" << endl;
 					user_prompt(userID);
 					return;
