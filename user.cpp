@@ -132,6 +132,9 @@ void user_help(vector<string> v, string userID) {
 		user_prompt(userID);
 		return;
 	}
+	user_prompt(userID);
+	return;
+
 }
 
 void user_quit()
@@ -180,7 +183,7 @@ void user_list(vector<string> v,string userID) {
 					readFile.close();
 
 
-					for (int k = 0; k < 5; k++) { //항공편명, 출발도착지,츨발도착지, 좌석, 가격
+					for (int k = 0; k < 5; k++) { //항공편명0, 출발도착지1,츨발도착지2, 가격 3 좌석 4 
 						if (k == 1) {
 							for (int j = 0; j < 3; j++) {
 								cout << f_info.at(k)[j];
@@ -212,6 +215,15 @@ void user_list(vector<string> v,string userID) {
 						cout << f_info.at(k); //5번-이름 6번-좌석정보 7번-이름 8번-좌석정보 f_info --> flight 마다 저장된 데이터 리스트.
 						cout << " ";
 					}
+					for (int j = 5; j < f_info.size(); j= j+2) {
+
+						if (f_info.at(j) == userID) { // 항공편 백터 5번부터 userID가 들어가는데 그곳에 나와 일치하는 ID존재하면 res 출력
+							cout << "res";
+						}
+					}
+
+
+
 					cout << endl;
 					f_info.clear();
 					f_info_temp.clear();
@@ -273,8 +285,8 @@ void user_list(vector<string> v,string userID) {
 				
 				int co = 0;
 				int ru = 0;
-				co = f_info.at(3)[0] - 48; //행
-				ru = f_info.at(3)[2] - 48; //렬
+				co = f_info.at(4)[0] - 48; //행
+				ru = f_info.at(4)[2] - 48; //렬
 
 				for (int h = 0; h < co*ru; h++) {
 					if (h != 0 && h % ru == 0) {
@@ -309,8 +321,8 @@ void user_list(vector<string> v,string userID) {
 				}
 				int co = 0;
 				int ru = 0;
-				co = f_info.at(3)[0] - 48; //행
-				ru = f_info.at(3)[2] - 48; //렬
+				co = f_info.at(4)[0] - 48; //행
+				ru = f_info.at(4)[2] - 48; //렬
 
 
 				for (int g = 0; g < co; g++) {
@@ -432,8 +444,8 @@ void user_reservation(vector<string> v,string userID) //v[0] 명령어 - flight 
 
 
 	
-	char seat_number_1 = f_info.at(3)[0]; //좌석 개수 몇곱하기 몇의 앞자리만 따와서
-	char seat_number_2 = f_info.at(3)[2]; //좌석 개수 몇곱하기 몇의 뒷자리만 따와서
+	char seat_number_1 = f_info.at(4)[0]; //좌석 개수 몇곱하기 몇의 앞자리만 따와서
+	char seat_number_2 = f_info.at(4)[2]; //좌석 개수 몇곱하기 몇의 뒷자리만 따와서
 	
 	
 	if (seat_number_1-48 < v.at(2)[0] - 65 || seat_number_2 - 48 < v.at(2)[1] - 48) {
