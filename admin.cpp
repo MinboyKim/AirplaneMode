@@ -84,11 +84,12 @@ void admin_show_airplane(vector<string> v) {
 				cout << print_data[1].substr(0, 3) << '/' << print_data[1].substr(3, 3) << ' ';
 				cout << print_data[2].substr(0, 12) << '~' << print_data[2].substr(12, 12) << ' ';
 				cout << print_data[3] << ' ';
-				cout << print_data[4][0] << ',' << print_data[4][2] << endl;
+				cout << print_data[4][0] << ',' << print_data[4][2];
 				while (!ifs2.eof()) {
+					cout << " res" << endl;
 					getline(ifs2, airplaneData);
 					string res_user = split_user_data(airplaneData)[0];
-					ifstream user_ifs("./data/Userdata.txt");
+					ifstream user_ifs("./data/Userlist.txt");
 					while (!user_ifs.eof()) {
 						getline(user_ifs, data_in);
 						if (res_user == split_user_data(data_in)[0]) {
@@ -123,7 +124,12 @@ void admin_show_airplane(vector<string> v) {
 				cout << print_data[1].substr(0, 3) << '/' << print_data[1].substr(3, 3) << ' ';
 				cout << print_data[2].substr(0, 12) << '~' << print_data[2].substr(12, 12) << ' ';
 				cout << print_data[3] << ' ';
-				cout << print_data[4][0] << ',' << print_data[4][2] << endl;
+				cout << print_data[4][0] << ',' << print_data[4][2];
+				while (!ifs2.eof()) {
+					cout << " res";
+					break;
+				}
+				cout << endl;
 				ifs2.close();
 			}
 		}
