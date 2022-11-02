@@ -242,85 +242,74 @@ vector<string> admin_check_add(vector<string> v) {
 	}
 	*/
 	v[2] = departture_destination;
-	if (time.length() == 21) {
-		for (int i = 0; i < 10; i++) {
-			if (check_integer(time[i]) != 0) {
-				error();
-				h_add();
-				return errorvertor;
-			}
-		}
-		if (time[10] != '-' && time[10] != ',' && time[10] != '~') {
-			error();
+
+	/**********time****************/
+	string newTime;
+	newTime.clear();
+	string division_char = "-,~";
+	if (v[3].size() == 25) {
+		if (division_char.find(v[3][12]) == string::npos) {    // Delimiter?
 			h_add();
 			return errorvertor;
 		}
-		for (int i = 11; i < 21; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
-			}
-			time[i - 1] = time[i];
+		else if (v[3].substr(0, 1) != "20" || v[3].substr(13, 14) != "20") { //2000 up?
+			h_add();
+			return errorvertor;
 		}
-		time.resize(21);
-
+		else {
+			for (auto i : v[3]) {
+				if (division_char.find(i) == string::npos) {           //except Delimiter
+					newTime += i;
+				}
+			}
+		}
 	}
-	else if (time.length() == 23 && (time[10] == '-' || time[10] == ',' || time[10] == '~')) {
-		for (int i = 0; i < 10; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
+	else if (v[3].size() == 21) {
+		if (division_char.find(v[3][10]) == string::npos) {    // Delimiter?
+			h_add();
+			return errorvertor;
+		}
+		else {
+			for (auto i : v[3]) {
+				if (division_char.find(i) == string::npos) {           //except Delimiter
+					newTime += i;
+				}
 			}
+			newTime.insert(0, "20");
+			newTime.insert(12, "20");
 		}
-		if (time[10] != '-' && time[10] != ',' && time[10] != '~') {
-			error(); h_add(); return errorvertor;
-		}
-		for (int i = 11; i < 23; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
-			}
-			time[i - 1] = time[i];
-		}
-		time.resize(23);
-
-	}
-	else if (time.length() == 23 && (time[12] == '-' || time[12] == ',' || time[12] == '~')) {
-		for (int i = 0; i < 10; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
-			}
-		}
-		if (time[12] != '-' && time[12] != ',' && time[12] != '~') {
-			error(); h_add(); return errorvertor;
-		}
-		for (int i = 13; i < 23; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
-			}
-			time[i - 1] = time[i];
-		}
-		time.resize(23);
-	}
-	else if (time.length() == 25) {
-		for (int i = 0; i < 12; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
-			}
-		}
-		if (time[12] != '-' && time[12] != ',' && time[12] != '~') {
-			error(); h_add(); return errorvertor;
-		}
-		for (int i = 13; i < 25; i++) {
-			if (check_integer(time[i]) != 0) {
-				error(); h_add(); return errorvertor;
-			}
-			time[i - 1] = time[i];
-
-		}
-		time.resize(24);
 	}
 	else {
-		error(); return errorvertor;
+		h_add();
+		return errorvertor;
 	}
-	v[3] = time;
+	
+	/************time condition*************/
+		int day_for_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+		int depTime = stoi(newTime.substr(4, 8));
+		int arrTime = stoi(newTime.substr(16,8));
+		int depYear = stoi(newTime.substr(0,4));
+		int arrYear = stoi(newTime.substr(12, 4));
+		int depMonth = stoi(newTime.substr(4, 2));
+		int arrMonth = stoi(newTime.substr(16, 2));
+		if (depYear < 2022 ||depYear > arrYear) {
+			h_add();
+			return errorvertor;
+		}
+		else if (depTime < 10030000 ||depTime >= arrTime) {
+			h_add();
+			return errorvertor;
+		}
+		else if (depMonth > 12 || depMonth == 00 || arrMonth > 12 || arrMonth == 00) {
+			h_add();
+			return errorvertor;
+		}
+		else if (stoi(newTime.substr(6, 2)) > day_for_month[depMonth - 1] || stoi(newTime.substr(18, 2)) > day_for_month[arrMonth - 1]) {
+			h_add();
+			return errorvertor;
+		}
+		v[3] = newTime;
+	
 
 
 	string newprice = "";
@@ -417,9 +406,8 @@ void admin_edit(vector<string> v) {
 	}
 	else {
 		for (int i = 0; i < 3; i++) {
-			if (!(s[i] >= 'A' && s[i] <= 'Z')) {
-				error();
-				return;
+			if (admin_check_argv(s[i]) != '!') {
+				s[i] = admin_check_argv(s[i]);
 			}
 			if (!(s[i + 3] >= '0' && s[i + 3] <= '9')) {
 				error();
@@ -427,7 +415,7 @@ void admin_edit(vector<string> v) {
 			}
 		}
 	}
-
+	v[1] = s;
 	string dir = "./data/airplane";
 	vector<string> paths;
 	if (_access(dir.c_str(), 0) != -1) {
@@ -613,7 +601,7 @@ void admin_show_user(string s)
 			while (!ifs2.eof()) {
 				getline(ifs2, airplaneData);
 				string res_user = split_user_data(airplaneData)[0];
-				ifstream user_ifs("./data/Userdata.txt");
+				ifstream user_ifs("./data/Userlist.txt");
 				while (!user_ifs.eof()) {
 					getline(user_ifs, data_in);
 					if (res_user == split_user_data(data_in)[0]) {

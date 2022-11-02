@@ -33,7 +33,6 @@ void integrity_check() {
 void path_check() {
     const char *path_data = ".";
     int result_data = _access(path_data, 0);
-
     if (result_data != 0) {
         cout << "ERROR! Not found server path!\n" << endl;
         exit(0);
