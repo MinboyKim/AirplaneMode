@@ -145,7 +145,11 @@ int choice() {
 }
 
 void admin_check(vector<string> v) {
-
+	if (v.size() == 0) {
+		admin_show_guide();
+		admin_prompt();
+		return;
+	}
 	string cmd = v[0];
 	if (cmd == "add" || cmd == "a" || cmd == "ad") {
 		if (admin_flight_is_exist(v) == 1) {
