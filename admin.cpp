@@ -154,6 +154,7 @@ void admin_check(vector<string> v) {
 				admin_add(v);
 			}
 		}
+
 	}
 	else if (v.size() == 2 && (cmd == "cancel" || cmd == "cance" || cmd == "canc" || cmd == "can" || cmd == "ca" || cmd == "c")) admin_cancel(v[1]);
 	else if (cmd == "edit" || cmd == "edi" || cmd == "ed" || cmd == "e") admin_edit(v);

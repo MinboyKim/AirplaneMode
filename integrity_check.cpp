@@ -91,6 +91,7 @@ void available_check() {
     return;
 }
 
+
 void rule_check() {
     string userData;
     string airplaneData;

@@ -181,7 +181,7 @@ void user_list(vector<string> v,string userID) {
 
 					}
 					readFile.close();
-
+					
 
 					for (int k = 0; k < 5; k++) { //항공편명0, 출발도착지1,츨발도착지2, 가격 3 좌석 4 
 						if (k == 1) {
@@ -565,6 +565,14 @@ void user_cancel(string flightName, string userID)
 			}
 			fclose(p_file);
 		}
+		string airplaneLine = txtAll[0];
+		vector <string> tempString_airplane;
+		istringstream ss1(airplaneLine);
+		string stringBuffer_airplane;
+		while (getline(ss1, stringBuffer_airplane, '^')) {
+			tempString_airplane.push_back(stringBuffer_airplane);
+		}
+		int money = stoi(tempString_airplane[4]);
 
 		int index = 0;
 		bool user_cancel_flag = false;
@@ -580,13 +588,63 @@ void user_cancel(string flightName, string userID)
 			cout << "You have not booked this flight" << endl;
 			return;
 		}
-		txtAll[index-1] = "";
+		txtAll[index - 1] = "";
 		ofstream ofile;
 		ofile.open(server_dir);
 		for (auto i : txtAll) {
 			ofile << i;
 		}
 		ofile.close();
+
+		string userFile(dir);
+		userFile += "\\data\\Userlist.txt";
+		FILE* p_file_user = NULL;
+		vector<string> txtAll_user;
+		char buffer_user[128];
+		if (0 == fopen_s(&p_file_user, userFile.c_str(), "rt")) {
+			while (fgets(buffer_user, 128, p_file_user) != NULL) {
+				txtAll_user.push_back(buffer_user);
+			}
+			fclose(p_file_user);
+		}
+
+		int index_user = 0;
+		index = 0;
+		vector<string> tempString_user;
+		for (auto i : txtAll_user) {
+			index++;
+			if (i.find(userID) != string::npos) {
+				break;
+			}
+		}
+		string userLine = txtAll_user[index - 1];
+		istringstream ss(userLine);
+		string stringBuffer_user;
+		while (getline(ss, stringBuffer_user, '^')) {
+			tempString_user.push_back(stringBuffer_user);
+		}
+		tempString_user[6] = to_string(stoi(tempString_user[6])+money);
+		
+		string temptempString_user;
+		for (auto i : tempString_user) {
+			temptempString_user += i;
+		}
+		txtAll_user[index - 1] = temptempString_user;
+		for (auto iter : tempString_user) {
+			if (iter != "")temptempString_user.append("^" + iter);
+		}
+		temptempString_user.append("^");
+		txtAll_user[index - 1] = temptempString_user;
+
+
+
+		ofstream ofile1;
+		ofile1.open(userFile);
+		for (auto i : txtAll_user) {
+			ofile1 << i;
+		}
+		ofile1.close();
+
 		cout << "Delete success" << endl;
 		return;
 	}
