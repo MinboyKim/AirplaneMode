@@ -2,6 +2,7 @@
 #define SIGN_IN_H
 
 #include "string_function.h"
+#include <direct.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>

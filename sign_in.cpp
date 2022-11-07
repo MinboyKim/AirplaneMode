@@ -1,10 +1,5 @@
+#include "sign_in.h"
 #include "string_function.h"
-#include <direct.h>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
 
 using namespace std;
 namespace fls = std::filesystem;
@@ -14,7 +9,7 @@ bool make_new_user(vector<string> new_user_data, string user_ID) {
     for (int i = 0; i < 4; i++) {
         will_write += new_user_data[i] + "^";
     }
-    will_write += "0^";
+    will_write += "0^0^";
 
     char dir[256];
     _getcwd(dir, 256);
@@ -54,66 +49,31 @@ bool make_new_user(vector<string> new_user_data, string user_ID) {
 
 bool sign_in_prompt(string user_ID) {
     vector<string> user_input, new_user_data;
-    while (true) {
-        cout << "please input your name : ";
-        string user_name_input = getline_trim();
-        if (user_name_input == "quit") {
-            return false;
-        }
-        if (check_name(user_name_input)) {
-            new_user_data.push_back(make_name_data(user_name_input));
-            break;
-        }
-        print_name_warning();
-    }
+    string print_data[4] = {"please input your name : ", "please input your sex : ", "please input your phonenumber : ", "please input your date of birth : "};
 
-    while (true) {
-        cout << "please input your sex : ";
-        user_input = split_space();
-        if (user_input.size() == 1) {
-            if (user_input[0] == "quit") {
-                return false;
+    for (int i = 0; i < 4; i++) {
+        while (true) {
+            cout << print_data[i];
+
+            if (i == 0) {
+                user_input.clear();
+                string user_name_input = getline_trim();
+                user_input.push_back(user_name_input);
+            } else {
+                user_input = split_space();
             }
-            if (check_sex(user_input[0])) {
-                if (is_male(user_input[0])) {
-                    new_user_data.push_back("1");
-                } else {
-                    new_user_data.push_back("0");
+
+            if (user_input.size() == 1) {
+                if (user_input[0] == "quit") {
+                    return false;
                 }
-                break;
+                if (check_data(i, user_input[0])) {
+                    new_user_data.push_back(make_data(i, user_input[0]));
+                    break;
+                }
             }
+            print_warning(i);
         }
-        print_sex_warning();
-    }
-
-    while (true) {
-        cout << "please input your phonenumber : ";
-        user_input = split_space();
-        if (user_input.size() == 1) {
-            if (user_input[0] == "quit") {
-                return false;
-            }
-            if (check_TEL(user_input[0])) {
-                new_user_data.push_back(make_TEL_data(user_input[0]));
-                break;
-            }
-        }
-        print_TEL_warning();
-    }
-
-    while (true) {
-        cout << "please input your date of birth : ";
-        user_input = split_space();
-        if (user_input.size() == 1) {
-            if (user_input[0] == "quit") {
-                return false;
-            }
-            if (check_birth(user_input[0])) {
-                new_user_data.push_back(make_birth_data(user_input[0]));
-                break;
-            }
-        }
-        print_birth_warning();
     }
 
     if (make_new_user(new_user_data, user_ID)) {
