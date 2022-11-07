@@ -1,12 +1,4 @@
 #include "string_function.h"
-#include <algorithm>
-#include <direct.h>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
 
 using namespace std;
 
@@ -122,6 +114,7 @@ bool check_name(string str) {
     }
     return true;
 }
+
 bool check_sex(string str) {
     string data_set[6] = {"M", "MALE", "MAN", "F", "FEMALE", "WOMAN"};
     for (string data : data_set) {
@@ -242,6 +235,11 @@ bool check_birth(string str) {
     }
 
     return true;
+}
+
+bool check_data(int i, string str) {
+    bool (*check_func[])(string) = {check_name, check_sex, check_TEL, check_data};
+    (*check_func[i])(str);
 }
 
 bool integrity_check_name(string str) {
@@ -405,6 +403,12 @@ string make_name_data(string str) {
     return str;
 }
 
+string make_sex_data(string str) {
+    if (is_male(str))
+        return "1";
+    return "0";
+}
+
 string make_TEL_data(string str) {
     string data_str;
     if (str.size() == 8) {
@@ -449,6 +453,11 @@ string make_birth_data(string str) {
     return mod_str;
 }
 
+string make_data(int i, string str) {
+    bool (*make_func[])(string) = {make_name_data, make_sex_data, make_TEL_data, make_birth_data};
+    (*make_func[i])(str);
+}
+
 void print_ID_warning() { cout << "ERROR not correct input.(You can input between 4 or 16 english characters or numbers allowed)\n"; }
 
 void print_name_warning() { cout << "ERROR not correct input. (You can input between 3 or 30 english characters. And only 1 space allowed.)\n"; }
@@ -457,4 +466,11 @@ void print_sex_warning() { cout << "ERROR not correct input. You should input M,
 
 void print_TEL_warning() { cout << "ERROR not correct input. You should input 8 numbers or 11 numbers start with 010\n"; }
 
-void print_birth_warning() { cout << "ERROR not correct input. (You can input between 6 or 8 characters. And you can use ¡®/¡¯ or  ¡®.¡¯ to divide date. Ex 1998.06.11, 1998/06/11)\n"; }
+void print_birth_warning() {
+    cout << "ERROR not correct input. (You can input between 6 or 8 characters. And you can use ¡®/¡¯ or  ¡®.¡¯ to divide date. Ex 1998.06.11, 1998/06/11)\n";
+}
+
+void print_warning(int i) {
+    void (*func[])() = {print_name_warning, print_sex_warning, print_TEL_warning, print_birth_warning};
+    (*func[i])();
+}
