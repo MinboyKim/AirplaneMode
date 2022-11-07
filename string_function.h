@@ -27,7 +27,7 @@ bool check_data(int i, string str);
 
 bool integrity_check_name(string str);
 bool is_userID_in_data(string str);
-bool is_TEL_in_data(string str);
+bool is_TEL_in_data(string str); //
 bool is_male(string str);
 bool is_number(string str);
 

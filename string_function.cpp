@@ -169,7 +169,7 @@ bool check_TEL(string str) {
     } else {
         return false;
     }
-    return true;
+    return is_TEL_in_data(make_TEL_data(str));
 }
 
 bool check_birth(string str) {
@@ -282,6 +282,33 @@ bool is_userID_in_data(string str) {
         }
     } else {
         // if file open fail?
+    }
+    user_data.close();
+    return false;
+}
+
+bool is_TEL_in_data(string str) {
+    char dir[256];
+    _getcwd(dir, 256);
+    string server_dir(dir);
+    server_dir += "\\data\\Userlist.txt";
+    ifstream user_data;
+    user_data.open(server_dir);
+    if (user_data.is_open()) {
+        while (!user_data.eof()) {
+            char data[256];
+            user_data.getline(data, 256);
+            string dataStr(data);
+            vector<string> v = split_user_data(dataStr);
+            if (v.size() > 0) {
+                string TEL_in_data = split_user_data(dataStr)[3];
+                if (str == TEL_in_data) {
+                    user_data.close();
+                    return true;
+                }
+            }
+        }
+    } else {
     }
     user_data.close();
     return false;
