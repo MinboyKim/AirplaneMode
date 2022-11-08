@@ -475,11 +475,6 @@ string make_birth_data(string str) {
     return mod_str;
 }
 
-string make_data(int i, string str) {
-    bool (*make_func[])(string) = {make_name_data, make_sex_data, make_TEL_data, make_birth_data};
-    (*make_func[i])(str);
-}
-
 void print_ID_warning() { cout << "ERROR not correct input.(You can input between 4 or 16 english characters or numbers allowed)\n"; }
 
 void print_name_warning() { cout << "ERROR not correct input. (You can input between 3 or 30 english characters. And only 1 space allowed.)\n"; }
