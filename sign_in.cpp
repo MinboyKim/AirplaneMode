@@ -48,6 +48,9 @@ bool make_new_user(vector<string> new_user_data, string user_ID) {
 }
 
 bool sign_in_prompt(string user_ID) {
+    bool (*check_func[])(string) = {check_name, check_sex, check_TEL, check_birth};
+    bool (*make_func[])(string) = {make_name_data, make_sex_data, make_TEL_data, make_birth_data};
+    void (*print_func[])() = {print_name_warning, print_sex_warning, print_TEL_warning, print_birth_warning};
     vector<string> user_input, new_user_data;
     string print_data[4] = {"please input your name : ", "please input your sex : ", "please input your phonenumber : ", "please input your date of birth : "};
 
@@ -67,12 +70,12 @@ bool sign_in_prompt(string user_ID) {
                 if (user_input[0] == "quit") {
                     return false;
                 }
-                if (check_data(i, user_input[0])) {
-                    new_user_data.push_back(make_data(i, user_input[0]));
+                if (check_func[i](user_input[0])) {
+                    new_user_data.push_back(make_func[i](user_input[0]));
                     break;
                 }
             }
-            print_warning(i);
+            print_func[i]();
         }
     }
 

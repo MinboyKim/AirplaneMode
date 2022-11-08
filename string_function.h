@@ -23,11 +23,10 @@ bool check_name(string str);
 bool check_sex(string str);
 bool check_TEL(string str);
 bool check_birth(string str);
-bool check_data(int i, string str);
 
 bool integrity_check_name(string str);
 bool is_userID_in_data(string str);
-bool is_TEL_in_data(string str); //
+bool is_TEL_in_data(string str); 
 bool is_male(string str);
 bool is_number(string str);
 
@@ -42,13 +41,11 @@ string make_name_data(string str);
 string make_sex_data(string str);
 string make_TEL_data(string str);
 string make_birth_data(string str);
-string make_data(int i, string str);
 
 void print_ID_warning();
 void print_name_warning();
 void print_sex_warning();
 void print_TEL_warning();
 void print_birth_warning();
-void print_warning(int i);
 
 #endif
