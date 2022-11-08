@@ -237,11 +237,6 @@ bool check_birth(string str) {
     return true;
 }
 
-bool check_data(int i, string str) {
-    bool (*check_func[])(string) = {check_name, check_sex, check_TEL, check_data};
-    (*check_func[i])(str);
-}
-
 bool integrity_check_name(string str) {
     bool space = false;
     for (int i = 0; i < str.size(); i++) {
@@ -495,9 +490,4 @@ void print_TEL_warning() { cout << "ERROR not correct input. You should input 8 
 
 void print_birth_warning() {
     cout << "ERROR not correct input. (You can input between 6 or 8 characters. And you can use ¡®/¡¯ or  ¡®.¡¯ to divide date. Ex 1998.06.11, 1998/06/11)\n";
-}
-
-void print_warning(int i) {
-    void (*func[])() = {print_name_warning, print_sex_warning, print_TEL_warning, print_birth_warning};
-    (*func[i])();
 }
