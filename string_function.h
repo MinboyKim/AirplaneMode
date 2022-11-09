@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -26,7 +27,7 @@ bool check_birth(string str);
 
 bool integrity_check_name(string str);
 bool is_userID_in_data(string str);
-bool is_TEL_in_data(string str); 
+bool is_TEL_in_data(string str);
 bool is_male(string str);
 bool is_number(string str);
 

@@ -1,15 +1,5 @@
 #include "integrity_check.h"
-
-#include <io.h>
-#include <stdio.h>
-
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <vector>
-
 #include "string_function.h"
-#include "user.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -61,11 +51,7 @@ void userList_check() {
 
 void available_check() {
     const char *path_userList = ".\\data\\Userlist.txt";
-    if (_access(path_userList, 4) == -1) {
-        cout << "ERROR! Files that cannot be used in File I/O exist\n";
-        exit(0);
-    }
-    if (_access(path_userList, 2) == -1) {
+    if (_access(path_userList, 4) == -1 || _access(path_userList, 2) == -1) {
         cout << "ERROR! Files that cannot be used in File I/O exist\n";
         exit(0);
     }
@@ -76,12 +62,9 @@ void available_check() {
         for (auto &p : std::filesystem::directory_iterator(dir)) {
             paths.push_back(p.path().string());
         }
+
         for (int i = 0; i < paths.size(); i++) {
-            if (_access(paths[i].c_str(), 4) == -1) {
-                cout << "ERROR! Files that cannot be used in File I/O exist\n";
-                exit(0);
-            }
-            if (_access(paths[i].c_str(), 2) == -1) {
+            if (_access(paths[i].c_str(), 4) == -1 || _access(paths[i].c_str(), 2) == -1) {
                 cout << "ERROR! Files that cannot be used in File I/O exist\n";
                 exit(0);
             }
@@ -90,7 +73,6 @@ void available_check() {
 
     return;
 }
-
 
 void rule_check() {
     string userData;
@@ -103,13 +85,8 @@ void rule_check() {
         int i = 1;
         while (!ifs1.eof()) {
             getline(ifs1, userData);
-            if (i == 1) {
-                if (userData == "") {
-                    break;
-                } else if (user_integrity_check(userData) == 0) {
-                    printf("ERROR! Incorrect data exist! ( file name : Userlist.txt , In row %d)\n", i);
-                    exit(0);
-                }
+            if (i == 1 && userData == "") {
+                break;
             } else if (user_integrity_check(userData) == 0) {
                 printf("ERROR! Incorrect data exist! ( file name : Userlist.txt , In row %d)\n", i);
                 exit(0);
@@ -178,7 +155,7 @@ bool user_integrity_check(string str) {
         return false;
     }
     integrity_data = split_user_data(str);
-    if (integrity_data.size() != 6) {
+    if (integrity_data.size() != 7) {
         return false;
     }
 
@@ -209,6 +186,11 @@ bool user_integrity_check(string str) {
     if (!is_number(integrity_data[5])) {
         return false;
     }
+
+    if (!is_number(integrity_data[6])) {
+        return false;
+    }
+
     for (int i = 0; i < user_ID_set.size(); i++) {
         if (user_ID_set[i] == integrity_data[0]) {
             return false;
