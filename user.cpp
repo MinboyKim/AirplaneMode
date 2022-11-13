@@ -117,6 +117,10 @@ void user_help(vector<string> v, string userID) {
 			cout << "            : ex> User> informaiton\n" << endl;
 			cout << "            : cj2200 ChoiJungyu M 01050362323 1990622\n" << endl;
 		}
+		else if (v.at(1) == "mileage" || v.at(1) == "mileag" || v.at(1) == "milea" || v.at(1) == "mile" || v.at(1) == "mil" || v.at(1) == "mi" || v.at(1) == "m") {
+			system("cls");
+			cout << "description : Instruction \"mileage or mileag or milea or mile or mil or mi or m \" print how much mileage you have \n" << endl;
+		}
 		else {
 			system("cls");
 			user_show_guide();
