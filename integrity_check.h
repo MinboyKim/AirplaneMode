@@ -1,14 +1,12 @@
 #ifndef INTEGRITY_CHECK_H
 #define INTEGRITY_CHECK_H
 
-#include <io.h>
-
+#include "string_function.h"
 #include <filesystem>
 #include <fstream>
+#include <io.h>
 #include <iostream>
 #include <vector>
-
-#include "string_function.h"
 
 void integrity_check();
 void path_check();

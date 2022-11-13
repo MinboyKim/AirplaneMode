@@ -169,7 +169,7 @@ bool check_TEL(string str) {
     } else {
         return false;
     }
-    return is_TEL_in_data(make_TEL_data(str));
+    return !is_TEL_in_data(make_TEL_data(str));
 }
 
 bool check_birth(string str) {
@@ -326,21 +326,10 @@ bool is_number(string str) {
 }
 
 bool check_airplane_name(string str) {
-    if (str.size() != 6) {
-        return false;
-    }
-
-    for (int i = 0; i < 3; i++) {
-        if (!(str[i] >= 'A' && str[i] <= 'Z')) {
-            return false;
-        }
-    }
-    for (int i = 3; i < 6; i++) {
-        if (!(str[i] >= '1' && str[i] <= '9')) {
-            return false;
-        }
-    }
-    return true;
+    regex re("[A-Z]{3}[0-9]{3}");
+    if (regex_match(str, re))
+        return true;
+    return false;
 }
 
 bool check_place(string str) {
