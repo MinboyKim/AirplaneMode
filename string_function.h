@@ -23,6 +23,7 @@ bool check_ID(string str);
 bool check_name(string str);
 bool check_sex(string str);
 bool check_TEL(string str);
+bool check_TEL_integrity(string str);
 bool check_birth(string str);
 
 bool integrity_check_name(string str);

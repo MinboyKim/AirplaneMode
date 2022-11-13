@@ -172,6 +172,19 @@ bool check_TEL(string str) {
     return !is_TEL_in_data(make_TEL_data(str));
 }
 
+bool check_TEL_integrity(string str) {
+    if (str.size() == 8) {
+        for (int i = 0; i < 8; i++) {
+            if (str[i] > '9' || str[i] < '0') {
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
+    return true;
+}
+
 bool check_birth(string str) {
     string mod_str = "";
     string division_char = "/.-";

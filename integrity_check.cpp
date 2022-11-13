@@ -173,7 +173,7 @@ bool user_integrity_check(string str) {
 
     if (!is_number(integrity_data[3]) || integrity_data[3].size() != 8) {
         return false;
-    } else if (!check_TEL(integrity_data[3])) {
+    } else if (!check_TEL_integrity(integrity_data[3])) {
         return false;
     }
 
