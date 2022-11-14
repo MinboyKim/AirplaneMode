@@ -704,7 +704,7 @@ void user_cancel(string flightName, string userID)
 		while (getline(ss, stringBuffer_user, '^')) {
 			tempString_user.push_back(stringBuffer_user);
 		}
-		tempString_user[6] = to_string(stoi(tempString_user[6])+money);
+		tempString_user[7] = to_string(stoi(tempString_user[7])+money);
 		
 		string temptempString_user;
 		
