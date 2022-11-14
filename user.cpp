@@ -652,7 +652,7 @@ void user_cancel(string flightName, string userID)
 		while (getline(ss1, stringBuffer_airplane, '^')) {
 			tempString_airplane.push_back(stringBuffer_airplane);
 		}
-		double money = stoi(tempString_airplane[4])*0.9;
+		int money = stoi(tempString_airplane[4])*0.9;
 
 		int index = 0;
 		bool user_cancel_flag = false;
@@ -736,6 +736,10 @@ void user_cancel(string flightName, string userID)
 
 void user_deposit(string iMoney, string userID)
 {
+	if (iMoney.length() > 9) {
+		cout << "Too much money." << endl;
+		return;
+	}
 	int money = stoi(iMoney);
 	char dir[256];
 	_getcwd(dir, 256);
