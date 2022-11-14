@@ -652,7 +652,7 @@ void user_cancel(string flightName, string userID)
 		while (getline(ss1, stringBuffer_airplane, '^')) {
 			tempString_airplane.push_back(stringBuffer_airplane);
 		}
-		int money = stoi(tempString_airplane[4]);
+		double money = stoi(tempString_airplane[4])*0.9;
 
 		int index = 0;
 		bool user_cancel_flag = false;
@@ -767,7 +767,7 @@ void user_deposit(string iMoney, string userID)
 			for (auto iter : tempVector) {
 				if (iter != "")tempString.append("^" + iter);
 			}
-			if (tempVector.size() == 7) tempString.append("^");
+			if (tempVector.size() == 8) tempString.append("^");
 			break;
 		}
 	}
@@ -812,7 +812,7 @@ void user_information(string userID)
 			break;
 		}
 	}
-	if(tempVector.size() > 7) tempVector[7] = "";
+	if(tempVector.size() > 8) tempVector[8] = "";
 	for (auto i : tempVector) {
 		if(i != "") cout << i << " ";
 	}
