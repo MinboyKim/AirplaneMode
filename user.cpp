@@ -763,7 +763,12 @@ void user_deposit(string iMoney, string userID)
 			while (getline(ss, stringBuffer, '^')) {
 				tempVector.push_back(stringBuffer);
 			}
-			tempVector[6] = to_string(money + stoi(tempVector[6]));
+			if (money + stoi(tempVector[6]) > 999999999) {
+				tempVector[6] = to_string(999999999);
+				cout << "User can have maximum 999999999." << endl;
+			}else
+				tempVector[6] = to_string(money + stoi(tempVector[6]));
+			
 			for (auto iter : tempVector) {
 				if (iter != "")tempString.append("^" + iter);
 			}
