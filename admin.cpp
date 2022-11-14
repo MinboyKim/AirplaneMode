@@ -152,11 +152,16 @@ void admin_check(vector<string> v) {
 	}
 	string cmd = v[0];
 	if (cmd == "add" || cmd == "a" || cmd == "ad") {
-		if (admin_flight_is_exist(v) == 1) {
-			if ((admin_check_add(v).size() == 6)) {
-				v = admin_check_add(v);
-				admin_add(v);
+		if (v.size() == 6) {
+			if (admin_flight_is_exist(v) == 1) {
+				if ((admin_check_add(v).size() == 6)) {
+					v = admin_check_add(v);
+					admin_add(v);
+				}
 			}
+		}
+		else {
+			h_add();
 		}
 
 	}
@@ -187,7 +192,7 @@ vector<string> admin_check_add(vector<string> v) {
 		cout << i << " ";
 	}*/
 	vector<string> errorvertor;
-	if (v.size() < 6 && v.size() > 6) {
+	if (v.size() < 6 || v.size() > 6) {
 		error(); h_add(); return errorvertor;
 	}
 	string planename = v[1];
@@ -253,7 +258,8 @@ vector<string> admin_check_add(vector<string> v) {
 	}
 	*/
 	v[2] = departture_destination;
-
+	
+	
 	/**********time****************/
 	string newTime;
 	newTime.clear();
@@ -263,7 +269,7 @@ vector<string> admin_check_add(vector<string> v) {
 			h_add();
 			return errorvertor;
 		}
-		else if (v[3].substr(0, 1) != "20" || v[3].substr(13, 14) != "20") { //2000 up?
+		else if (v[3].substr(0, 2) != "20" || v[3].substr(13, 2) != "20") { //2000 up?
 			h_add();
 			return errorvertor;
 		}
@@ -564,6 +570,7 @@ int admin_flight_is_exist(vector<string> v) {
 }
 
 void admin_quit() {
+	cout << "Good bye";
 	exit(0);
 }
 
@@ -616,8 +623,16 @@ void admin_show_user(string s)
 				while (!user_ifs.eof()) {
 					getline(user_ifs, data_in);
 					if (res_user == split_user_data(data_in)[0]) {
-						for (int i = 0; i < 5; i++) {
-							cout << split_user_data(data_in)[i] << ' ';
+						vector<string> userInfo = split_user_data(data_in);
+						if (userInfo[2] == "1") {
+							userInfo[2] = "M";
+						}
+						else if (userInfo[2] == "0") {
+							userInfo[2] = "W";
+						}
+						userInfo[3] = "010" + userInfo[3];
+						for (int i = 0; i < 5; i++) {					
+							cout << userInfo[i] << ' ';
 						}
 						cout << endl;
 						break;

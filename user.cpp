@@ -405,9 +405,11 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 	while (1) {
 		cout << "Will you use your Mileage?" << endl;
 		cout << "yes or no? please endter Y or y or N or n" << endl;
+
 		cin.getline(yesorno, 100, '\n');
 		cin.clear();
 		if (strlen(yesorno) != 1)
+
 			continue;
 		if (yesorno[0] == 'Y' || yesorno[0] == 'N' || yesorno[0] == 'y' || yesorno[0] == 'N')
 			break;
@@ -499,7 +501,7 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 
 		}
 		readFile.close();
-
+	
 		for (int i = 0; i < user_datal.size(); i = i + 7) { // 유저 아이디 검사. // 마일리지가 추가 되었으므로 7로 변경
 
 			if (user_datal.at(i) == userID) {
@@ -523,7 +525,7 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 								if (mil[r] < '0' || mil[r]>'9')// 숫자로 이루어진게 아니라면
 								{
 									cout << "you can input only disit!" << endl;
-									break;
+									continue;
 								}
 								check_num++;
 							}
@@ -825,6 +827,17 @@ void user_information(string userID)
 		}
 	}
 	if(tempVector.size() > 8) tempVector[8] = "";
+
+
+	if (tempVector[3] == "1") {
+		tempVector[3] = "M";
+	}
+	else if (tempVector[3] == "0") {
+		tempVector[3] = "W";
+	}
+
+	tempVector[4] = "010" + tempVector[4];
+
 	for (auto i : tempVector) {
 		if(i != "") cout << i << " ";
 	}
@@ -833,32 +846,33 @@ void user_information(string userID)
 
 	int user_res_count = 0;		//몇 개 예약했는지 세는 변수
 	vector<string> user_res;	//모든 예약 정보 담을 벡터	
-	for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(std::filesystem::current_path() / "data/airplane")) {		//폴더안 돌면서
-		FILE* airplane_file = NULL;
-		vector<string> airplane_file_All;	//파일 안 모든 내용 담을 벡터
-		char buffer_forAirplane[128];
-		string airplaneName;	//항공편이름 담는 변수
-		vector<string> vecForairplaneName;		//항공편이름 가져올 때 "^" 스플릿한 문자열 저장할 벡터
-		if (0 == fopen_s(&airplane_file, entry.path().string().c_str(), "rt")) {
-			while (fgets(buffer, 128, airplane_file) != NULL) {
-				airplane_file_All.push_back(buffer);	//내용 다 담기
+	if (std::filesystem::exists("./data/airplane")) {
+		for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(std::filesystem::current_path() / "data/airplane")) {		//폴더안 돌면서
+			FILE* airplane_file = NULL;
+			vector<string> airplane_file_All;	//파일 안 모든 내용 담을 벡터
+			char buffer_forAirplane[128];
+			string airplaneName;	//항공편이름 담는 변수
+			vector<string> vecForairplaneName;		//항공편이름 가져올 때 "^" 스플릿한 문자열 저장할 벡터
+			if (0 == fopen_s(&airplane_file, entry.path().string().c_str(), "rt")) {
+				while (fgets(buffer, 128, airplane_file) != NULL) {
+					airplane_file_All.push_back(buffer);	//내용 다 담기
+				}
+				vecForairplaneName = split_user_data(airplane_file_All[0]);		//구분자 스플릿
+				airplaneName = vecForairplaneName[0];	//항공편 이름 저장
+				fclose(airplane_file);
 			}
-			vecForairplaneName = split_user_data(airplane_file_All[0]);		//구분자 스플릿
-			airplaneName = vecForairplaneName[0];	//항공편 이름 저장
-			fclose(airplane_file);
-		}
-		for (auto i : airplane_file_All) {		//모든 내용 돌면서
-			if (i.find(userID) != string::npos) {		//예약내용 있으면
-				vector<string> userResTempVec = split_user_data(i);		//스플릿
-				user_res.push_back(airplaneName);	//항공편이름 담고
-				user_res.push_back(" ");
-				user_res.push_back(userResTempVec[1]);		//좌석정보 담고
-				user_res.push_back("\n");
-				user_res_count++;
+			for (auto i : airplane_file_All) {		//모든 내용 돌면서
+				if (i.find(userID) != string::npos) {		//예약내용 있으면
+					vector<string> userResTempVec = split_user_data(i);		//스플릿
+					user_res.push_back(airplaneName);	//항공편이름 담고
+					user_res.push_back(" ");
+					user_res.push_back(userResTempVec[1]);		//좌석정보 담고
+					user_res.push_back("\n");
+					user_res_count++;
+				}
 			}
 		}
 	}
-
 	cout << "Total " << user_res_count << " res" << endl;
 	for (auto i : user_res) {
 		cout << i;
@@ -990,3 +1004,4 @@ void user_quit_check(vector<string> v, string user_ID) {
 		return;
 	}
 }
+
