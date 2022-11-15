@@ -411,7 +411,7 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 		if (strlen(yesorno) != 1)
 
 			continue;
-		if (yesorno[0] == 'Y' || yesorno[0] == 'N' || yesorno[0] == 'y' || yesorno[0] == 'N')
+		if (yesorno[0] == 'Y' || yesorno[0] == 'N' || yesorno[0] == 'y' || yesorno[0] == 'n')
 			break;
 	}
 
