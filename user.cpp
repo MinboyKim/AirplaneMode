@@ -506,6 +506,11 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 
 			if (user_datal.at(i) == userID) {
 				if (yesorno[0] == 'Y' || yesorno[0] == 'y') {//마일리지를 사용하는 경우
+					if (user_datal.at(i + 6) == "0") {
+						cout << "You have no mileage" << endl;
+						user_prompt(userID);
+						return;
+					}
 					if (stoi(user_datal.at(i + 5)) + stoi(user_datal.at(i + 6)) < stoi(f_info.at(3))) {//마일리지 + 돈 적으면 안됨
 						cout << "Not enough user asset for flight!" << endl;
 						user_prompt(userID);
