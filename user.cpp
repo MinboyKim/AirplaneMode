@@ -402,6 +402,7 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 	}
 
 	char yesorno[100];
+	
 	while (1) {
 		cout << "Will you use your Mileage?" << endl;
 		cout << "yes or no? please endter Y or y or N or n" << endl;
@@ -530,7 +531,7 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 								if (mil[r] < '0' || mil[r]>'9')// 숫자로 이루어진게 아니라면
 								{
 									cout << "you can input only disit!" << endl;
-									continue;
+									break;
 								}
 								check_num++;
 							}
@@ -550,7 +551,7 @@ void user_reservation(vector<string> v, string userID) //v[0] 명령어 - flight
 						}
 						//계산
 						int result = stoi(user_datal.at(i + 5)) - stoi(f_info.at(3)) + stoi(mil);
-						int result2 = stoi(user_datal.at(i + 6)) - stoi(mil);
+						int result2 = stoi(user_datal.at(i + 6))+(stoi(f_info.at(3)) - stoi(mil))/10 - stoi(mil);
 						stringstream ssint;
 						stringstream ssint2;
 						ssint << result;
