@@ -105,7 +105,7 @@ void user_help(vector<string> v, string userID) {
 			cout << "            : ex> User> cancel KOR111" << endl;
 
 		}
-		else if (v.at(1) == "deposit" || v.at(1) == "deposi" || v.at(1) == "depos" || v.at(1) == "dep" || v.at(1) == "de" || v.at(1) == "d") {
+		else if (v.at(1) == "deposit" || v.at(1) == "deposi" || v.at(1) == "depos" || v.at(1) == "dep" || v.at(1) == "de" || v.at(1) == "d" || v.at(1)=="depo") {
 			system("cls");
 			cout << "description : Instruction \" deposit or depo or d \" deposit user's money. You can use this instruction with 1 argument about amount. \n" << endl;
 			cout << "            : ex> User> deposit 1120" << endl;
